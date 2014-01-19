@@ -1,0 +1,7 @@
+/.dep/
+/.settings/
+/build/
+/.cproject
+/.project
+.DS_Store
+*.swp
