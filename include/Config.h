@@ -27,13 +27,16 @@
 #ifndef CONFIG_H_
 #define CONFIG_H_
 
+/* Set a compile-time logging level. */
+#define STATIC_LOGGING_LEVEL LOGGING_INFO
+
 /* Macros for GPIO pins that expand to their GPIO port and pad number. */
 #define GPIO_LEDZ       GPIOB, GPIOB_LEDZ
 #define GPIO_DRV_NSS    GPIOB, GPIOB_DRV_NSS
 #define GPIO_LEDX       GPIOB, GPIOB_LEDX
 #define GPIO_LEDY       GPIOB, GPIOB_LEDY
 
-/* Debug serial options */
+/* Debug serial options. */
 #define DEBUG_SERIAL    (SD3)
 #define DEBUG_BAUDRATE  115200
 
