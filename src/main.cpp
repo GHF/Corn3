@@ -53,6 +53,13 @@ int main(void) {
   halInit();
   chSysInit();
 
+  // serial setup
+  const SerialConfig dbgSerialConfig = { DEBUG_BAUDRATE,
+                                         0,
+                                         USART_CR2_STOP1_BITS,
+                                         USART_CR3_CTSE | USART_CR3_RTSE };
+  sdStart(&DEBUG_SERIAL, &dbgSerialConfig);
+
   chThdCreateStatic(waHeartbeat,
                     sizeof(waHeartbeat),
                     LOWPRIO,

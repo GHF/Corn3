@@ -33,4 +33,8 @@
 #define GPIO_LEDX       GPIOB, GPIOB_LEDX
 #define GPIO_LEDY       GPIOB, GPIOB_LEDY
 
+/* Debug serial options */
+#define DEBUG_SERIAL    (SD3)
+#define DEBUG_BAUDRATE  115200
+
 #endif  /* CONFIG_H_ */
