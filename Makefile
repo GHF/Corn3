@@ -64,7 +64,7 @@ PROJECT = corn3
 
 # Imported source files and paths
 CHIBIOS = ChibiOS
-include board/board.mk
+include src/board/board.mk
 include src/version/version_vars.mk
 include $(CHIBIOS)/os/hal/platforms/STM32F30x/platform.mk
 include $(CHIBIOS)/os/hal/hal.mk
