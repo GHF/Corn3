@@ -53,4 +53,31 @@
  */
 #define INVOKE(invokable, ...) invokable(__VA_ARGS__)
 
+/* ANSI color codes. */
+#define ANSI_RESET            "\x1b[0m"
+#define ANSI_BOLD             "\x1b[1m"
+#define ANSI_UNDERLINE        "\x1b[4m"
+#define ANSI_REVERSE          "\x1b[7m"
+#define ANSI_BOLD_OFF         "\x1b[22m"
+#define ANSI_UNDERLINE_OFF    "\x1b[24m"
+#define ANSI_REVERSE_OFF      "\x1b[27m"
+#define ANSI_COLOR_BLACK      "\x1b[30m"
+#define ANSI_COLOR_RED        "\x1b[31m"
+#define ANSI_COLOR_GREEN      "\x1b[32m"
+#define ANSI_COLOR_YELLOW     "\x1b[33m"
+#define ANSI_COLOR_BLUE       "\x1b[34m"
+#define ANSI_COLOR_MAGENTA    "\x1b[35m"
+#define ANSI_COLOR_CYAN       "\x1b[36m"
+#define ANSI_COLOR_WHITE      "\x1b[37m"
+#define ANSI_COLOR_OFF        "\x1b[39m"
+#define ANSI_BGCOL_BLACK      "\x1b[40m"
+#define ANSI_BGCOL_RED        "\x1b[41m"
+#define ANSI_BGCOL_GREEN      "\x1b[42m"
+#define ANSI_BGCOL_YELLOW     "\x1b[43m"
+#define ANSI_BGCOL_BLUE       "\x1b[44m"
+#define ANSI_BGCOL_MAGENTA    "\x1b[45m"
+#define ANSI_BGCOL_CYAN       "\x1b[46m"
+#define ANSI_BGCOL_WHITE      "\x1b[47m"
+#define ANSI_BGCOL_OFF        "\x1b[49m"
+
 #endif  /* UTILITY_H_ */
