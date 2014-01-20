@@ -24,8 +24,8 @@
  * use or other dealings in this Software without prior written authorization.
  */
 
-#ifndef UTILITY_H_
-#define UTILITY_H_
+#ifndef BASE_UTILITY_H_
+#define BASE_UTILITY_H_
 
 /* Compiler-specific attribute definitions. */
 #ifdef __GNUC__
@@ -80,4 +80,4 @@
 #define ANSI_BGCOL_WHITE      "\x1b[47m"
 #define ANSI_BGCOL_OFF        "\x1b[49m"
 
-#endif  /* UTILITY_H_ */
+#endif  /* BASE_UTILITY_H_ */

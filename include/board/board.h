@@ -25,8 +25,8 @@
  * use or other dealings in this Software without prior written authorization.
  */
 
-#ifndef _BOARD_H_
-#define _BOARD_H_
+#ifndef BOARD_BOARD_H_
+#define BOARD_BOARD_H_
 
 /*
  * Setup for the Corn3 brushless motor controller.
@@ -893,6 +893,6 @@ void boardInit(void);
 #ifdef __cplusplus
 }
 #endif
-#endif /* _FROM_ASM_ */
+#endif  /* _FROM_ASM_ */
 
-#endif /* _BOARD_H_ */
+#endif  /* BOARD_BOARD_H_ */

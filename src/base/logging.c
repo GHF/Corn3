@@ -24,9 +24,9 @@
  * use or other dealings in this Software without prior written authorization.
  */
 
-#include "Config.h"
-#include "Logging.h"
-#include "Utility.h"
+#include "config.h"
+#include "base/logging.h"
+#include "base/utility.h"
 
 #include <stdio.h>
 #include <stdarg.h>

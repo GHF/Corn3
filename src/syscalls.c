@@ -27,7 +27,7 @@
 #include "ch.h"
 #include "hal.h"
 
-#include "Config.h"
+#include "config.h"
 
 #include <stdint.h>
 

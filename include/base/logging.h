@@ -24,10 +24,10 @@
  * use or other dealings in this Software without prior written authorization.
  */
 
-#ifndef LOGGING_H_
-#define LOGGING_H_
+#ifndef BASE_LOGGING_H_
+#define BASE_LOGGING_H_
 
-#include "Config.h"
+#include "config.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -90,4 +90,4 @@ int LogAtLevel(int level, const char *, ...);
 }  /* extern "C" */
 #endif  /* __cplusplus */
 
-#endif /* LOGGING_H_ */
+#endif  /* BASE_LOGGING_H_ */

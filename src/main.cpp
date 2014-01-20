@@ -27,9 +27,9 @@
 #include "ch.h"
 #include "hal.h"
 
-#include "Config.h"
-#include "Logging.h"
-#include "Utility.h"
+#include "config.h"
+#include "base/logging.h"
+#include "base/utility.h"
 #include "version/version.h"
 
 #include <cstdlib>
