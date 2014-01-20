@@ -2,6 +2,7 @@
 /.settings/
 /build/
 /.cproject
+/.gdbinit
 /.project
 .DS_Store
 *.swp
