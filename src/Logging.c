@@ -49,9 +49,9 @@ void SetLoggingLevel(LoggingLevel level) {
 int LogAtLevel(LoggingLevel level, const char *format, ...) {
   const char * const level_prefixes[] = { "",
                                           ANSI_BOLD,
-                                          ANSI_COLOR_YELLOW,
-                                          ANSI_COLOR_RED,
-                                          ANSI_BGCOL_RED,
+                                          ANSI_BOLD ANSI_COLOR_YELLOW,
+                                          ANSI_BOLD ANSI_COLOR_RED,
+                                          ANSI_BOLD ANSI_BGCOL_RED,
                                           ANSI_REVERSE };
 
   const char * const level_names[] = { "DEBUG",
@@ -63,9 +63,9 @@ int LogAtLevel(LoggingLevel level, const char *format, ...) {
 
   const char * const level_suffixes[] = { "",
                                           ANSI_BOLD_OFF,
-                                          ANSI_COLOR_OFF,
-                                          ANSI_COLOR_OFF,
-                                          ANSI_BGCOL_OFF,
+                                          ANSI_COLOR_OFF ANSI_BOLD_OFF,
+                                          ANSI_COLOR_OFF ANSI_BOLD_OFF,
+                                          ANSI_BGCOL_OFF ANSI_BOLD_OFF,
                                           ANSI_REVERSE_OFF };
 
   if (level < GetLoggingLevel())
