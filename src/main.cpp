@@ -28,7 +28,9 @@
 #include "hal.h"
 
 #include "Config.h"
+#include "Logging.h"
 #include "Utility.h"
+#include "version/version.h"
 
 #include <cstdlib>
 
@@ -53,12 +55,19 @@ int main(void) {
   halInit();
   chSysInit();
 
-  // serial setup
+  // Setup debug serial port.
   const SerialConfig dbgSerialConfig = { DEBUG_BAUDRATE,
                                          0,
                                          USART_CR2_STOP1_BITS,
                                          USART_CR3_CTSE | USART_CR3_RTSE };
   sdStart(&DEBUG_SERIAL, &dbgSerialConfig);
+
+  // Print using base OS mechanism, so there is output even if printf breaks.
+  const uint8_t welcome_msg[] = BOARD_NAME "\r\n";
+  chSequentialStreamWrite(&DEBUG_SERIAL, welcome_msg, sizeof(welcome_msg));
+
+  // Print startup message.
+  LogInfo("Firmware version %s built %s", g_build_version, g_build_time);
 
   chThdCreateStatic(waHeartbeat,
                     sizeof(waHeartbeat),

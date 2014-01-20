@@ -65,6 +65,7 @@ PROJECT = corn3
 # Imported source files and paths
 CHIBIOS = ChibiOS
 include board/board.mk
+include src/version/version_vars.mk
 include $(CHIBIOS)/os/hal/platforms/STM32F30x/platform.mk
 include $(CHIBIOS)/os/hal/hal.mk
 include $(CHIBIOS)/os/ports/GCC/ARMCMx/STM32F3xx/port.mk
@@ -80,6 +81,7 @@ CSRC = $(PORTSRC) \
        $(HALSRC) \
        $(PLATFORMSRC) \
        $(BOARDSRC) \
+       $(VERSIONSRC) \
        src/syscalls.c \
        src/Logging.c \
 
@@ -195,7 +197,7 @@ UINCDIR = include
 ULIBDIR =
 
 # List all user libraries here
-ULIBS =
+ULIBS = $(VERSIONLIBS)
 
 #
 # End of user defines
@@ -215,5 +217,8 @@ ifeq ($(USE_FWLIB),yes)
   USE_OPT += -DUSE_STDPERIPH_DRIVER
 endif
 
+# Main make targets and rules.
 include $(CHIBIOS)/os/ports/GCC/ARMCMx/rules.mk
 
+# Additional make rules.
+include $(VERSIONDIR)/version_rules.mk
