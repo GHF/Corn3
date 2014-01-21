@@ -66,7 +66,7 @@ PROJECT = corn3
 CHIBIOS = ChibiOS
 include src/board/board.mk
 include src/version/version_vars.mk
-include $(CHIBIOS)/os/hal/platforms/STM32F30x/platform.mk
+include src/lld/platform.mk
 include $(CHIBIOS)/os/hal/hal.mk
 include $(CHIBIOS)/os/ports/GCC/ARMCMx/STM32F3xx/port.mk
 include $(CHIBIOS)/os/kernel/kernel.mk
