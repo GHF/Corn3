@@ -1,5 +1,30 @@
 /*
-    ChibiOS/RT - Copyright (C) 2006-2013 Giovanni Di Sirio
+ * Corn3 - Copyright (C) 2014 Xo Wang
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ * Except as contained in this notice, the name(s) of the above copyright
+ * holders shall not be used in advertising or otherwise to promote the sale,
+ * use or other dealings in this Software without prior written authorization.
+ */
+/*
+    ChibiOS/RT - Copyright (C) 2006-2013 Giovanni Di Sirio  (MODIFIED BY ABOVE)
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -40,59 +65,11 @@
 /*===========================================================================*/
 
 /**
- * @brief   ICUD1 driver identifier.
- * @note    The driver ICUD1 allocates the complex timer TIM1 when enabled.
- */
-#if STM32_ICU_USE_TIM1 || defined(__DOXYGEN__)
-ICUDriver ICUD1;
-#endif
-
-/**
  * @brief   ICUD2 driver identifier.
  * @note    The driver ICUD1 allocates the timer TIM2 when enabled.
  */
 #if STM32_ICU_USE_TIM2 || defined(__DOXYGEN__)
 ICUDriver ICUD2;
-#endif
-
-/**
- * @brief   ICUD3 driver identifier.
- * @note    The driver ICUD1 allocates the timer TIM3 when enabled.
- */
-#if STM32_ICU_USE_TIM3 || defined(__DOXYGEN__)
-ICUDriver ICUD3;
-#endif
-
-/**
- * @brief   ICUD4 driver identifier.
- * @note    The driver ICUD4 allocates the timer TIM4 when enabled.
- */
-#if STM32_ICU_USE_TIM4 || defined(__DOXYGEN__)
-ICUDriver ICUD4;
-#endif
-
-/**
- * @brief   ICUD5 driver identifier.
- * @note    The driver ICUD5 allocates the timer TIM5 when enabled.
- */
-#if STM32_ICU_USE_TIM5 || defined(__DOXYGEN__)
-ICUDriver ICUD5;
-#endif
-
-/**
- * @brief   ICUD8 driver identifier.
- * @note    The driver ICUD8 allocates the timer TIM8 when enabled.
- */
-#if STM32_ICU_USE_TIM8 || defined(__DOXYGEN__)
-ICUDriver ICUD8;
-#endif
-
-/**
- * @brief   ICUD9 driver identifier.
- * @note    The driver ICUD9 allocates the timer TIM9 when enabled.
- */
-#if STM32_ICU_USE_TIM9 || defined(__DOXYGEN__)
-ICUDriver ICUD9;
 #endif
 
 /*===========================================================================*/
@@ -133,48 +110,6 @@ static void icu_lld_serve_interrupt(ICUDriver *icup) {
 /* Driver interrupt handlers.                                                */
 /*===========================================================================*/
 
-#if STM32_ICU_USE_TIM1
-#if !defined(STM32_TIM1_UP_HANDLER)
-#error "STM32_TIM1_UP_HANDLER not defined"
-#endif
-/**
- * @brief   TIM1 compare interrupt handler.
- * @note    It is assumed that the various sources are only activated if the
- *          associated callback pointer is not equal to @p NULL in order to not
- *          perform an extra check in a potentially critical interrupt handler.
- *
- * @isr
- */
-CH_IRQ_HANDLER(STM32_TIM1_UP_HANDLER) {
-
-  CH_IRQ_PROLOGUE();
-
-  icu_lld_serve_interrupt(&ICUD1);
-
-  CH_IRQ_EPILOGUE();
-}
-
-#if !defined(STM32_TIM1_CC_HANDLER)
-#error "STM32_TIM1_CC_HANDLER not defined"
-#endif
-/**
- * @brief   TIM1 compare interrupt handler.
- * @note    It is assumed that the various sources are only activated if the
- *          associated callback pointer is not equal to @p NULL in order to not
- *          perform an extra check in a potentially critical interrupt handler.
- *
- * @isr
- */
-CH_IRQ_HANDLER(STM32_TIM1_CC_HANDLER) {
-
-  CH_IRQ_PROLOGUE();
-
-  icu_lld_serve_interrupt(&ICUD1);
-
-  CH_IRQ_EPILOGUE();
-}
-#endif /* STM32_ICU_USE_TIM1 */
-
 #if STM32_ICU_USE_TIM2
 #if !defined(STM32_TIM2_HANDLER)
 #error "STM32_TIM2_HANDLER not defined"
@@ -197,136 +132,6 @@ CH_IRQ_HANDLER(STM32_TIM2_HANDLER) {
 }
 #endif /* STM32_ICU_USE_TIM2 */
 
-#if STM32_ICU_USE_TIM3
-#if !defined(STM32_TIM3_HANDLER)
-#error "STM32_TIM3_HANDLER not defined"
-#endif
-/**
- * @brief   TIM3 interrupt handler.
- * @note    It is assumed that the various sources are only activated if the
- *          associated callback pointer is not equal to @p NULL in order to not
- *          perform an extra check in a potentially critical interrupt handler.
- *
- * @isr
- */
-CH_IRQ_HANDLER(STM32_TIM3_HANDLER) {
-
-  CH_IRQ_PROLOGUE();
-
-  icu_lld_serve_interrupt(&ICUD3);
-
-  CH_IRQ_EPILOGUE();
-}
-#endif /* STM32_ICU_USE_TIM3 */
-
-#if STM32_ICU_USE_TIM4
-#if !defined(STM32_TIM4_HANDLER)
-#error "STM32_TIM4_HANDLER not defined"
-#endif
-/**
- * @brief   TIM4 interrupt handler.
- * @note    It is assumed that the various sources are only activated if the
- *          associated callback pointer is not equal to @p NULL in order to not
- *          perform an extra check in a potentially critical interrupt handler.
- *
- * @isr
- */
-CH_IRQ_HANDLER(STM32_TIM4_HANDLER) {
-
-  CH_IRQ_PROLOGUE();
-
-  icu_lld_serve_interrupt(&ICUD4);
-
-  CH_IRQ_EPILOGUE();
-}
-#endif /* STM32_ICU_USE_TIM4 */
-
-#if STM32_ICU_USE_TIM5
-#if !defined(STM32_TIM5_HANDLER)
-#error "STM32_TIM5_HANDLER not defined"
-#endif
-/**
- * @brief   TIM5 interrupt handler.
- * @note    It is assumed that the various sources are only activated if the
- *          associated callback pointer is not equal to @p NULL in order to not
- *          perform an extra check in a potentially critical interrupt handler.
- *
- * @isr
- */
-CH_IRQ_HANDLER(STM32_TIM5_HANDLER) {
-
-  CH_IRQ_PROLOGUE();
-
-  icu_lld_serve_interrupt(&ICUD5);
-
-  CH_IRQ_EPILOGUE();
-}
-#endif /* STM32_ICU_USE_TIM5 */
-
-#if STM32_ICU_USE_TIM8
-#if !defined(STM32_TIM8_UP_HANDLER)
-#error "STM32_TIM8_UP_HANDLER not defined"
-#endif
-/**
- * @brief   TIM8 compare interrupt handler.
- * @note    It is assumed that the various sources are only activated if the
- *          associated callback pointer is not equal to @p NULL in order to not
- *          perform an extra check in a potentially critical interrupt handler.
- *
- * @isr
- */
-CH_IRQ_HANDLER(STM32_TIM8_UP_HANDLER) {
-
-  CH_IRQ_PROLOGUE();
-
-  icu_lld_serve_interrupt(&ICUD8);
-
-  CH_IRQ_EPILOGUE();
-}
-
-#if !defined(STM32_TIM8_CC_HANDLER)
-#error "STM32_TIM8_CC_HANDLER not defined"
-#endif
-/**
- * @brief   TIM8 compare interrupt handler.
- * @note    It is assumed that the various sources are only activated if the
- *          associated callback pointer is not equal to @p NULL in order to not
- *          perform an extra check in a potentially critical interrupt handler.
- *
- * @isr
- */
-CH_IRQ_HANDLER(STM32_TIM8_CC_HANDLER) {
-
-  CH_IRQ_PROLOGUE();
-
-  icu_lld_serve_interrupt(&ICUD8);
-
-  CH_IRQ_EPILOGUE();
-}
-#endif /* STM32_ICU_USE_TIM8 */
-
-#if STM32_ICU_USE_TIM9
-#if !defined(STM32_TIM9_HANDLER)
-#error "STM32_TIM9_HANDLER not defined"
-#endif
-/**
- * @brief   TIM9 interrupt handler.
- * @note    It is assumed that the various sources are only activated if the
- *          associated callback pointer is not equal to @p NULL in order to not
- *          perform an extra check in a potentially critical interrupt handler.
- *
- * @isr
- */
-CH_IRQ_HANDLER(STM32_TIM9_HANDLER) {
-
-  CH_IRQ_PROLOGUE();
-
-  icu_lld_serve_interrupt(&ICUD9);
-
-  CH_IRQ_EPILOGUE();
-}
-#endif /* STM32_ICU_USE_TIM9 */
-
 /*===========================================================================*/
 /* Driver exported functions.                                                */
 /*===========================================================================*/
@@ -338,46 +143,10 @@ CH_IRQ_HANDLER(STM32_TIM9_HANDLER) {
  */
 void icu_lld_init(void) {
 
-#if STM32_ICU_USE_TIM1
-  /* Driver initialization.*/
-  icuObjectInit(&ICUD1);
-  ICUD1.tim = STM32_TIM1;
-#endif
-
 #if STM32_ICU_USE_TIM2
   /* Driver initialization.*/
   icuObjectInit(&ICUD2);
   ICUD2.tim = STM32_TIM2;
-#endif
-
-#if STM32_ICU_USE_TIM3
-  /* Driver initialization.*/
-  icuObjectInit(&ICUD3);
-  ICUD3.tim = STM32_TIM3;
-#endif
-
-#if STM32_ICU_USE_TIM4
-  /* Driver initialization.*/
-  icuObjectInit(&ICUD4);
-  ICUD4.tim = STM32_TIM4;
-#endif
-
-#if STM32_ICU_USE_TIM5
-  /* Driver initialization.*/
-  icuObjectInit(&ICUD5);
-  ICUD5.tim = STM32_TIM5;
-#endif
-
-#if STM32_ICU_USE_TIM8
-  /* Driver initialization.*/
-  icuObjectInit(&ICUD8);
-  ICUD8.tim = STM32_TIM8;
-#endif
-
-#if STM32_ICU_USE_TIM9
-  /* Driver initialization.*/
-  icuObjectInit(&ICUD9);
-  ICUD9.tim = STM32_TIM9;
 #endif
 }
 
@@ -397,78 +166,12 @@ void icu_lld_start(ICUDriver *icup) {
 
   if (icup->state == ICU_STOP) {
     /* Clock activation and timer reset.*/
-#if STM32_ICU_USE_TIM1
-    if (&ICUD1 == icup) {
-      rccEnableTIM1(FALSE);
-      rccResetTIM1();
-      nvicEnableVector(STM32_TIM1_UP_NUMBER,
-                       CORTEX_PRIORITY_MASK(STM32_ICU_TIM1_IRQ_PRIORITY));
-      nvicEnableVector(STM32_TIM1_CC_NUMBER,
-                       CORTEX_PRIORITY_MASK(STM32_ICU_TIM1_IRQ_PRIORITY));
-#if defined(STM32_TIM1CLK)
-      icup->clock = STM32_TIM1CLK;
-#else
-      icup->clock = STM32_TIMCLK2;
-#endif
-    }
-#endif
 #if STM32_ICU_USE_TIM2
     if (&ICUD2 == icup) {
       rccEnableTIM2(FALSE);
       rccResetTIM2();
       nvicEnableVector(STM32_TIM2_NUMBER,
                        CORTEX_PRIORITY_MASK(STM32_ICU_TIM2_IRQ_PRIORITY));
-      icup->clock = STM32_TIMCLK1;
-    }
-#endif
-#if STM32_ICU_USE_TIM3
-    if (&ICUD3 == icup) {
-      rccEnableTIM3(FALSE);
-      rccResetTIM3();
-      nvicEnableVector(STM32_TIM3_NUMBER,
-                       CORTEX_PRIORITY_MASK(STM32_ICU_TIM3_IRQ_PRIORITY));
-      icup->clock = STM32_TIMCLK1;
-    }
-#endif
-#if STM32_ICU_USE_TIM4
-    if (&ICUD4 == icup) {
-      rccEnableTIM4(FALSE);
-      rccResetTIM4();
-      nvicEnableVector(STM32_TIM4_NUMBER,
-                       CORTEX_PRIORITY_MASK(STM32_ICU_TIM4_IRQ_PRIORITY));
-      icup->clock = STM32_TIMCLK1;
-    }
-#endif
-#if STM32_ICU_USE_TIM5
-    if (&ICUD5 == icup) {
-      rccEnableTIM5(FALSE);
-      rccResetTIM5();
-      nvicEnableVector(STM32_TIM5_NUMBER,
-                       CORTEX_PRIORITY_MASK(STM32_ICU_TIM5_IRQ_PRIORITY));
-      icup->clock = STM32_TIMCLK1;
-    }
-#endif
-#if STM32_ICU_USE_TIM8
-    if (&ICUD8 == icup) {
-      rccEnableTIM8(FALSE);
-      rccResetTIM8();
-      nvicEnableVector(STM32_TIM8_UP_NUMBER,
-                       CORTEX_PRIORITY_MASK(STM32_ICU_TIM8_IRQ_PRIORITY));
-      nvicEnableVector(STM32_TIM8_CC_NUMBER,
-                       CORTEX_PRIORITY_MASK(STM32_ICU_TIM8_IRQ_PRIORITY));
-#if defined(STM32_TIM8CLK)
-      icup->clock = STM32_TIM8CLK;
-#else
-      icup->clock = STM32_TIMCLK2;
-#endif
-    }
-#endif
-#if STM32_ICU_USE_TIM9
-    if (&ICUD9 == icup) {
-      rccEnableTIM9(FALSE);
-      rccResetTIM9();
-      nvicEnableVector(STM32_TIM9_NUMBER,
-                       CORTEX_PRIORITY_MASK(STM32_ICU_TIM9_IRQ_PRIORITY));
       icup->clock = STM32_TIMCLK1;
     }
 #endif
@@ -558,48 +261,10 @@ void icu_lld_stop(ICUDriver *icup) {
     icup->tim->DIER = 0;                    /* All IRQs disabled.           */
     icup->tim->SR   = 0;                    /* Clear eventual pending IRQs. */
 
-#if STM32_ICU_USE_TIM1
-    if (&ICUD1 == icup) {
-      nvicDisableVector(STM32_TIM1_UP_NUMBER);
-      nvicDisableVector(STM32_TIM1_CC_NUMBER);
-      rccDisableTIM1(FALSE);
-    }
-#endif
 #if STM32_ICU_USE_TIM2
     if (&ICUD2 == icup) {
       nvicDisableVector(STM32_TIM2_NUMBER);
       rccDisableTIM2(FALSE);
-    }
-#endif
-#if STM32_ICU_USE_TIM3
-    if (&ICUD3 == icup) {
-      nvicDisableVector(STM32_TIM3_NUMBER);
-      rccDisableTIM3(FALSE);
-    }
-#endif
-#if STM32_ICU_USE_TIM4
-    if (&ICUD4 == icup) {
-      nvicDisableVector(STM32_TIM4_NUMBER);
-      rccDisableTIM4(FALSE);
-    }
-#endif
-#if STM32_ICU_USE_TIM5
-    if (&ICUD5 == icup) {
-      nvicDisableVector(STM32_TIM5_NUMBER);
-      rccDisableTIM5(FALSE);
-    }
-#endif
-#if STM32_ICU_USE_TIM8
-    if (&ICUD8 == icup) {
-      nvicDisableVector(STM32_TIM8_UP_NUMBER);
-      nvicDisableVector(STM32_TIM8_CC_NUMBER);
-      rccDisableTIM8(FALSE);
-    }
-#endif
-#if STM32_ICU_USE_TIM9
-    if (&ICUD9 == icup) {
-      nvicDisableVector(STM32_TIM9_NUMBER);
-      rccDisableTIM9(FALSE);
     }
 #endif
   }

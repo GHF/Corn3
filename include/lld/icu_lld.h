@@ -1,5 +1,30 @@
 /*
-    ChibiOS/RT - Copyright (C) 2006-2013 Giovanni Di Sirio
+ * Corn3 - Copyright (C) 2014 Xo Wang
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ * Except as contained in this notice, the name(s) of the above copyright
+ * holders shall not be used in advertising or otherwise to promote the sale,
+ * use or other dealings in this Software without prior written authorization.
+ */
+/*
+    ChibiOS/RT - Copyright (C) 2006-2013 Giovanni Di Sirio (MODIFIED BY ABOVE)
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -17,6 +42,8 @@
 /**
  * @file    STM32/icu_lld.h
  * @brief   STM32 ICU subsystem low level driver header.
+ *
+ * @note    This driver has been modified to support only TIM2 on STM32F30xxx.
  *
  * @addtogroup ICU
  * @{
@@ -38,19 +65,6 @@
 /*===========================================================================*/
 
 /**
- * @name    Configuration options
- * @{
- */
-/**
- * @brief   ICUD1 driver enable switch.
- * @details If set to @p TRUE the support for ICUD1 is included.
- * @note    The default is @p TRUE.
- */
-#if !defined(STM32_ICU_USE_TIM1) || defined(__DOXYGEN__)
-#define STM32_ICU_USE_TIM1                  FALSE
-#endif
-
-/**
  * @brief   ICUD2 driver enable switch.
  * @details If set to @p TRUE the support for ICUD2 is included.
  * @note    The default is @p TRUE.
@@ -60,97 +74,10 @@
 #endif
 
 /**
- * @brief   ICUD3 driver enable switch.
- * @details If set to @p TRUE the support for ICUD3 is included.
- * @note    The default is @p TRUE.
- */
-#if !defined(STM32_ICU_USE_TIM3) || defined(__DOXYGEN__)
-#define STM32_ICU_USE_TIM3                  FALSE
-#endif
-
-/**
- * @brief   ICUD4 driver enable switch.
- * @details If set to @p TRUE the support for ICUD4 is included.
- * @note    The default is @p TRUE.
- */
-#if !defined(STM32_ICU_USE_TIM4) || defined(__DOXYGEN__)
-#define STM32_ICU_USE_TIM4                  FALSE
-#endif
-
-/**
- * @brief   ICUD5 driver enable switch.
- * @details If set to @p TRUE the support for ICUD5 is included.
- * @note    The default is @p TRUE.
- */
-#if !defined(STM32_ICU_USE_TIM5) || defined(__DOXYGEN__)
-#define STM32_ICU_USE_TIM5                  FALSE
-#endif
-
-/**
- * @brief   ICUD8 driver enable switch.
- * @details If set to @p TRUE the support for ICUD8 is included.
- * @note    The default is @p TRUE.
- */
-#if !defined(STM32_ICU_USE_TIM8) || defined(__DOXYGEN__)
-#define STM32_ICU_USE_TIM8                  FALSE
-#endif
-
-/**
- * @brief   ICUD9 driver enable switch.
- * @details If set to @p TRUE the support for ICUD9 is included.
- * @note    The default is @p TRUE.
- */
-#if !defined(STM32_ICU_USE_TIM9) || defined(__DOXYGEN__)
-#define STM32_ICU_USE_TIM9                  FALSE
-#endif
-
-/**
- * @brief   ICUD1 interrupt priority level setting.
- */
-#if !defined(STM32_ICU_TIM1_IRQ_PRIORITY) || defined(__DOXYGEN__)
-#define STM32_ICU_TIM1_IRQ_PRIORITY         7
-#endif
-
-/**
  * @brief   ICUD2 interrupt priority level setting.
  */
 #if !defined(STM32_ICU_TIM2_IRQ_PRIORITY) || defined(__DOXYGEN__)
 #define STM32_ICU_TIM2_IRQ_PRIORITY         7
-#endif
-
-/**
- * @brief   ICUD3 interrupt priority level setting.
- */
-#if !defined(STM32_ICU_TIM3_IRQ_PRIORITY) || defined(__DOXYGEN__)
-#define STM32_ICU_TIM3_IRQ_PRIORITY         7
-#endif
-
-/**
- * @brief   ICUD4 interrupt priority level setting.
- */
-#if !defined(STM32_ICU_TIM4_IRQ_PRIORITY) || defined(__DOXYGEN__)
-#define STM32_ICU_TIM4_IRQ_PRIORITY         7
-#endif
-
-/**
- * @brief   ICUD5 interrupt priority level setting.
- */
-#if !defined(STM32_ICU_TIM5_IRQ_PRIORITY) || defined(__DOXYGEN__)
-#define STM32_ICU_TIM5_IRQ_PRIORITY         7
-#endif
-
-/**
- * @brief   ICUD8 interrupt priority level setting.
- */
-#if !defined(STM32_ICU_TIM8_IRQ_PRIORITY) || defined(__DOXYGEN__)
-#define STM32_ICU_TIM8_IRQ_PRIORITY         7
-#endif
-
-/**
- * @brief   ICUD9 interrupt priority level setting.
- */
-#if !defined(STM32_ICU_TIM9_IRQ_PRIORITY) || defined(__DOXYGEN__)
-#define STM32_ICU_TIM9_IRQ_PRIORITY         7
 #endif
 /** @} */
 
@@ -158,74 +85,41 @@
 /* Derived constants and error checks.                                       */
 /*===========================================================================*/
 
-#if STM32_ICU_USE_TIM1 && !STM32_HAS_TIM1
-#error "TIM1 not present in the selected device"
+#if STM32_ICU_USE_TIM1
+#error "TIM1 not compatible with this driver"
 #endif
 
 #if STM32_ICU_USE_TIM2 && !STM32_HAS_TIM2
 #error "TIM2 not present in the selected device"
 #endif
 
-#if STM32_ICU_USE_TIM3 && !STM32_HAS_TIM3
-#error "TIM3 not present in the selected device"
+#if STM32_ICU_USE_TIM3
+#error "TIM3 not compatible with this driver"
 #endif
 
-#if STM32_ICU_USE_TIM4 && !STM32_HAS_TIM4
-#error "TIM4 not present in the selected device"
+#if STM32_ICU_USE_TIM4
+#error "TIM4 not compatible with this driver"
 #endif
 
-#if STM32_ICU_USE_TIM5 && !STM32_HAS_TIM5
-#error "TIM5 not present in the selected device"
+#if STM32_ICU_USE_TIM5
+#error "TIM5 not compatible with this driver"
 #endif
 
-#if STM32_ICU_USE_TIM8 && !STM32_HAS_TIM8
-#error "TIM8 not present in the selected device"
+#if STM32_ICU_USE_TIM8
+#error "TIM8 not compatible with this driver"
 #endif
 
-#if STM32_ICU_USE_TIM9 && !STM32_HAS_TIM9
-#error "TIM9 not present in the selected device"
+#if STM32_ICU_USE_TIM9
+#error "TIM9 not compatible with this driver"
 #endif
 
-#if !STM32_ICU_USE_TIM1 && !STM32_ICU_USE_TIM2 &&                           \
-    !STM32_ICU_USE_TIM3 && !STM32_ICU_USE_TIM4 &&                           \
-    !STM32_ICU_USE_TIM5 && !STM32_ICU_USE_TIM8 &&                           \
-    !STM32_ICU_USE_TIM9
-#error "ICU driver activated but no TIM peripheral assigned"
-#endif
-
-#if STM32_ICU_USE_TIM1 &&                                                   \
-    !CORTEX_IS_VALID_KERNEL_PRIORITY(STM32_ICU_TIM1_IRQ_PRIORITY)
-#error "Invalid IRQ priority assigned to TIM1"
+#if !STM32_ICU_USE_TIM2
+#error "ICU driver activated but TIM2 peripheral not assigned"
 #endif
 
 #if STM32_ICU_USE_TIM2 &&                                                   \
     !CORTEX_IS_VALID_KERNEL_PRIORITY(STM32_ICU_TIM2_IRQ_PRIORITY)
 #error "Invalid IRQ priority assigned to TIM2"
-#endif
-
-#if STM32_ICU_USE_TIM3 &&                                                   \
-    !CORTEX_IS_VALID_KERNEL_PRIORITY(STM32_ICU_TIM3_IRQ_PRIORITY)
-#error "Invalid IRQ priority assigned to TIM3"
-#endif
-
-#if STM32_ICU_USE_TIM4 &&                                                   \
-    !CORTEX_IS_VALID_KERNEL_PRIORITY(STM32_ICU_TIM4_IRQ_PRIORITY)
-#error "Invalid IRQ priority assigned to TIM4"
-#endif
-
-#if STM32_ICU_USE_TIM5 &&                                                   \
-    !CORTEX_IS_VALID_KERNEL_PRIORITY(STM32_ICU_TIM5_IRQ_PRIORITY)
-#error "Invalid IRQ priority assigned to TIM5"
-#endif
-
-#if STM32_ICU_USE_TIM8 &&                                                   \
-    !CORTEX_IS_VALID_KERNEL_PRIORITY(STM32_ICU_TIM8_IRQ_PRIORITY)
-#error "Invalid IRQ priority assigned to TIM8"
-#endif
-
-#if STM32_ICU_USE_TIM9 &&                                                   \
-    !CORTEX_IS_VALID_KERNEL_PRIORITY(STM32_ICU_TIM9_IRQ_PRIORITY)
-#error "Invalid IRQ priority assigned to TIM9"
 #endif
 
 /*===========================================================================*/
@@ -365,32 +259,8 @@ struct ICUDriver {
 /* External declarations.                                                    */
 /*===========================================================================*/
 
-#if STM32_ICU_USE_TIM1 && !defined(__DOXYGEN__)
-extern ICUDriver ICUD1;
-#endif
-
 #if STM32_ICU_USE_TIM2 && !defined(__DOXYGEN__)
 extern ICUDriver ICUD2;
-#endif
-
-#if STM32_ICU_USE_TIM3 && !defined(__DOXYGEN__)
-extern ICUDriver ICUD3;
-#endif
-
-#if STM32_ICU_USE_TIM4 && !defined(__DOXYGEN__)
-extern ICUDriver ICUD4;
-#endif
-
-#if STM32_ICU_USE_TIM5 && !defined(__DOXYGEN__)
-extern ICUDriver ICUD5;
-#endif
-
-#if STM32_ICU_USE_TIM8 && !defined(__DOXYGEN__)
-extern ICUDriver ICUD8;
-#endif
-
-#if STM32_ICU_USE_TIM9 && !defined(__DOXYGEN__)
-extern ICUDriver ICUD9;
 #endif
 
 #ifdef __cplusplus
