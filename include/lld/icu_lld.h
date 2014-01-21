@@ -150,7 +150,7 @@ typedef enum {
 /**
  * @brief   ICU counter type.
  */
-typedef uint16_t icucnt_t;
+typedef uint32_t icucnt_t;
 
 /**
  * @brief   Driver configuration structure.
