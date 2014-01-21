@@ -148,6 +148,14 @@ typedef enum {
 } icuchannel_t;
 
 /**
+ * @brief   ICU channel type.
+ */
+typedef enum {
+  ICU_CHANNEL_1_INPUT_1 = 0,        /**< Channel 1 connected input 1.        */
+  ICU_CHANNEL_1_XOR_123 = 1,        /**< Channel 1 is XORed inputs 1, 2, 3.  */
+} icuxormode_t;
+
+/**
  * @brief   ICU counter type.
  */
 typedef uint32_t icucnt_t;
@@ -191,6 +199,10 @@ typedef struct {
    * @note  Only the DMA-related bits can be specified in this field.
    */
   uint32_t                  dier;
+  /**
+   * @brief   Configuration of channel 1.
+   */
+  icuxormode_t              xormode;
 } ICUConfig;
 
 /**

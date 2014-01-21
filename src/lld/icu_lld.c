@@ -179,6 +179,7 @@ void icu_lld_start(ICUDriver *icup) {
   else {
     /* Driver re-configuration scenario, it must be stopped first.*/
     icup->tim->CR1    = 0;                  /* Timer disabled.              */
+    icup->tim->CR2    = 0;                  /* Clear timer options.         */
     icup->tim->DIER   = icup->config->dier &/* DMA-related DIER settings.   */
                         ~STM32_TIM_DIER_IRQ_MASK;
     icup->tim->SR     = 0;                  /* Clear eventual pending IRQs. */
@@ -194,6 +195,11 @@ void icu_lld_start(ICUDriver *icup) {
               "icu_lld_start(), #1", "invalid frequency");
   icup->tim->PSC  = (uint16_t)psc;
   icup->tim->ARR   = 0xFFFFFFFF;
+
+  if (icup->config->xormode == ICU_CHANNEL_1_XOR_123) {
+    /* TI1 is CH1, CH1, and CH3 XORed together. */
+    icup->tim->CR2 |= STM32_TIM_CR2_TI1S;
+  }
 
   if (icup->config->channel == ICU_CHANNEL_1) {
     /* Selected input 1.
