@@ -35,8 +35,8 @@
 #include <cstdlib>
 
 // heartbeat thread
-static WORKING_AREA(waHeartbeat, 128);
-NORETURN static msg_t threadHeartbeat(void *arg) {
+static WORKING_AREA(wa_heartbeat, 128);
+NORETURN static msg_t ThreadHeartbeat(void *arg) {
   (void) arg;
 
   chRegSetThreadName("heartbeat");
@@ -56,11 +56,11 @@ int main(void) {
   chSysInit();
 
   // Setup debug serial port.
-  const SerialConfig dbgSerialConfig = { DEBUG_BAUDRATE,
-                                         0,
-                                         USART_CR2_STOP1_BITS,
-                                         USART_CR3_CTSE | USART_CR3_RTSE };
-  sdStart(&DEBUG_SERIAL, &dbgSerialConfig);
+  const SerialConfig debug_serial_config = { DEBUG_BAUDRATE,
+                                             0,
+                                             USART_CR2_STOP1_BITS,
+                                             USART_CR3_CTSE | USART_CR3_RTSE };
+  sdStart(&DEBUG_SERIAL, &debug_serial_config);
 
   // Print using base OS mechanism, so there is output even if printf breaks.
   const uint8_t welcome_msg[] = BOARD_NAME "\r\n";
@@ -69,10 +69,10 @@ int main(void) {
   // Print startup message.
   LogInfo("Firmware version %s built %s", g_build_version, g_build_time);
 
-  chThdCreateStatic(waHeartbeat,
-                    sizeof(waHeartbeat),
+  chThdCreateStatic(wa_heartbeat,
+                    sizeof(wa_heartbeat),
                     LOWPRIO,
-                    threadHeartbeat,
+                    ThreadHeartbeat,
                     nullptr);
 
   while (true) {
