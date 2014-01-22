@@ -31,9 +31,11 @@
 #ifdef __GNUC__
 #define NORETURN __attribute__((noreturn))
 #define ALIGNED(x) __attribute__((aligned(x)))
+#define UNREACHABLE() __builtin_unreachable()
 #else
 #define NORETURN
 #define ALIGNED(x)
+#define UNREACHABLE() do { } while (0)
 #endif
 
 /**
