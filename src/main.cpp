@@ -43,9 +43,9 @@ NORETURN static msg_t ThreadHeartbeat(void *arg) {
 
   while (true) {
     INVOKE(palClearPad, GPIO_LEDY);
-    chThdSleepMilliseconds(100);
-    INVOKE(palSetPad, GPIO_LEDY);
     chThdSleepMilliseconds(900);
+    INVOKE(palSetPad, GPIO_LEDY);
+    chThdSleepMilliseconds(100);
   }
 
   chThdExit(0);
@@ -74,6 +74,11 @@ int main(void) {
                     LOWPRIO,
                     ThreadHeartbeat,
                     nullptr);
+
+  // Signal end of initialization.
+  LogInfo("Initialized in %lu ms.", chTimeNow() * 1000 / CH_FREQUENCY);
+  INVOKE(palClearPad, GPIO_LEDX);
+  INVOKE(palClearPad, GPIO_LEDZ);
 
   while (true) {
     chThdSleepMilliseconds(1000);
