@@ -62,7 +62,7 @@ typedef enum LoggingLevel {
  * #define STATIC_LOGGING_LEVEL as one of the above levels to set a logging
  * level which does not change at runtime.
  */
-inline LoggingLevel GetLoggingLevel(void) {
+static inline LoggingLevel GetLoggingLevel(void) {
   return STATIC_LOGGING_LEVEL;
 }
 
