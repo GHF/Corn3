@@ -32,6 +32,14 @@
 #include <cstdlib>
 
 /**
+ * @brief Base of the dynamic shared object.
+ *
+ * @note There are no dynamic shared objects in this system and this is only
+ *       used by __cxa_atexit, so it isn't initialized.
+ */
+void *__dso_handle;
+
+/**
  * @brief Implementation of new using ::malloc.
  *
  * @param n Size of memory to allocate for object.
