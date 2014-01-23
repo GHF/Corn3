@@ -54,7 +54,7 @@ typedef enum LoggingLevel {
 /* Helper to optimize out Log* calls with an early level check. */
 #define Log(level, ...)  do {        \
   if ((level) >= GetLoggingLevel())          \
-    LogAtLevel(level, __VA_ARGS__);  \
+    LogAtLevel(level, __func__, __VA_ARGS__);  \
 } while (0)
 
 #ifdef STATIC_LOGGING_LEVEL
@@ -75,8 +75,8 @@ void SetLoggingLevel(LoggingLevel level);
 #endif  /* STATIC_LOGGING_LEVEL */
 
 #ifdef __GNUC__
-void LogAtLevel(LoggingLevel level, const char *, ...)
-    __attribute__((__format__(__printf__, 2, 3)));
+void LogAtLevel(LoggingLevel level, const char *, const char *, ...)
+    __attribute__((__format__(__printf__, 3, 4)));
 #else
 int LogAtLevel(int level, const char *, ...);
 #endif  /* __GNUC__ */

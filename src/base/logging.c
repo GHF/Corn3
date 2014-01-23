@@ -66,7 +66,7 @@ void SetLoggingLevel(LoggingLevel level) {
 }
 #endif  /* STATIC_LOGGING_LEVEL */
 
-void LogAtLevel(LoggingLevel level, const char *format, ...) {
+void LogAtLevel(LoggingLevel level, const char *func, const char *format, ...) {
   const char * const level_prefixes[] = { "",
                                           ANSI_BOLD,
                                           ANSI_BOLD ANSI_COLOR_YELLOW,
@@ -95,10 +95,11 @@ void LogAtLevel(LoggingLevel level, const char *format, ...) {
     level = LOGGING_NUM_LEVELS;
 
   LOG_FPRINTF(LOGGING_FILE,
-              "%s%s%s:",
+              "%s%s%s:%s:",
               level_prefixes[level],
               level_names[level],
-              level_suffixes[level]);
+              level_suffixes[level],
+              func);
 
   va_list args;
   va_start(args, format);
