@@ -64,3 +64,26 @@ extern "C" NORETURN void __cxa_pure_virtual() {
   chSysHalt();
   UNREACHABLE();
 }
+
+#if DISABLE_FLOAT_TO_STRING
+// Forward declaration. Not including <sys/reent.h> to avoid bloat.
+struct _reent;
+/**
+ * @brief Stub for dtoa (double-precision floating point to string).
+ *
+ * @note Replaces the newlib implementation, which is 4.7K in .text.
+ *
+ * @note Will halt system with a critical error if called.
+ */
+extern "C" NORETURN char *_dtoa_r(_reent *,
+                                  double,
+                                  int,
+                                  int,
+                                  int *,
+                                  int *,
+                                  char **) {
+  LogCritical(__func__);
+  chSysHalt();
+  UNREACHABLE();
+}
+#endif  // #if DISABLE_DOUBLE_TO_STRING

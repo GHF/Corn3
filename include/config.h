@@ -30,6 +30,9 @@
 /* Set a compile-time logging level. */
 #define STATIC_LOGGING_LEVEL LOGGING_INFO
 
+/* Option to remove floating point support from printf (saves code space). */
+#define DISABLE_FLOAT_TO_STRING TRUE
+
 /* Macros for GPIO pins that expand to their GPIO port and pad number. */
 #define GPIO_LEDZ       GPIOB, GPIOB_LEDZ
 #define GPIO_DRV_NSS    GPIOB, GPIOB_DRV_NSS
