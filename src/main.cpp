@@ -27,61 +27,18 @@
 #include "ch.h"
 #include "hal.h"
 
-#include "config.h"
-#include "base/logging.h"
-#include "base/utility.h"
-#include "version/version.h"
+#include "corn.h"
 
 #include <cstdlib>
-
-// heartbeat thread
-static WORKING_AREA(wa_heartbeat, 128);
-NORETURN static msg_t ThreadHeartbeat(void *arg) {
-  (void) arg;
-
-  chRegSetThreadName("heartbeat");
-
-  while (true) {
-    INVOKE(palClearPad, GPIO_LEDY);
-    chThdSleepMilliseconds(900);
-    INVOKE(palSetPad, GPIO_LEDY);
-    chThdSleepMilliseconds(100);
-  }
-
-  chThdExit(0);
-}
 
 int main(void) {
   halInit();
   chSysInit();
 
-  // Setup debug serial port.
-  const SerialConfig debug_serial_config = { DEBUG_BAUDRATE,
-                                             0,
-                                             USART_CR2_STOP1_BITS,
-                                             USART_CR3_CTSE | USART_CR3_RTSE };
-  sdStart(&DEBUG_SERIAL, &debug_serial_config);
-
-  // Print using base OS mechanism, so there is output even if printf breaks.
-  const uint8_t welcome_msg[] = BOARD_NAME "\r\n";
-  chSequentialStreamWrite(&DEBUG_SERIAL, welcome_msg, sizeof(welcome_msg));
-
-  // Print startup message.
-  LogInfo("Firmware version %s built %s", g_build_version, g_build_time);
-
-  chThdCreateStatic(wa_heartbeat,
-                    sizeof(wa_heartbeat),
-                    LOWPRIO,
-                    ThreadHeartbeat,
-                    nullptr);
-
-  // Signal end of initialization.
-  LogInfo("Initialized in %lu ms.", chTimeNow() * 1000 / CH_FREQUENCY);
-  INVOKE(palClearPad, GPIO_LEDX);
-  INVOKE(palClearPad, GPIO_LEDZ);
+  InitializeCorn();
 
   while (true) {
-    chThdSleepMilliseconds(1000);
+    chThdSleep(TIME_INFINITE);
   }
 
   return EXIT_SUCCESS;

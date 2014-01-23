@@ -24,29 +24,9 @@
  * use or other dealings in this Software without prior written authorization.
  */
 
-#ifndef CONFIG_H_
-#define CONFIG_H_
+#ifndef CORN_H_
+#define CORN_H_
 
-/* Set a compile-time logging level. */
-#define STATIC_LOGGING_LEVEL LOGGING_INFO
+void InitializeCorn();
 
-/* Option to remove floating point support from printf (saves code space). */
-#define DISABLE_FLOAT_TO_STRING TRUE
-
-/* Macros for GPIO pins that expand to their GPIO port and pad number. */
-#define GPIO_LEDZ       GPIOB, GPIOB_LEDZ
-#define GPIO_DRV_NSS    GPIOB, GPIOB_DRV_NSS
-#define GPIO_LEDX       GPIOB, GPIOB_LEDX
-#define GPIO_LEDY       GPIOB, GPIOB_LEDY
-
-/* Options for LED functionality. */
-#define GPIO_LED_ISR        GPIO_LEDX  /* Turned on while in important ISR.   */
-#define GPIO_LED_ERROR      GPIO_LEDX  /* Latched on when error encountered.  */
-#define GPIO_LED_HEARTBEAT  GPIO_LEDY  /* Blinks at 1 Hz for system healthy.  */
-#define GPIO_LED_INIT       GPIO_LEDZ  /* Cleared upon system initialization. */
-
-/* Debug serial options. */
-#define DEBUG_SERIAL    (SD3)
-#define DEBUG_BAUDRATE  115200
-
-#endif  /* CONFIG_H_ */
+#endif  /* CORN_H_ */
