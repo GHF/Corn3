@@ -75,16 +75,11 @@ void SetLoggingLevel(LoggingLevel level);
 #endif  /* STATIC_LOGGING_LEVEL */
 
 #ifdef __GNUC__
-int LogAtLevel(LoggingLevel level, const char *, ...)
+void LogAtLevel(LoggingLevel level, const char *, ...)
     __attribute__((__format__(__printf__, 2, 3)));
 #else
 int LogAtLevel(int level, const char *, ...);
 #endif  /* __GNUC__ */
-
-/* Default file descriptor to log to. */
-#ifndef LOGGING_FILE
-#define LOGGING_FILE stderr
-#endif
 
 #ifdef __cplusplus
 }  /* extern "C" */

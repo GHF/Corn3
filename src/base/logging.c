@@ -28,8 +28,28 @@
 #include "base/logging.h"
 #include "base/utility.h"
 
+#if LOGGING_USE_CHPRINTF
+#include "ch.h"
+#include "hal.h"
+#include "chprintf.h"
+
+/* Default file descriptor to log to. */
+#ifndef LOGGING_FILE
+#define LOGGING_FILE ((BaseSequentialStream *)&DEBUG_SERIAL)
+#endif
+#define LOG_FPRINTF(file, ...)              chprintf(file, __VA_ARGS__)
+#define LOG_VFPRINTF(file, format, va_list) chvprintf(file, format, va_list)
+#else
 #include <stdio.h>
 #include <stdarg.h>
+
+/* Default file descriptor to log to. */
+#ifndef LOGGING_FILE
+#define LOGGING_FILE stderr
+#endif
+#define LOG_FPRINTF(file, ...)              fprintf(file, __VA_ARGS__)
+#define LOG_VFPRINTF(file, format, va_list) vfprintf(file, format, va_list)
+#endif  /* #if LOGGING_USE_CHPRINTF */
 
 #ifndef STATIC_LOGGING_LEVEL
 static LoggingLevel g_logging_level = LOGGING_DEFAULT_LEVEL;
@@ -46,7 +66,7 @@ void SetLoggingLevel(LoggingLevel level) {
 }
 #endif  /* STATIC_LOGGING_LEVEL */
 
-int LogAtLevel(LoggingLevel level, const char *format, ...) {
+void LogAtLevel(LoggingLevel level, const char *format, ...) {
   const char * const level_prefixes[] = { "",
                                           ANSI_BOLD,
                                           ANSI_BOLD ANSI_COLOR_YELLOW,
@@ -69,24 +89,20 @@ int LogAtLevel(LoggingLevel level, const char *format, ...) {
                                           ANSI_REVERSE_OFF };
 
   if (level < GetLoggingLevel())
-    return 0;
+    return;
 
   if (level > LOGGING_NUM_LEVELS)
     level = LOGGING_NUM_LEVELS;
 
-  int num_chars;
-  num_chars = fprintf(LOGGING_FILE,
-                      "%s%s%s:",
-                      level_prefixes[level],
-                      level_names[level],
-                      level_suffixes[level]);
+  LOG_FPRINTF(LOGGING_FILE,
+              "%s%s%s:",
+              level_prefixes[level],
+              level_names[level],
+              level_suffixes[level]);
 
   va_list args;
   va_start(args, format);
-  num_chars += vfprintf(LOGGING_FILE, format, args);
-  fputs("\r\n", LOGGING_FILE);
-  num_chars += 2;
+  LOG_VFPRINTF(LOGGING_FILE, format, args);
+  LOG_FPRINTF(LOGGING_FILE, "\r\n");
   va_end(args);
-
-  return num_chars;
 }

@@ -51,6 +51,11 @@ ifeq ($(USE_FWLIB),)
   USE_FWLIB = no
 endif
 
+# Enables the use of chprintf instead of system printf for base/logging.
+ifeq ($(LOGGING_USE_CHPRINTF),)
+  LOGGING_USE_CHPRINTF = yes
+endif
+
 #
 # Architecture or project specific options
 ##############################################################################
@@ -216,6 +221,13 @@ ifeq ($(USE_FWLIB),yes)
   CSRC += $(STM32SRC)
   INCDIR += $(STM32INC)
   USE_OPT += -DUSE_STDPERIPH_DRIVER
+endif
+
+ifeq ($(LOGGING_USE_CHPRINTF),yes)
+  CSRC += $(CHIBIOS)/os/various/chprintf.c
+  DDEFS += -DLOGGING_USE_CHPRINTF=1
+else
+  DDEFS += -DLOGGING_USE_CHPRINTF=0
 endif
 
 # Main make targets and rules.
