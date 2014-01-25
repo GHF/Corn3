@@ -43,7 +43,13 @@
  * @file    STM32/icu_lld.h
  * @brief   STM32 ICU subsystem low level driver header.
  *
- * @note    This driver has been modified to support only TIM2 on STM32F30xxx.
+ * @note    This has been modified to support only TIM2 and TIM4 on STM32F30xxx.
+ *
+ * @note    This driver has been extended to support channel 1 as a XOR of
+ *          channels 1, 2, and 3.
+ *
+ * @note    This driver has been extended for different reset triggers,
+ *          including the channel 1 edge detector.
  *
  * @addtogroup ICU
  * @{
@@ -53,6 +59,7 @@
 #define _ICU_LLD_H_
 
 #include "stm32_tim.h"
+#include "chcore.h"
 
 #if HAL_USE_ICU || defined(__DOXYGEN__)
 
@@ -74,12 +81,28 @@
 #endif
 
 /**
+ * @brief   ICUD4 driver enable switch.
+ * @details If set to @p TRUE the support for ICUD4 is included.
+ * @note    The default is @p TRUE.
+ */
+#if !defined(STM32_ICU_USE_TIM4) || defined(__DOXYGEN__)
+#define STM32_ICU_USE_TIM4                  FALSE
+#endif
+
+/**
  * @brief   ICUD2 interrupt priority level setting.
  */
 #if !defined(STM32_ICU_TIM2_IRQ_PRIORITY) || defined(__DOXYGEN__)
 #define STM32_ICU_TIM2_IRQ_PRIORITY         7
 #endif
 /** @} */
+
+/**
+ * @brief   ICUD4 interrupt priority level setting.
+ */
+#if !defined(STM32_ICU_TIM4_IRQ_PRIORITY) || defined(__DOXYGEN__)
+#define STM32_ICU_TIM4_IRQ_PRIORITY         7
+#endif
 
 /*===========================================================================*/
 /* Derived constants and error checks.                                       */
@@ -97,8 +120,8 @@
 #error "TIM3 not compatible with this driver"
 #endif
 
-#if STM32_ICU_USE_TIM4
-#error "TIM4 not compatible with this driver"
+#if STM32_ICU_USE_TIM4 && !STM32_HAS_TIM4
+#error "TIM4 not present in the selected device"
 #endif
 
 #if STM32_ICU_USE_TIM5
@@ -113,13 +136,18 @@
 #error "TIM9 not compatible with this driver"
 #endif
 
-#if !STM32_ICU_USE_TIM2
-#error "ICU driver activated but TIM2 peripheral not assigned"
+#if !STM32_ICU_USE_TIM2 && !STM32_ICU_USE_TIM4
+#error "ICU driver activated but no TIM peripheral assigned"
 #endif
 
 #if STM32_ICU_USE_TIM2 &&                                                   \
     !CORTEX_IS_VALID_KERNEL_PRIORITY(STM32_ICU_TIM2_IRQ_PRIORITY)
 #error "Invalid IRQ priority assigned to TIM2"
+#endif
+
+#if STM32_ICU_USE_TIM4 &&                                                   \
+    !CORTEX_IS_VALID_KERNEL_PRIORITY(STM32_ICU_TIM4_IRQ_PRIORITY)
+#error "Invalid IRQ priority assigned to TIM4"
 #endif
 
 /*===========================================================================*/
@@ -145,10 +173,21 @@ typedef uint32_t icufreq_t;
 typedef enum {
   ICU_CHANNEL_1 = 0,              /**< Use TIMxCH1.      */
   ICU_CHANNEL_2 = 1,              /**< Use TIMxCH2.      */
+  ICU_CHANNEL_3 = 2,              /**< Use TIMxCH3.      */
+  ICU_CHANNEL_4 = 3,              /**< Use TIMxCH4.      */
 } icuchannel_t;
 
 /**
- * @brief   ICU channel type.
+ * @brief   ICU counting configuration.
+ */
+typedef enum {
+  ICU_RESET_NEVER       = 0,    /**< Timer starts enabled and never resets.  */
+  ICU_RESET_ON_ACTIVE   = 1,    /**< Timer resets when driver enters ACTIVE. */
+  ICU_RESET_ON_CH1_EDGE = 2,    /**< Timer resets when CH1 detects edge.     */
+} icuresetmode_t;
+
+/**
+ * @brief   ICU channel 1 configuration.
  */
 typedef enum {
   ICU_CHANNEL_1_INPUT_1 = 0,        /**< Channel 1 connected input 1.        */
@@ -199,6 +238,10 @@ typedef struct {
    * @note  Only the DMA-related bits can be specified in this field.
    */
   uint32_t                  dier;
+  /**
+   * @brief   Reset mode of underlying timer.
+   */
+  icuresetmode_t            resetmode;
   /**
    * @brief   Configuration of channel 1.
    */
@@ -273,6 +316,10 @@ struct ICUDriver {
 
 #if STM32_ICU_USE_TIM2 && !defined(__DOXYGEN__)
 extern ICUDriver ICUD2;
+#endif
+
+#if STM32_ICU_USE_TIM4 && !defined(__DOXYGEN__)
+extern ICUDriver ICUD4;
 #endif
 
 #ifdef __cplusplus
