@@ -51,6 +51,10 @@
  * @note    This driver has been extended for different reset triggers,
  *          including the channel 1 edge detector.
  *
+ * @note    This driver has been modified to clear its timer when enabled, and
+ *          to always invoke callbacks, even when exiting WAITING. So, the first
+ *          edge will always invoke the callback with the time since enabling.
+ *
  * @addtogroup ICU
  * @{
  */

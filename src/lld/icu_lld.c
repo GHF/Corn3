@@ -54,6 +54,10 @@
 #include "ch.h"
 #include "hal.h"
 
+/* Includes macros for blinking the ISR LED while handling interrupts. */
+#include "config.h"
+#include "base/utility.h"
+
 #if HAL_USE_ICU || defined(__DOXYGEN__)
 
 /*===========================================================================*/
@@ -81,6 +85,53 @@ ICUDriver ICUD4;
 #endif
 
 /*===========================================================================*/
+/* Driver macros.                                                            */
+/*===========================================================================*/
+
+/**
+ * @name    Low Level driver helper macros
+ * @{
+ */
+/**
+ * @brief   Common ISR code, ICU width event.
+ *
+ * @param[in] icup      pointer to the @p ICUDriver object
+ *
+ * @notapi
+ */
+#undef _icu_isr_invoke_width_cb
+#define _icu_isr_invoke_width_cb(icup) {                                    \
+  (icup)->state = ICU_IDLE;                                                 \
+  (icup)->config->width_cb(icup);                                           \
+}
+
+/**
+ * @brief   Common ISR code, ICU period event.
+ *
+ * @param[in] icup      pointer to the @p ICUDriver object
+ *
+ * @notapi
+ */
+#undef _icu_isr_invoke_period_cb
+#define _icu_isr_invoke_period_cb(icup) {                                   \
+  (icup)->state = ICU_ACTIVE;                                               \
+  (icup)->config->period_cb(icup);                                          \
+}
+
+/**
+ * @brief   Common ISR code, ICU timer overflow event.
+ *
+ * @param[in] icup      pointer to the @p ICUDriver object
+ *
+ * @notapi
+ */
+#undef _icu_isr_invoke_overflow_cb
+#define _icu_isr_invoke_overflow_cb(icup) {                                 \
+  (icup)->config->overflow_cb(icup);                                        \
+}
+/** @} */
+
+/*===========================================================================*/
 /* Driver local variables and types.                                         */
 /*===========================================================================*/
 
@@ -95,6 +146,8 @@ ICUDriver ICUD4;
  */
 static void icu_lld_serve_interrupt(ICUDriver *icup) {
   uint16_t sr;
+
+  INVOKE(palSetPad, GPIO_LED_ISR);
 
   sr  = icup->tim->SR;
   sr &= icup->tim->DIER & STM32_TIM_DIER_IRQ_MASK;
@@ -122,6 +175,8 @@ static void icu_lld_serve_interrupt(ICUDriver *icup) {
   }
   if ((sr & STM32_TIM_SR_UIF) != 0)
     _icu_isr_invoke_overflow_cb(icup);
+
+  INVOKE(palClearPad, GPIO_LED_ISR);
 }
 
 /*===========================================================================*/
@@ -358,8 +413,6 @@ void icu_lld_start(ICUDriver *icup) {
     else
       icup->tim->CCER = STM32_TIM_CCER_CC3E | STM32_TIM_CCER_CC3P |
                         STM32_TIM_CCER_CC4E;
-    /* There's no trigger to update registers, so this does it manually. */
-    icup->tim->EGR |= STM32_TIM_EGR_UG;
 
     /* Direct pointers to the capture registers in order to make reading
        data faster from within callbacks.*/
@@ -409,6 +462,7 @@ void icu_lld_stop(ICUDriver *icup) {
 void icu_lld_enable(ICUDriver *icup) {
 
   icup->tim->SR = 0;                        /* Clear pending IRQs (if any). */
+  icup->tim->EGR |= STM32_TIM_EGR_UG;   /* Update config and clear counter. */
   switch (icup->config->channel) {
   case ICU_CHANNEL_1:
     if (icup->config->period_cb != NULL)
