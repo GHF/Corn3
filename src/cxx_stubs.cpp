@@ -24,12 +24,12 @@
  * use or other dealings in this Software without prior written authorization.
  */
 
+#include <cstdlib>
+
 #include "ch.h"
 
 #include "base/logging.h"
 #include "base/utility.h"
-
-#include <cstdlib>
 
 /**
  * @brief Base of the dynamic shared object.

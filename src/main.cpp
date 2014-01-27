@@ -24,12 +24,12 @@
  * use or other dealings in this Software without prior written authorization.
  */
 
+#include <cstdlib>
+
 #include "ch.h"
 #include "hal.h"
 
 #include "corn.h"
-
-#include <cstdlib>
 
 int main(void) {
   halInit();

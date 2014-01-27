@@ -24,8 +24,11 @@
  * use or other dealings in this Software without prior written authorization.
  */
 
-#include "config.h"
 #include "base/logging.h"
+
+#include <stdarg.h>
+
+#include "config.h"
 #include "base/utility.h"
 
 #if LOGGING_USE_CHPRINTF
@@ -41,7 +44,6 @@
 #define LOG_VFPRINTF(file, format, va_list) chvprintf(file, format, va_list)
 #else
 #include <stdio.h>
-#include <stdarg.h>
 
 /* Default file descriptor to log to. */
 #ifndef LOGGING_FILE

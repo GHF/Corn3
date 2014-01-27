@@ -24,16 +24,15 @@
  * use or other dealings in this Software without prior written authorization.
  */
 
+#include <errno.h>
+#include <stdint.h>
+#include <sys/stat.h>
+#include <sys/unistd.h>
+
 #include "ch.h"
 #include "hal.h"
 
 #include "config.h"
-
-#include <stdint.h>
-
-#include <errno.h>
-#include <sys/stat.h>
-#include <sys/unistd.h>
 
 /* These should be ChibiOS sequential streams. */
 #define STDIN_SERIAL    DEBUG_SERIAL
