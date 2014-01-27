@@ -318,6 +318,19 @@
 #define SPI_USE_MUTUAL_EXCLUSION    TRUE
 #endif
 
+/*===========================================================================*/
+/* ICU driver related settings.                                              */
+/*===========================================================================*/
+
+/**
+ * @brief   ICU driver structure extension.
+ * @details User fields added to the @p ICUDriver structure.
+ */
+#if !defined(ICU_DRIVER_EXT_FIELDS) || defined(__DOXYGEN__)
+#define ICU_DRIVER_EXT_FIELDS                                               \
+  void *rotor_hall;  /**<  Pointer to a RotorHall instance.                  */
+#endif
+
 #endif /* _HALCONF_H_ */
 
 /** @} */

@@ -39,14 +39,27 @@
 #define GPIO_LEDX       GPIOB, GPIOB_LEDX
 #define GPIO_LEDY       GPIOB, GPIOB_LEDY
 
+/* These GPIO group macros are of the form "port, mask, offset." */
+#define GPIO_GROUP_HALL GPIOA, \
+                        PAL_PORT_BIT(GPIOA_HALL_A) | \
+                            PAL_PORT_BIT(GPIOA_HALL_B) | \
+                            PAL_PORT_BIT(GPIOA_HALL_C), \
+                        GPIOA_HALL_A
+
 /* Options for LED functionality. */
 #define GPIO_LED_ISR        GPIO_LEDX  /* Turned on while in important ISR.   */
 #define GPIO_LED_ERROR      GPIO_LEDX  /* Latched on when error encountered.  */
 #define GPIO_LED_HEARTBEAT  GPIO_LEDY  /* Blinks at 1 Hz for system healthy.  */
 #define GPIO_LED_INIT       GPIO_LEDZ  /* Cleared upon system initialization. */
+#define GPIO_LED_HALL       GPIO_LEDZ  /* Toggled upon hall state change.     */
 
 /* Debug serial options. */
 #define DEBUG_SERIAL    (SD3)
 #define DEBUG_BAUDRATE  115200
+
+/* Hall sensor input options. */
+#define HALL_ICU              (ICUD2)
+#define HALL_ICU_FREQ         (720000)
+#define HALL_THREAD_PRIORITY  NORMALPRIO
 
 #endif  /* CONFIG_H_ */

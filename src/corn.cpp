@@ -32,6 +32,7 @@
 #include "base/logging.h"
 #include "base/utility.h"
 #include "version/version.h"
+#include "motor/rotor_hall.h"
 
 // Heartbeat thread working area and function.
 static WORKING_AREA(wa_heartbeat, 128);
@@ -75,6 +76,10 @@ void InitializeCorn() {
                     LOWPRIO,
                     ThreadHeartbeat,
                     nullptr);
+
+  // Start hall sensor rotor angle driver.
+  static WORKING_AREA(wa_hall, 1024);
+  static RotorHall rotor_hall(&HALL_ICU, &wa_hall, sizeof(wa_hall));
 
   // Signal end of initialization.
   LogInfo("Initialized in %lu ms.", chTimeNow() * 1000 / CH_FREQUENCY);
