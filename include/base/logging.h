@@ -27,11 +27,14 @@
 #ifndef BASE_LOGGING_H_
 #define BASE_LOGGING_H_
 
+#include <stdarg.h>
+
 #include "config.h"
+#include "utility.h"
 
 #ifdef __cplusplus
 extern "C" {
-#endif  /* __cplusplus */
+#endif
 
 /* Levels of logged information. */
 typedef enum LoggingLevel {
@@ -74,15 +77,25 @@ LoggingLevel GetLoggingLevel(void);
 void SetLoggingLevel(LoggingLevel level);
 #endif  /* STATIC_LOGGING_LEVEL */
 
-#ifdef __GNUC__
+/**
+ * @brief Identical to @c LogAtLevel except taking a va_list instead of variadic
+ *        arguments.
+ */
+void vLogAtLevel(LoggingLevel level, const char *, const char *, va_list);
+
+/**
+ * @brief Logs a message at some level with appropriate formatting.
+ *
+ * @param level See @c LoggingLevel for the different levels of messages.
+ * @param func Name of function to print before the message.
+ * @param format Message to print out as a printf-style format string.
+ * @param ... Arguments for @p format.
+ */
 void LogAtLevel(LoggingLevel level, const char *, const char *, ...)
-    __attribute__((__format__(__printf__, 3, 4)));
-#else
-int LogAtLevel(int level, const char *, ...);
-#endif  /* __GNUC__ */
+    FORMAT(__printf__, 3, 4);
 
 #ifdef __cplusplus
 }  /* extern "C" */
-#endif  /* __cplusplus */
+#endif
 
 #endif  /* BASE_LOGGING_H_ */

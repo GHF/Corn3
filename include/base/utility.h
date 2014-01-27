@@ -27,15 +27,22 @@
 #ifndef BASE_UTILITY_H_
 #define BASE_UTILITY_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* Compiler-specific attribute definitions. */
 #ifdef __GNUC__
 #define NORETURN __attribute__((noreturn))
 #define ALIGNED(x) __attribute__((aligned(x)))
 #define UNREACHABLE() __builtin_unreachable()
+#define FORMAT(archetype, format_index, first_arg) \
+    __attribute__((__format__(archetype, format_index, first_arg)))
 #else
 #define NORETURN
 #define ALIGNED(x)
 #define UNREACHABLE() do { } while (0)
+#define FORMAT(archetype, format_index, first_arg)
 #endif
 
 /**
@@ -50,10 +57,41 @@
  *         FN(ARGS);          // this doesn't work
  *         INVOKE(FN, ARGS);  // this works
  *
- * @param[in] invokable  macro or function with zero or more arguments
- * @param[in] ...        arguments to pass to invokable
+ * @param invokable  Macro or function with zero or more arguments.
+ * @param ...        Arguments to pass to invokable.
  */
 #define INVOKE(invokable, ...) invokable(__VA_ARGS__)
+
+/**
+ * @brief Logs a critical error then halts the system.
+ *
+ * @param format Message to display.
+ * @param ... Arguments to pass to logging.
+ */
+#define CriticalHalt(...) _CriticalHalt(__func__, __VA_ARGS__)
+
+/**
+ * @brief Logs a critical error then halts the system.
+ *
+ * @param func Name of the function the error originated from.
+ * @param format Message to display.
+ * @param ... Arguments to pass to logging.
+ */
+NORETURN void _CriticalHalt(const char *func, const char *message, ...)
+    FORMAT(__printf__, 2, 3);
+
+/**
+ * @brief Checks that a condition is true. If not, logs a critical error with
+ *        the location and condition checked, then halts.
+ */
+#define CHECK(condition) do {                               \
+    if (!(condition)) {                                     \
+      CriticalHalt(__func__,                                \
+                   "CHECK(" #condition ") failed. (%s:%d)", \
+                   __FILE__,                                \
+                   __LINE__);                               \
+    }                                                       \
+  } while(0)
 
 /* ANSI color codes. */
 #define ANSI_RESET            "\x1b[0m"
@@ -81,5 +119,9 @@
 #define ANSI_BGCOL_CYAN       "\x1b[46m"
 #define ANSI_BGCOL_WHITE      "\x1b[47m"
 #define ANSI_BGCOL_OFF        "\x1b[49m"
+
+#ifdef __cplusplus
+}  /* extern "C" */
+#endif
 
 #endif  /* BASE_UTILITY_H_ */

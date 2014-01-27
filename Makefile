@@ -88,6 +88,7 @@ CSRC = $(PORTSRC) \
        $(BOARDSRC) \
        $(VERSIONSRC) \
        src/base/logging.c \
+       src/base/utility.c \
        src/syscalls.c \
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global

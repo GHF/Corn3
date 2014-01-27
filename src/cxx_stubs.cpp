@@ -48,9 +48,7 @@ void *__dso_handle;
 void * operator new(size_t n) {
   void * const p = ::malloc(n);
   if (p == nullptr) {
-    LogCritical("Heap exhausted; halting.");
-    chSysHalt();
-    UNREACHABLE();
+    CriticalHalt("Heap exhausted; halting.");
   }
   return p;
 }
@@ -68,9 +66,7 @@ void operator delete(void *p) {
  * @brief Handler for calling a pure virtual function.
  */
 extern "C" NORETURN void __cxa_pure_virtual() {
-  LogCritical("Pure virtual called; halting.");
-  chSysHalt();
-  UNREACHABLE();
+  CriticalHalt("Pure virtual called; halting.");
 }
 
 #if DISABLE_FLOAT_TO_STRING
@@ -90,8 +86,6 @@ extern "C" NORETURN char *_dtoa_r(_reent *,
                                   int *,
                                   int *,
                                   char **) {
-  LogCritical("Double to string conversion disabled; halting.");
-  chSysHalt();
-  UNREACHABLE();
+  CriticalHalt("Double to string conversion disabled; halting.");
 }
 #endif  // #if DISABLE_DOUBLE_TO_STRING
