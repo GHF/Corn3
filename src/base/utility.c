@@ -36,12 +36,15 @@ NORETURN void _CriticalHalt(const char *func, const char *format, ...) {
   va_start(args, format);
   vLogAtLevel(LOGGING_CRITICAL, func, format, args);
   va_end(args);
-  // Wait for output queue to clear. Should be called under system lock, but
-  // correctness isn't critical here.
+  // Wait for output queue to clear. The chOQIsEmptyI call should be under
+  // system lock, but it's read only so this will work.
   const systime_t timeout_end = chTimeNow() + MS2ST(100);
   while (!chOQIsEmptyI(&DEBUG_SERIAL.oqueue) && chTimeNow() < timeout_end) {
     chThdYield();
   }
+  // Set error LED after disabling interrupts so ISRs can't clear it.
+  chSysLock();
+  INVOKE(palSetPad, GPIO_LED_ERROR);
   chSysHalt();
   UNREACHABLE();
 }
