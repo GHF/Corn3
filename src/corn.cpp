@@ -59,8 +59,7 @@ void InitializeCorn() {
   static const SerialConfig debug_serial_config = { DEBUG_BAUDRATE,
                                                     0,
                                                     USART_CR2_STOP1_BITS,
-                                                    USART_CR3_CTSE |
-                                                        USART_CR3_RTSE };
+                                                    0 };
   sdStart(&DEBUG_SERIAL, &debug_serial_config);
 
   // Print welcome with OS mechanism, so there is output even if logging breaks.
