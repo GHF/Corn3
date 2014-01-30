@@ -86,8 +86,7 @@ NORETURN void _CriticalHalt(const char *func, const char *message, ...)
  */
 #define CHECK(condition) do {                               \
     if (!(condition)) {                                     \
-      CriticalHalt(__func__,                                \
-                   "CHECK(" #condition ") failed. (%s:%d)", \
+      CriticalHalt("CHECK(" #condition ") failed. (%s:%d)", \
                    __FILE__,                                \
                    __LINE__);                               \
     }                                                       \
