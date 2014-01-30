@@ -117,24 +117,24 @@ const ICUConfig RotorHall::kHallICUConfig = { ICU_INPUT_ACTIVE_HIGH,
 // Note that they are out of angular order because the hall states are in
 // integer order.
 const Angle16 RotorHall::kHallAngles[kHallNumStates] = { 0,
-                                                         DegreesToAngle16(0),
-                                                         DegreesToAngle16(240),
-                                                         DegreesToAngle16(300),
-                                                         DegreesToAngle16(120),
-                                                         DegreesToAngle16(60),
                                                          DegreesToAngle16(180),
+                                                         DegreesToAngle16(60),
+                                                         DegreesToAngle16(120),
+                                                         DegreesToAngle16(300),
+                                                         DegreesToAngle16(240),
+                                                         DegreesToAngle16(0),
                                                          0};
 
 // Lookup table from hall state to the following hall state, assuming positive
 // direction of rotation (i.e. counter-clockwise).
 const RotorHall::HallState RotorHall::kNextHallStates[kHallNumStates] = {
     kHallInvalid000,
-    kHall60Deg,
-    kHall300Deg,
-    kHall0Deg,
-    kHall180Deg,
-    kHall120Deg,
     kHall240Deg,
+    kHall120Deg,
+    kHall180Deg,
+    kHall0Deg,
+    kHall300Deg,
+    kHall60Deg,
     kHallInvalid111 };
 
 // Reads the hall bitfield from the GPIO pads.

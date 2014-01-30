@@ -79,12 +79,12 @@ class RotorHall: public RotorInterface {
    */
   enum HallState {
     kHallInvalid000 = 0x0,  ///< kHallInvalid000 Null state of three clear bits.
-    kHall0Deg       = 0x1,  ///< kHall0Deg   Rotor at 330 to 30 degrees.
-    kHall60Deg      = 0x5,  ///< kHall60Deg  Rotor at 30 to 90 degrees.
-    kHall120Deg     = 0x4,  ///< kHall120Deg Rotor at 90 to 150 degrees.
-    kHall180Deg     = 0x6,  ///< kHall180Deg Rotor at 150 to 210 degrees.
-    kHall240Deg     = 0x2,  ///< kHall240Deg Rotor at 210 to 270 degrees.
-    kHall300Deg     = 0x3,  ///< kHall300Deg Rotor at 270 to 330 degrees.
+    kHall0Deg       = 0x6,  ///< kHall0Deg   Rotor at 330 to 30 degrees.
+    kHall60Deg      = 0x2,  ///< kHall60Deg  Rotor at 30 to 90 degrees.
+    kHall120Deg     = 0x3,  ///< kHall120Deg Rotor at 90 to 150 degrees.
+    kHall180Deg     = 0x1,  ///< kHall180Deg Rotor at 150 to 210 degrees.
+    kHall240Deg     = 0x5,  ///< kHall240Deg Rotor at 210 to 270 degrees.
+    kHall300Deg     = 0x4,  ///< kHall300Deg Rotor at 270 to 330 degrees.
     kHallInvalid111 = 0x7,  ///< kHallInvalid111 Null state of three set bits.
     kHallNumStates          ///< kHallNumStates Number of hall states.
   };
