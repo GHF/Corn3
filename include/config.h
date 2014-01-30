@@ -40,10 +40,10 @@
 #define GPIO_LEDY       GPIOB, GPIOB_LEDY
 
 /* These GPIO group macros are of the form "port, mask, offset." */
-#define GPIO_GROUP_HALL GPIOA, \
-                        PAL_PORT_BIT(GPIOA_HALL_A) | \
+#define GPIO_GROUP_HALL GPIOA,                           \
+                        PAL_PORT_BIT(GPIOA_HALL_A) |     \
                             PAL_PORT_BIT(GPIOA_HALL_B) | \
-                            PAL_PORT_BIT(GPIOA_HALL_C), \
+                            PAL_PORT_BIT(GPIOA_HALL_C),  \
                         GPIOA_HALL_A
 
 /* Options for LED functionality. */
