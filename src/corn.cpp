@@ -64,7 +64,7 @@ void InitializeCorn() {
   sdStart(&DEBUG_SERIAL, &debug_serial_config);
 
   // Print welcome with OS mechanism, so there is output even if logging breaks.
-  const uint8_t welcome_msg[] = ANSI_RESET BOARD_NAME "\r\n";
+  const uint8_t welcome_msg[] = ANSI_RESET "\r\n" BOARD_NAME "\r\n";
   chSequentialStreamWrite(&DEBUG_SERIAL, welcome_msg, sizeof(welcome_msg));
 
   // Print startup message.
