@@ -259,9 +259,9 @@
                                      PIN_PUPDR_PULLUP(GPIOA_PIN5) |         \
                                      PIN_PUPDR_PULLUP(GPIOA_PIN6) |         \
                                      PIN_PUPDR_PULLUP(GPIOA_PIN7) |         \
-                                     PIN_PUPDR_PULLUP(GPIOA_PWM_C) |        \
-                                     PIN_PUPDR_PULLUP(GPIOA_PWM_B) |        \
-                                     PIN_PUPDR_PULLUP(GPIOA_PWM_A) |        \
+                                     PIN_PUPDR_PULLDOWN(GPIOA_PWM_C) |      \
+                                     PIN_PUPDR_PULLDOWN(GPIOA_PWM_B) |      \
+                                     PIN_PUPDR_PULLDOWN(GPIOA_PWM_A) |      \
                                      PIN_PUPDR_FLOATING(GPIOA_USB_DM) |     \
                                      PIN_PUPDR_FLOATING(GPIOA_USB_DP) |     \
                                      PIN_PUPDR_PULLUP(GPIOA_SWDIO) |        \
@@ -275,9 +275,9 @@
                                      PIN_ODR_HIGH(GPIOA_PIN5) |             \
                                      PIN_ODR_HIGH(GPIOA_PIN6) |             \
                                      PIN_ODR_HIGH(GPIOA_PIN7) |             \
-                                     PIN_ODR_HIGH(GPIOA_PWM_C) |            \
-                                     PIN_ODR_HIGH(GPIOA_PWM_B) |            \
-                                     PIN_ODR_HIGH(GPIOA_PWM_A) |            \
+                                     PIN_ODR_LOW(GPIOA_PWM_C) |             \
+                                     PIN_ODR_LOW(GPIOA_PWM_B) |             \
+                                     PIN_ODR_LOW(GPIOA_PWM_A) |             \
                                      PIN_ODR_HIGH(GPIOA_USB_DM) |           \
                                      PIN_ODR_HIGH(GPIOA_USB_DP) |           \
                                      PIN_ODR_HIGH(GPIOA_SWDIO) |            \
@@ -381,9 +381,9 @@
                                      PIN_PUPDR_FLOATING(GPIOB_UART_TX) |    \
                                      PIN_PUPDR_FLOATING(GPIOB_UART_RX) |    \
                                      PIN_PUPDR_FLOATING(GPIOB_LEDY) |       \
-                                     PIN_PUPDR_FLOATING(GPIOB_PWM_CN) |     \
-                                     PIN_PUPDR_FLOATING(GPIOB_PWM_BN) |     \
-                                     PIN_PUPDR_FLOATING(GPIOB_PWM_AN))
+                                     PIN_PUPDR_PULLDOWN(GPIOB_PWM_CN) |     \
+                                     PIN_PUPDR_PULLDOWN(GPIOB_PWM_BN) |     \
+                                     PIN_PUPDR_PULLDOWN(GPIOB_PWM_AN))
 #define VAL_GPIOB_ODR               (PIN_ODR_HIGH(GPIOB_PIN0) |             \
                                      PIN_ODR_HIGH(GPIOB_LEDZ) |             \
                                      PIN_ODR_HIGH(GPIOB_PIN2) |             \
@@ -397,9 +397,9 @@
                                      PIN_ODR_HIGH(GPIOB_UART_TX) |          \
                                      PIN_ODR_HIGH(GPIOB_UART_RX) |          \
                                      PIN_ODR_HIGH(GPIOB_LEDY) |             \
-                                     PIN_ODR_HIGH(GPIOB_PWM_CN) |           \
-                                     PIN_ODR_HIGH(GPIOB_PWM_BN) |           \
-                                     PIN_ODR_HIGH(GPIOB_PWM_AN))
+                                     PIN_ODR_LOW(GPIOB_PWM_CN) |            \
+                                     PIN_ODR_LOW(GPIOB_PWM_BN) |            \
+                                     PIN_ODR_LOW(GPIOB_PWM_AN))
 #define VAL_GPIOB_AFRL              (PIN_AFIO_AF(GPIOB_PIN0, 0) |           \
                                      PIN_AFIO_AF(GPIOB_LEDZ, 0) |           \
                                      PIN_AFIO_AF(GPIOB_PIN2, 0) |           \
