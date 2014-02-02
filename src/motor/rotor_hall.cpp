@@ -51,10 +51,10 @@ RotorHall::RotorHall(ICUDriver *icu_driver, void *wa_update, size_t wa_size)
       last_hall_state_(kHallNumStates),
       counts_elapsed_(0) {
   // Setup hall sensor input capture.
-  icu_driver->rotor_hall = this;
+  icu_driver_->rotor_hall = this;
   LogDebug("Configuring hall input capture at %u Hz...", HALL_ICU_FREQ);
-  icuStart(icu_driver, &kHallICUConfig);
-  icuEnable(icu_driver);
+  icuStart(icu_driver_, &kHallICUConfig);
+  icuEnable(icu_driver_);
   LogInfo("Started hall input capture.");
 }
 
@@ -166,10 +166,17 @@ icucnt_t RotorHall::TransitionDeltaT() {
 // of state are advanced under a system lock to avoid corruption and to be able
 // to signal the update thread.
 void RotorHall::HandleEdge(icucnt_t count) {
+  // Filter very short input spikes, which generate edges in rapid succession.
+  // TODO(Xo): Use hardware filtering.
+  const HallState new_hall_state = ReadHallState();
+  if (new_hall_state == hall_state_) {
+    return;
+  }
+
   chSysLockFromIsr();
   // Atomically update the state variables using the latest hall signal edge.
   last_hall_state_ = hall_state_;
-  hall_state_ = ReadHallState();
+  hall_state_ = new_hall_state;
   counts_elapsed_ = count;
   timer_overflowed_ = false;
   // Signals the update thread that state variables have changed.
