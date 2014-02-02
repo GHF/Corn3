@@ -96,6 +96,7 @@ CSRC = $(PORTSRC) \
 CPPSRC = src/main.cpp \
 		 src/corn.cpp \
 		 src/cxx_stubs.cpp \
+         src/driver/DRV8303.cpp \
          src/motor/rotor_hall.cpp \
 
 # C sources to be compiled in ARM mode regardless of the global setting.

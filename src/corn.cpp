@@ -31,6 +31,7 @@
 #include "config.h"
 #include "base/logging.h"
 #include "base/utility.h"
+#include "driver/DRV8303.h"
 #include "version/version.h"
 #include "motor/rotor_hall.h"
 
@@ -79,6 +80,10 @@ void InitializeCorn() {
   // Start hall sensor rotor angle driver.
   static WORKING_AREA(wa_hall, 1024);
   static RotorHall rotor_hall(&HALL_ICU, &wa_hall, sizeof(wa_hall));
+
+  // Start gate driver and current sense amplifiers driver.
+  static DRV8303 drv8303(&DRV_SPI);
+  drv8303.ResetSoft();
 
   // Signal end of initialization.
   LogInfo("Initialized in %lu ms.", chTimeNow() * 1000 / CH_FREQUENCY);

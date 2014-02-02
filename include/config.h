@@ -34,10 +34,11 @@
 #define DISABLE_FLOAT_TO_STRING TRUE
 
 /* Macros for GPIO pins that expand to their GPIO port and pad number. */
-#define GPIO_LEDZ       GPIOB, GPIOB_LEDZ
+#define GPIO_DRV_EN     GPIOA, GPIOA_DRV_EN
 #define GPIO_DRV_NSS    GPIOB, GPIOB_DRV_NSS
 #define GPIO_LEDX       GPIOB, GPIOB_LEDX
 #define GPIO_LEDY       GPIOB, GPIOB_LEDY
+#define GPIO_LEDZ       GPIOB, GPIOB_LEDZ
 
 /* These GPIO group macros are of the form "port, mask, offset." */
 #define GPIO_GROUP_HALL GPIOA,                           \
@@ -61,5 +62,8 @@
 #define HALL_ICU              (ICUD2)
 #define HALL_ICU_FREQ         (720000)
 #define HALL_THREAD_PRIORITY  NORMALPRIO
+
+/* DRV8303 driver options. See class definition for additional configuration. */
+#define DRV_SPI  (SPID1)
 
 #endif  /* CONFIG_H_ */
