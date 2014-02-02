@@ -461,8 +461,8 @@ void icu_lld_stop(ICUDriver *icup) {
  */
 void icu_lld_enable(ICUDriver *icup) {
 
-  icup->tim->SR = 0;                        /* Clear pending IRQs (if any). */
   icup->tim->EGR |= STM32_TIM_EGR_UG;   /* Update config and clear counter. */
+  icup->tim->SR = 0;                        /* Clear pending IRQs (if any). */
   switch (icup->config->channel) {
   case ICU_CHANNEL_1:
     if (icup->config->period_cb != NULL)
