@@ -24,10 +24,13 @@
  * use or other dealings in this Software without prior written authorization.
  */
 
+#include "corn.h"
+
+#include <algorithm>
+
 #include "ch.h"
 #include "hal.h"
 
-#include "corn.h"
 #include "config.h"
 #include "base/logging.h"
 #include "base/utility.h"
@@ -36,8 +39,46 @@
 #include "motor/rotor_hall.h"
 #include "motor/inverter_pwm.h"
 
-// Heartbeat thread working area and function.
+// Pointer to the normally-inlined system reset so its definition is linked.
+// This may still be optimized out unless referenced somewhere.
+void (*g_system_reset_function)(void) = NVIC_SystemReset;
+
+// Reset thread working area and function.
+static WORKING_AREA(wa_reset, 128);
+
+// Resets the system if two ^C characters are received in succession.
+NORETURN static msg_t ThreadReset(void *arg) {
+  (void) arg;
+
+  chRegSetThreadName("reset");
+
+  // Non-trivially reference the reset function pointer so it isn't elided by
+  // the linker.
+  std::swap(g_system_reset_function, g_system_reset_function);
+
+  bool etx_received = false;
+  while (true) {
+    const uint8_t c = chnGetTimeout(&DEBUG_SERIAL, TIME_INFINITE);
+    if (c == '\x03') {
+      if (etx_received) {
+        break;
+      } else {
+        etx_received = true;
+      }
+    } else {
+      etx_received = false;
+    }
+  }
+
+  NVIC_SystemReset();
+  UNREACHABLE();
+}
+
+// Heartbeat thread working area.
 static WORKING_AREA(wa_heartbeat, 128);
+
+// Blinks an LED at 1 Hz at low priority to show system is functional and has
+// available idle time.
 NORETURN static msg_t ThreadHeartbeat(void *arg) {
   (void) arg;
 
@@ -63,6 +104,13 @@ void InitializeCorn() {
                                                     USART_CR2_STOP1_BITS,
                                                     0 };
   sdStart(&DEBUG_SERIAL, &debug_serial_config);
+
+  // Start reset handler thread.
+  chThdCreateStatic(wa_reset,
+                    sizeof(wa_reset),
+                    NORMALPRIO + 1,
+                    ThreadReset,
+                    nullptr);
 
   // Print welcome with OS mechanism, so there is output even if logging breaks.
   const uint8_t welcome_msg[] = ANSI_RESET "\r\n" BOARD_NAME "\r\n";
