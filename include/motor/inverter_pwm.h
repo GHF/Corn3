@@ -74,7 +74,15 @@ class InverterPWM: public InverterInterface {
    * @brief Reads PWM period. This is the denominator of the fraction of time
    *        that this phase is on.
    *
-   * @return Maximum duration of a pulse width.
+   * @note The PWM generator is configured for center-aligned, so that each
+   *       cycle is generated twice: once counting up (normal) and once counting
+   *       down, during which the signal is "mirrored" in time. So, the active
+   *       time for each cycle is adjacent to active time of either the previous
+   *       or next cycle (and vice versa for the inactive time). The end result
+   *       is that the true generated period is double of the return value.
+   *       Pulse widths are also doubled for the same reasons.
+   *
+   * @return Max number of timer ticks that a pulse width may span.
    */
   Width16 GetPeriod() {
     return pwm_driver_->period;

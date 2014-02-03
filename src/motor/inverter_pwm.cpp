@@ -138,7 +138,9 @@ const PWMConfig InverterPWM::kPwmConfig = { INVERTER_COUNTER_FREQ,
                                             { PWM_OUTPUT_DISABLED, nullptr },
                                             { PWM_OUTPUT_DISABLED, nullptr },
                                             { PWM_OUTPUT_DISABLED, nullptr } },
-                                            // Preload channel configuration.
+                                            // Center-aligned (count up & down).
+                                            STM32_TIM_CR1_CMS(3),
+                                            // Preload channel configurations.
                                             STM32_TIM_CR2_CCPC,
                                             // Drive channel even if disabled.
                                             STM32_TIM_BDTR_OSSR |

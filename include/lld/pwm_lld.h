@@ -367,6 +367,11 @@ typedef struct {
   PWMChannelConfig          channels[PWM_CHANNELS];
   /* End of the mandatory fields.*/
   /**
+   * @brief TIM CR1 register initialization data.
+   * @note  The value of this field should normally be equal to zero.
+   */
+  uint32_t                  cr1;
+  /**
    * @brief TIM CR2 register initialization data.
    * @note  The value of this field should normally be equal to zero.
    */
