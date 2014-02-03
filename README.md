@@ -2,7 +2,9 @@ Corn3
 =====
 Copyright (C) 2014 Xo Wang
 
-Corn3 is firmware for Corntroller version 3.
+Corn3 is firmware for Corntroller version 3. It is a total rewrite of previous
+Corntroller code, with a focus on writing code and documentation that may serve
+as an introduction to three phase motor control for hobbyists.
 
 Build
 -----
@@ -38,10 +40,20 @@ Version 3 features:
 No power figures available, but should be similar to hobby controllers of
 similar size.
 
+Hacking
+-------
+Corn3 and Corntroller are developed using the Black Magic Probe debugger.
+
+See http://www.blacksphere.co.nz/main/blackmagic
+
+Corntroller v3 has a 10-pin "mini" keyed JTAG header and a PicoBlade 4-pin
+serial debug connector. The firmware does not yet support USB firmware
+flashing.
+
 License
 -------
 Corn3 is licensed under the MIT license with non-advertisement clause.
 
-In compliance with the Apache license that ChibiOS template configuration files
-are licensed under, the Apache License version 2.0 is included.
+In compliance with the Apache license that ChibiOS configuration and low level
+drivers are licensed under, the Apache License version 2.0 is included.
 
