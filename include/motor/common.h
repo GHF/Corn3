@@ -27,7 +27,7 @@
 #ifndef MOTOR_COMMON_H_
 #define MOTOR_COMMON_H_
 
-#include <stdint.h>
+#include <cstdint>
 
 /**
  * @brief Data type to represent electrical angle.
@@ -54,6 +54,13 @@ typedef int16_t Angle16Diff;
  *       clockwise.
  */
 typedef float Velocity32;
+
+/**
+ * @brief Data type to represent width of inverter output. A value of this type
+ *        is the number of counts by a PWM generator clock, and is meaningful
+ *        only if it does not exceed the period of the clock.
+ */
+typedef uint16_t Width16;
 
 /**
  * @brief Convert degrees to fixed-point, with rounding.

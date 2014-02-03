@@ -98,6 +98,7 @@ CPPSRC = src/main.cpp \
 		 src/cxx_stubs.cpp \
          src/driver/DRV8303.cpp \
          src/motor/rotor_hall.cpp \
+         src/motor/inverter_pwm.cpp \
 
 # C sources to be compiled in ARM mode regardless of the global setting.
 # NOTE: Mixing ARM and THUMB mode enables the -mthumb-interwork compiler

@@ -68,7 +68,7 @@
 #define STM32_UART5SW                       STM32_UART5SW_PCLK
 #define STM32_I2C1SW                        STM32_I2C1SW_SYSCLK
 #define STM32_I2C2SW                        STM32_I2C2SW_SYSCLK
-#define STM32_TIM1SW                        STM32_TIM1SW_PCLK2
+#define STM32_TIM1SW                        STM32_TIM1SW_PLLX2
 #define STM32_TIM8SW                        STM32_TIM8SW_PCLK2
 #define STM32_RTCSEL                        STM32_RTCSEL_LSI
 #define STM32_USB_CLOCK_REQUIRED            TRUE
@@ -160,8 +160,8 @@
 /*
  * PWM driver system settings.
  */
-#define STM32_PWM_USE_ADVANCED              FALSE
-#define STM32_PWM_USE_TIM1                  FALSE
+#define STM32_PWM_USE_ADVANCED              TRUE
+#define STM32_PWM_USE_TIM1                  TRUE
 #define STM32_PWM_USE_TIM2                  FALSE
 #define STM32_PWM_USE_TIM3                  FALSE
 #define STM32_PWM_USE_TIM4                  FALSE

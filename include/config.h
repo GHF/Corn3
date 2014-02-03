@@ -66,4 +66,9 @@
 /* DRV8303 driver options. See class definition for additional configuration. */
 #define DRV_SPI  (SPID1)
 
+/* Inverter options. See class definition for dead time setting. */
+#define INVERTER_PWM           (PWMD1)
+#define INVERTER_COUNTER_FREQ  (144000000)
+#define INVERTER_PWM_PERIOD    (18000)
+
 #endif  /* CONFIG_H_ */
