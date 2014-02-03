@@ -34,13 +34,16 @@
 #include "base/logging.h"
 #include "base/utility.h"
 
-// Initializes this driver, the SPI driver, and hard resets the IC.
 DRV8303::DRV8303(SPIDriver *spi_driver)
     : spi_driver_(spi_driver) {
+}
+
+// Performs a hard reset of the driver and current sense amplifier.
+void DRV8303::Start() {
   spiStart(spi_driver_, &kSpiConfig);
   do {
-    ShutDown();
-    StartUp();
+    Deactivate();
+    Activate();
   } while (CheckFaults());
   // TODO: Calibrate analog inputs for amplifier offsets.
   LogInfo("Started gate driver and current sense amplifiers.");
@@ -79,14 +82,14 @@ bool DRV8303::CheckFaults() {
 }
 
 // Asserts the driver enable line and waits for the start up sequence time.
-void DRV8303::StartUp() {
+void DRV8303::Activate() {
   // TODO: Make GPIO parameters instance-specific.
   INVOKE(palSetPad, GPIO_DRV_EN);
   chThdSleepMilliseconds(10);
 }
 
 // Deasserts the driver enable line and waits for the shut down sequence time.
-void DRV8303::ShutDown() {
+void DRV8303::Deactivate() {
   // TODO: Make GPIO parameters instance-specific.
   INVOKE(palClearPad, GPIO_DRV_EN);
   chThdSleepMicroseconds(10);

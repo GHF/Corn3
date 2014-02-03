@@ -38,11 +38,16 @@
 class DRV8303 {
  public:
   /**
-   * @brief Initializes the driver and amplifier driver and clears any faults.
+   * @brief Creates a driver control structure.
    *
    * @param spi_driver SPI driver used to communicate with the IC.
    */
   DRV8303(SPIDriver *spi_driver);
+
+  /**
+   * @brief Initializes driver functionality and clears faults.
+   */
+  void Start();
 
   /**
    * @brief Resets gate driver to normal operation and clears all faults in
@@ -64,12 +69,12 @@ class DRV8303 {
   /**
    * @brief Enables gate driver and current sense amplifier.
    */
-  void StartUp();
+  void Activate();
 
   /**
    * @brief Disables gate driver and current sense amplifier.
    */
-  void ShutDown();
+  void Deactivate();
 
  protected:
   /**

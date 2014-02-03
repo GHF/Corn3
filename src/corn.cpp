@@ -129,12 +129,15 @@ void InitializeCorn() {
   // Start hall sensor rotor angle driver.
   static WORKING_AREA(wa_hall, 1024);
   static RotorHall rotor_hall(&HALL_ICU, &wa_hall, sizeof(wa_hall));
+  rotor_hall.Start();
 
   // Start three-phase PWM driver.
   static InverterPWM inverter_pwm(&INVERTER_PWM);
+  inverter_pwm.Start();
 
   // Start gate driver and current sense amplifiers driver.
   static DRV8303 drv8303(&DRV_SPI);
+  drv8303.Start();
   drv8303.ResetSoft();
 
   // Signal end of initialization.

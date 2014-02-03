@@ -36,8 +36,8 @@
 #include "base/logging.h"
 #include "base/utility.h"
 
-// Sets up rotor state, initializes ICU driver, and launches thread that
-// computes state from hall sensor signal changes.
+// Sets up rotor state, and launches thread that computes state from hall sensor
+// signal changes.
 RotorHall::RotorHall(ICUDriver *icu_driver, void *wa_update, size_t wa_size)
     : icu_driver_(icu_driver),
       semaphore_update_(_SEMAPHORE_DATA(semaphore_update_, 0)),
@@ -50,6 +50,10 @@ RotorHall::RotorHall(ICUDriver *icu_driver, void *wa_update, size_t wa_size)
       hall_state_(kHallNumStates),
       last_hall_state_(kHallNumStates),
       counts_elapsed_(0) {
+}
+
+// Initializes ICU driver, which enables hall sensor signal edge interrupts.
+void RotorHall::Start() {
   // Setup hall sensor input capture.
   icu_driver_->rotor_hall = this;
   LogDebug("Configuring hall input capture at %u Hz...", HALL_ICU_FREQ);

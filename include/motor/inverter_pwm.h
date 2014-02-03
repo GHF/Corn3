@@ -62,13 +62,18 @@
 class InverterPWM: public InverterInterface {
  public:
   /**
-   * @brief Initializes the PWM driver and configures each channel to put out an
-   *        inactive (low) signal, which puts each inverter channel in high
-   *        impedance.
+   * @brief Creates inverter driver structure.
    *
    * @param pwm_driver PWM driver used to generate gate driver input signals.
    */
   InverterPWM(PWMDriver *pwm_driver);
+
+  /**
+   * @brief Initializes the PWM driver and configures each channel to put out an
+   *        inactive (low) signal, which puts each inverter channel in high
+   *        impedance.
+   */
+  void Start();
 
   /**
    * @brief Reads PWM period. This is the denominator of the fraction of time

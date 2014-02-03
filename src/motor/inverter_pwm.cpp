@@ -28,10 +28,13 @@
 
 #include "base/logging.h"
 
-// Note that all the channels are disabled in the OS driver, and then separately
-// configured through the WriteChannel function.
 InverterPWM::InverterPWM(PWMDriver *pwm_driver)
     : pwm_driver_(pwm_driver) {
+}
+
+// Note that all the channels are disabled in the OS driver, and then separately
+// configured through the WriteChannel function.
+void InverterPWM::Start() {
   pwmStart(pwm_driver_, &kPwmConfig);
   // Enable each channel's output, but put them in disable mode. See comment for
   // the OS driver configuration on the distinction.
@@ -39,7 +42,9 @@ InverterPWM::InverterPWM(PWMDriver *pwm_driver)
   WriteChannel(InverterPWM::kChannelB, 0, false);
   WriteChannel(InverterPWM::kChannelC, 0, false);
   SyncModes();
-  LogInfo("Started inverter PWM driver.");
+  constexpr int pwm_frequency = INVERTER_COUNTER_FREQ / INVERTER_PWM_PERIOD / 2;
+  LogInfo("Started inverter PWM driver at %d.%d kHz.",
+          pwm_frequency / 1000, (pwm_frequency % 1000 + 50) / 100);
 }
 
 // Writes channel configurations to preload registers. The widths don't take

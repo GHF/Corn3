@@ -42,14 +42,18 @@
 class RotorHall: public RotorInterface {
  public:
   /**
-   * @brief Initializes the hall sensor driver, setting up interrupts and and a
-   *        thread.
+   * @brief Creates hall sensor driver structure and launches thread.
    *
    * @param icu_driver ICU driver used to capture hall state transitions.
    * @param wa_update Working area for the hall transition processing thread.
    * @param wa_size Size of @p wa_update.
    */
   RotorHall(ICUDriver *icu_driver, void *wa_update, size_t wa_size);
+
+  /**
+   * @brief Initializes the hall sensor driver and sets up interrupts.
+   */
+  void Start();
 
   /**
    * @brief Computes the current rotor angle based on its hall state.
