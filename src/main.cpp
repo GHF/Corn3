@@ -35,11 +35,9 @@ int main(void) {
   halInit();
   chSysInit();
 
-  InitializeCorn();
-
-  while (true) {
-    chThdSleep(TIME_INFINITE);
-  }
+  Corn corn;
+  corn.Start();
+  corn.MainLoop();
 
   return EXIT_SUCCESS;
 }

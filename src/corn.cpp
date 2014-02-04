@@ -26,35 +26,94 @@
 
 #include "corn.h"
 
-#include <algorithm>
-
 #include "ch.h"
 #include "hal.h"
 
 #include "config.h"
 #include "base/logging.h"
 #include "base/utility.h"
-#include "driver/DRV8303.h"
 #include "version/version.h"
-#include "motor/rotor_hall.h"
-#include "motor/inverter_pwm.h"
+
+// Does whole-system initialization, and uses many static variables as if they
+// were instance variables, because this object is constructed under the
+// assumption that only one will be made.
+Corn::Corn()
+    : rotor_hall_(&HALL_ICU, &wa_hall_, sizeof(wa_hall_)),
+      inverter_pwm_(&INVERTER_PWM),
+      drv8303_(&DRV_SPI) {
+}
+
+// Sequences bootup. Calls initialization methods of subsystems.
+void Corn::Start() {
+  // Clear error LED to show start of initialization.
+  INVOKE(palClearPad, GPIO_LED_ERROR);
+
+  // Setup debug serial driver.
+  sdStart(&DEBUG_SERIAL, &kDebugSerialConfig);
+
+  // Start reset handler thread.
+  chThdCreateStatic(wa_reset_,
+                    sizeof(wa_reset_),
+                    NORMALPRIO + 1,
+                    ThreadReset,
+                    nullptr);
+
+  // Print welcome with OS mechanism, so there is output even if logging breaks.
+  const uint8_t welcome_msg[] = ANSI_RESET "\r\n" BOARD_NAME "\r\n";
+  chSequentialStreamWrite(&DEBUG_SERIAL, welcome_msg, sizeof(welcome_msg));
+
+  // Print startup message.
+  LogInfo("Firmware version %s built %s", g_build_version, g_build_time);
+
+  // Start heartbeat thread.
+  chThdCreateStatic(wa_heartbeat_,
+                    sizeof(wa_heartbeat_),
+                    LOWPRIO,
+                    ThreadHeartbeat,
+                    nullptr);
+
+  // Start hall sensor rotor angle driver.
+  rotor_hall_.Start();
+
+  // Start three-phase PWM driver.
+  inverter_pwm_.Start();
+
+  // Start gate driver and current sense amplifiers driver.
+  drv8303_.Start();
+  drv8303_.ResetSoft();
+
+  // Signal end of initialization.
+  LogInfo("Initialized in %lu ms.", chTimeNow() * 1000 / CH_FREQUENCY);
+  INVOKE(palClearPad, GPIO_LED_INIT);
+}
+
+NORETURN void Corn::MainLoop() {
+  while (true) {
+    chThdSleep(TIME_INFINITE);
+  }
+}
+
+// Thread working area definitions.
+// TODO(Xo): Define the stack sizes in a single location.
+WORKING_AREA(Corn::wa_reset_, 128);
+WORKING_AREA(Corn::wa_heartbeat_, 128);
+WORKING_AREA(Corn::wa_hall_, 1024);
+
+// Serial settings for 8N1 at configured baud rate, with no flow control.
+const SerialConfig Corn::kDebugSerialConfig = { DEBUG_BAUDRATE,
+                                                0,
+                                                USART_CR2_STOP1_BITS,
+                                                0 };
 
 // Pointer to the normally-inlined system reset so its definition is linked.
 // This may still be optimized out unless referenced somewhere.
-void (*g_system_reset_function)(void) = NVIC_SystemReset;
-
-// Reset thread working area and function.
-static WORKING_AREA(wa_reset, 128);
+void (* const Corn::system_reset_function)(void) = NVIC_SystemReset;
 
 // Resets the system if two ^C characters are received in succession.
-NORETURN static msg_t ThreadReset(void *arg) {
+NORETURN msg_t Corn::ThreadReset(void *arg) {
   (void) arg;
 
   chRegSetThreadName("reset");
-
-  // Non-trivially reference the reset function pointer so it isn't elided by
-  // the linker.
-  std::swap(g_system_reset_function, g_system_reset_function);
 
   bool etx_received = false;
   while (true) {
@@ -70,16 +129,14 @@ NORETURN static msg_t ThreadReset(void *arg) {
     }
   }
 
-  NVIC_SystemReset();
+  // Call through the pointer so that NVIC_SystemReset isn't inlined. This makes
+  // it show up as a global symbol which can be easily jumped to in a debugger.
+  system_reset_function();
   UNREACHABLE();
 }
 
-// Heartbeat thread working area.
-static WORKING_AREA(wa_heartbeat, 128);
-
-// Blinks an LED at 1 Hz at low priority to show system is functional and has
-// available idle time.
-NORETURN static msg_t ThreadHeartbeat(void *arg) {
+// Uses delays to achieve a 1 Hz blink rate, so the timing will not be exact.
+NORETURN msg_t Corn::ThreadHeartbeat(void *arg) {
   (void) arg;
 
   chRegSetThreadName("heartbeat");
@@ -92,55 +149,4 @@ NORETURN static msg_t ThreadHeartbeat(void *arg) {
   }
 
   chThdExit(0);
-}
-
-void InitializeCorn() {
-  // Clear error LED to show start.
-  INVOKE(palClearPad, GPIO_LED_ERROR);
-
-  // Setup debug serial driver; configuration static so valid when out of scope.
-  static const SerialConfig debug_serial_config = { DEBUG_BAUDRATE,
-                                                    0,
-                                                    USART_CR2_STOP1_BITS,
-                                                    0 };
-  sdStart(&DEBUG_SERIAL, &debug_serial_config);
-
-  // Start reset handler thread.
-  chThdCreateStatic(wa_reset,
-                    sizeof(wa_reset),
-                    NORMALPRIO + 1,
-                    ThreadReset,
-                    nullptr);
-
-  // Print welcome with OS mechanism, so there is output even if logging breaks.
-  const uint8_t welcome_msg[] = ANSI_RESET "\r\n" BOARD_NAME "\r\n";
-  chSequentialStreamWrite(&DEBUG_SERIAL, welcome_msg, sizeof(welcome_msg));
-
-  // Print startup message.
-  LogInfo("Firmware version %s built %s", g_build_version, g_build_time);
-
-  // Start heartbeat thread.
-  chThdCreateStatic(wa_heartbeat,
-                    sizeof(wa_heartbeat),
-                    LOWPRIO,
-                    ThreadHeartbeat,
-                    nullptr);
-
-  // Start hall sensor rotor angle driver.
-  static WORKING_AREA(wa_hall, 1024);
-  static RotorHall rotor_hall(&HALL_ICU, &wa_hall, sizeof(wa_hall));
-  rotor_hall.Start();
-
-  // Start three-phase PWM driver.
-  static InverterPWM inverter_pwm(&INVERTER_PWM);
-  inverter_pwm.Start();
-
-  // Start gate driver and current sense amplifiers driver.
-  static DRV8303 drv8303(&DRV_SPI);
-  drv8303.Start();
-  drv8303.ResetSoft();
-
-  // Signal end of initialization.
-  LogInfo("Initialized in %lu ms.", chTimeNow() * 1000 / CH_FREQUENCY);
-  INVOKE(palClearPad, GPIO_LED_INIT);
 }

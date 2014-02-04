@@ -27,6 +27,60 @@
 #ifndef CORN_H_
 #define CORN_H_
 
-void InitializeCorn();
+#include <cstddef>
+
+#include "hal.h"
+
+#include "base/utility.h"
+#include "driver/DRV8303.h"
+#include "motor/rotor_hall.h"
+#include "motor/inverter_pwm.h"
+
+/**
+ * @brief Entry point, initialization, and main loop for all functionality.
+ *
+ * @note ONLY CONSTRUCT ONE OF THESE, AND NEVER DESTROY IT. This is not enforced
+ *       with a singleton mechanism to keep the code simple.
+ */
+class Corn {
+ public:
+  /**
+   * @brief Creates system variables and structures.
+   */
+  Corn();
+
+  /**
+   * @brief Initializes subsystems into known states.
+   */
+  void Start();
+
+  /**
+   * @brief Runs Corntroller main functionality.
+   */
+  NORETURN void MainLoop();
+
+ protected:
+  static const SerialConfig kDebugSerialConfig;  ///< Serial port configuration.
+  static void (* const system_reset_function)(void);  ///< NVIC_SystemReset.
+
+  /**
+   * @brief Resets the system upon command through the debug serial channel.
+   */
+  NORETURN static msg_t ThreadReset(void *arg);
+
+  /**
+   * @brief Blinks an LED at 1 Hz at low priority to show system is functional
+   *        and has idle time.
+   */
+  NORETURN static msg_t ThreadHeartbeat(void *arg);
+
+  static WORKING_AREA(wa_reset_, 128);      ///< Reset thread working area.
+  static WORKING_AREA(wa_heartbeat_, 128);  ///< Heartbeat thread working area.
+  static WORKING_AREA(wa_hall_, 1024);      ///< Hall thread working area.
+
+  RotorHall rotor_hall_;  ///< Hall sensor signal handling driver.
+  InverterPWM inverter_pwm_;  ///< 3-phase inverter driver.
+  DRV8303 drv8303_;  ///< Gate driver and current sense amplifier driver.
+};
 
 #endif  /* CORN_H_ */
