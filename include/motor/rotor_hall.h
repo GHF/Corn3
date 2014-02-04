@@ -32,6 +32,8 @@
 
 #include "motor/rotor_interface.h"
 
+class CommutatorSixStep;
+
 /**
  * @brief Hall sensor rotor angle sensor driver.
  *
@@ -73,6 +75,10 @@ class RotorHall: public RotorInterface {
    *         @p velocity.
    */
   bool ComputeVelocity(Velocity32 *velocity);
+
+  void SetCommutatorSixStep(CommutatorSixStep *commutator_six_step) {
+    commutator_six_step_ = commutator_six_step;
+  }
 
  protected:
   /**
@@ -122,7 +128,7 @@ class RotorHall: public RotorInterface {
    *
    * @return Counts of the ICU timer between the last two hall state changes or
    *         between the last state change and now, whichever is greater. Will
-   *         be saturated to maximum value if
+   *         be saturated to maximum value if timer overflows.
    */
   icucnt_t TransitionDeltaT();
 
@@ -196,6 +202,7 @@ class RotorHall: public RotorInterface {
   ICUDriver * const icu_driver_;  ///< Points to OS capture driver.
   Semaphore semaphore_update_;  ///< Synchronizes update thread to ISR.
   Thread * const thread_hall_;  ///< Points to state update thread.
+  CommutatorSixStep *commutator_six_step_;  ///< Hall transitions signal sink.
 
   bool timer_overflowed_;  ///< True if timer overflowed since last edge.
   HallState hall_state_;  ///< Current hall state bitfield.

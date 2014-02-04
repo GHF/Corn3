@@ -63,6 +63,11 @@ typedef float Velocity32;
 typedef uint16_t Width16;
 
 /**
+ * @brief Data type to represent difference between two pulse widths.
+ */
+typedef int16_t Width16Diff;
+
+/**
  * @brief Convert degrees to fixed-point, with rounding.
  *
  * @param degrees Angle in degrees.

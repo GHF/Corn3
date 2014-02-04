@@ -40,7 +40,8 @@
 Corn::Corn()
     : rotor_hall_(&HALL_ICU, &wa_hall_, sizeof(wa_hall_)),
       inverter_pwm_(&INVERTER_PWM),
-      drv8303_(&DRV_SPI) {
+      drv8303_(&DRV_SPI),
+      commutator_six_step_(&rotor_hall_, &inverter_pwm_) {
 }
 
 // Sequences bootup. Calls initialization methods of subsystems.
@@ -72,9 +73,6 @@ void Corn::Start() {
                     ThreadHeartbeat,
                     nullptr);
 
-  // Start hall sensor rotor angle driver.
-  rotor_hall_.Start();
-
   // Start three-phase PWM driver.
   inverter_pwm_.Start();
 
@@ -82,15 +80,17 @@ void Corn::Start() {
   drv8303_.Start();
   drv8303_.ResetSoft();
 
+  // Start hall sensor rotor angle driver.
+  rotor_hall_.SetCommutatorSixStep(&commutator_six_step_);
+  rotor_hall_.Start();
+
   // Signal end of initialization.
   LogInfo("Initialized in %lu ms.", chTimeNow() * 1000 / CH_FREQUENCY);
   INVOKE(palClearPad, GPIO_LED_INIT);
 }
 
 NORETURN void Corn::MainLoop() {
-  while (true) {
-    chThdSleep(TIME_INFINITE);
-  }
+  commutator_six_step_.CommutationLoop();
 }
 
 // Thread working area definitions.

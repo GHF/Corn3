@@ -35,6 +35,7 @@
 #include "config.h"
 #include "base/logging.h"
 #include "base/utility.h"
+#include "motor/commutator_six_step.h"
 
 // Sets up rotor state, and launches thread that computes state from hall sensor
 // signal changes.
@@ -46,6 +47,7 @@ RotorHall::RotorHall(ICUDriver *icu_driver, void *wa_update, size_t wa_size)
                                      NORMALPRIO,
                                      ThreadHallWrapper,
                                      this)),
+      commutator_six_step_(nullptr),
       timer_overflowed_(true),
       hall_state_(kHallNumStates),
       last_hall_state_(kHallNumStates),
@@ -188,6 +190,10 @@ void RotorHall::HandleEdge(icucnt_t count) {
   timer_overflowed_ = false;
   // Signals the update thread that state variables have changed.
   chSemSignalI(&semaphore_update_);
+  // Signal change to commutator.
+  if (commutator_six_step_ != nullptr) {
+    commutator_six_step_->SignalChange();
+  }
   chSysUnlockFromIsr();
 
   INVOKE(palTogglePad, GPIO_LED_HALL);
