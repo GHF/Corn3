@@ -59,7 +59,7 @@ void RotorHall::Start() {
   // Setup hall sensor input capture.
   icu_driver_->rotor_hall = this;
   LogDebug("Configuring hall input capture at %u Hz...", HALL_ICU_FREQ);
-  icuStart(icu_driver_, &kHallICUConfig);
+  icuStart(icu_driver_, &kHallIcuConfig);
   icuEnable(icu_driver_);
   LogInfo("Started hall input capture.");
 }
@@ -109,10 +109,10 @@ bool RotorHall::ComputeVelocity(Velocity32 *velocity) {
 //
 // Note the custom fields in here for Corn modified version of the driver as
 // well as a pointer to this driver in @c ICUDriver.
-const ICUConfig RotorHall::kHallICUConfig = { ICU_INPUT_ACTIVE_HIGH,
+const ICUConfig RotorHall::kHallIcuConfig = { ICU_INPUT_ACTIVE_HIGH,
                                               HALL_ICU_FREQ,
-                                              ICUWidthCallback,
-                                              ICUPeriodCallback,
+                                              IcuWidthCallback,
+                                              IcuPeriodCallback,
                                               nullptr,
                                               ICU_CHANNEL_1,
                                               0,
@@ -123,34 +123,31 @@ const ICUConfig RotorHall::kHallICUConfig = { ICU_INPUT_ACTIVE_HIGH,
 // Note that they are out of angular order because the hall states are in
 // integer order.
 const Angle16 RotorHall::kHallAngles[kHallNumStates] = { 0,
-                                                         DegreesToAngle16(180),
-                                                         DegreesToAngle16(60),
-                                                         DegreesToAngle16(120),
                                                          DegreesToAngle16(300),
-                                                         DegreesToAngle16(240),
+                                                         DegreesToAngle16(60),
                                                          DegreesToAngle16(0),
+                                                         DegreesToAngle16(180),
+                                                         DegreesToAngle16(240),
+                                                         DegreesToAngle16(120),
                                                          0};
 
 // Lookup table from hall state to the following hall state, assuming positive
 // direction of rotation (i.e. counter-clockwise).
 const RotorHall::HallState RotorHall::kNextHallStates[kHallNumStates] = {
     kHallInvalid000,
-    kHall240Deg,
-    kHall120Deg,
-    kHall180Deg,
     kHall0Deg,
-    kHall300Deg,
+    kHall120Deg,
     kHall60Deg,
+    kHall240Deg,
+    kHall300Deg,
+    kHall180Deg,
     kHallInvalid111 };
 
 // Reads the hall bitfield from the GPIO pads.
 // TODO(Xo): Make this instance-specific by storing GPIO parameters.
 RotorHall::HallState RotorHall::ReadHallState() {
-  // Use a look up table to reverse the order of the hall bits.
-  // TODO(Xo): Change the other look up tables so this isn't necessary.
-  static const uint8_t kBitReverses[8] = { 0, 4, 2, 6, 1, 5, 3, 7 };
-  const uint8_t reversed_hall_signals = INVOKE(palReadGroup, GPIO_GROUP_HALL);
-  return static_cast<RotorHall::HallState>(kBitReverses[reversed_hall_signals]);
+  return static_cast<RotorHall::HallState>(INVOKE(palReadGroup,
+                                                  GPIO_GROUP_HALL));
 }
 
 // Computes the most up-to-date estimate of time between hall states.
@@ -252,17 +249,17 @@ NORETURN msg_t RotorHall::ThreadHallWrapper(void *rotor_hall) {
 // The ICU driver has different callbacks for rising and falling edges, which
 // are stored in different registers. This redirects rising edge interrupts to
 // the edge handler.
-void RotorHall::ICUWidthCallback(ICUDriver *icup) {
+void RotorHall::IcuWidthCallback(ICUDriver *icup) {
   const icucnt_t count = icuGetWidth(icup);
   static_cast<RotorHall *>(icup->rotor_hall)->HandleEdge(count);
 }
 
 // Redirects rising edge interrupts to the edge handler.
-void RotorHall::ICUPeriodCallback(ICUDriver *icup) {
+void RotorHall::IcuPeriodCallback(ICUDriver *icup) {
   const icucnt_t count = icuGetPeriod(icup);
   static_cast<RotorHall *>(icup->rotor_hall)->HandleEdge(count);
 }
 
-void RotorHall::ICUOverflowCallback(ICUDriver *icup) {
+void RotorHall::IcuOverflowCallback(ICUDriver *icup) {
   static_cast<RotorHall *>(icup->rotor_hall)->timer_overflowed_ = true;
 }

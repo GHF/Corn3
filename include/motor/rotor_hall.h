@@ -89,12 +89,12 @@ class RotorHall: public RotorInterface {
    */
   enum HallState {
     kHallInvalid000 = 0x0,  ///< kHallInvalid000 Null state of three clear bits.
-    kHall0Deg       = 0x6,  ///< kHall0Deg   Rotor at 330 to 30 degrees.
+    kHall0Deg       = 0x3,  ///< kHall0Deg   Rotor at 330 to 30 degrees.
     kHall60Deg      = 0x2,  ///< kHall60Deg  Rotor at 30 to 90 degrees.
-    kHall120Deg     = 0x3,  ///< kHall120Deg Rotor at 90 to 150 degrees.
-    kHall180Deg     = 0x1,  ///< kHall180Deg Rotor at 150 to 210 degrees.
+    kHall120Deg     = 0x6,  ///< kHall120Deg Rotor at 90 to 150 degrees.
+    kHall180Deg     = 0x4,  ///< kHall180Deg Rotor at 150 to 210 degrees.
     kHall240Deg     = 0x5,  ///< kHall240Deg Rotor at 210 to 270 degrees.
-    kHall300Deg     = 0x4,  ///< kHall300Deg Rotor at 270 to 330 degrees.
+    kHall300Deg     = 0x1,  ///< kHall300Deg Rotor at 270 to 330 degrees.
     kHallInvalid111 = 0x7,  ///< kHallInvalid111 Null state of three set bits.
     kHallNumStates          ///< kHallNumStates Number of hall states.
   };
@@ -102,7 +102,7 @@ class RotorHall: public RotorInterface {
   /**
    * @brief Configuration options for OS driver.
    */
-  static const ICUConfig kHallICUConfig;
+  static const ICUConfig kHallIcuConfig;
 
   /**
    * @brief Relates hall state to angular position.
@@ -174,7 +174,7 @@ class RotorHall: public RotorInterface {
    * @return Angular speed in floating point format. Always positive.
    */
   static Velocity32 ComputeSpeed(icucnt_t counts_elapsed) {
-    return Velocity32(kHallICUConfig.frequency / 6) * Velocity32(1 << 16) /
+    return Velocity32(kHallIcuConfig.frequency / 6) * Velocity32(1 << 16) /
            counts_elapsed;
   }
 
@@ -183,21 +183,21 @@ class RotorHall: public RotorInterface {
    *
    * @param icup Pointer to ICU driver that originated the capture event.
    */
-  static void ICUWidthCallback(ICUDriver *icup);
+  static void IcuWidthCallback(ICUDriver *icup);
 
   /**
    * @brief Reads the ICU capture value and passes it to the edge handler.
    *
    * @param icup Pointer to ICU driver that originated the capture event.
    */
-  static void ICUPeriodCallback(ICUDriver *icup);
+  static void IcuPeriodCallback(ICUDriver *icup);
 
   /**
    * @brief Sets the state as having overflowed the timer since last hall edge.
    *
    * @param icup Pointer to ICU driver that originated the overflow event.
    */
-  static void ICUOverflowCallback(ICUDriver *icup);
+  static void IcuOverflowCallback(ICUDriver *icup);
 
   ICUDriver * const icu_driver_;  ///< Points to OS capture driver.
   Semaphore semaphore_update_;  ///< Synchronizes update thread to ISR.
