@@ -91,7 +91,7 @@ void InverterPWM::WriteChannel(InverterPWM::Channel channel,
 
     case InverterPWM::kChannelB: {
       uint32_t ccmr1 = pwm_driver_->tim->CCMR1;
-      ccmr1 &= ~STM32_TIM_CCMR1_OC1M_MASK;
+      ccmr1 &= ~STM32_TIM_CCMR1_OC2M_MASK;
       if (enable) {
         ccmr1 |= STM32_TIM_CCMR1_OC2M(6);
         ccer |= STM32_TIM_CCER_CC2E | STM32_TIM_CCER_CC2NE;
