@@ -144,8 +144,11 @@ const RotorHall::HallState RotorHall::kNextHallStates[kHallNumStates] = {
 // Reads the hall bitfield from the GPIO pads.
 // TODO(Xo): Make this instance-specific by storing GPIO parameters.
 RotorHall::HallState RotorHall::ReadHallState() {
-  return static_cast<RotorHall::HallState>(INVOKE(palReadGroup,
-                                                  GPIO_GROUP_HALL));
+  // Use a look up table to reverse the order of the hall bits.
+  // TODO(Xo): Change the other look up tables so this isn't necessary.
+  static const uint8_t kBitReverses[8] = { 0, 4, 2, 6, 1, 5, 3, 7 };
+  const uint8_t reversed_hall_signals = INVOKE(palReadGroup, GPIO_GROUP_HALL);
+  return static_cast<RotorHall::HallState>(kBitReverses[reversed_hall_signals]);
 }
 
 // Computes the most up-to-date estimate of time between hall states.
