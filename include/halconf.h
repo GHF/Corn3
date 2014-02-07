@@ -328,7 +328,7 @@
  */
 #if !defined(ICU_DRIVER_EXT_FIELDS) || defined(__DOXYGEN__)
 #define ICU_DRIVER_EXT_FIELDS                                               \
-  void *rotor_hall;  /**<  Pointer to a RotorHall instance.                  */
+  void *self;  /**<  Pointer to a user-defined class instance.               */
 #endif
 
 #endif /* _HALCONF_H_ */

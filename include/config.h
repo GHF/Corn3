@@ -69,6 +69,13 @@
 /* Inverter options. See class definition for dead time setting. */
 #define INVERTER_PWM           (PWMD1)
 #define INVERTER_COUNTER_FREQ  (144000000)
-#define INVERTER_PWM_PERIOD    (18000)
+#define INVERTER_PWM_PERIOD    (7200)
+
+/* Servo PWM input options. */
+#define SERVO_INPUT_ICU          (ICUD4)
+#define SERVO_INPUT_ICU_FREQ     (1000000)
+#define SERVO_INPUT_MIN_COMMAND  (1200)
+#define SERVO_INPUT_MAX_COMMAND  (1800)
+#define SERVO_INPUT_DEADBAND     (17)
 
 #endif  /* CONFIG_H_ */

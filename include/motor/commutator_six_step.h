@@ -81,10 +81,18 @@ class CommutatorSixStep {
    */
   void WriteAmplitude(Width16Diff semi_amplitude);
 
+  /**
+   * @brief Retrieves the maximum amplitude setting.
+   *
+   * @return Absolute value of the largest semi-amplitude that can be set with
+   *         @c WriteAmplitude.
+   */
+  Width16Diff GetMaxAmplitude();
+
  protected:
   RotorInterface * const rotor_;
   InverterInterface * const inverter_;
-  Width16 semi_amplitude_;  ///< Width by which driven phases are biased.
+  Width16Diff semi_amplitude_;  ///< Width by which driven phases are biased.
   Semaphore semaphore_;  ///< Synchronization for commutation updates.
 };
 

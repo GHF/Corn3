@@ -85,8 +85,8 @@
 #define GPIOB_DRV_MOSI              5
 #define GPIOB_DRV_NSS               6
 #define GPIOB_LEDX                  7
-#define GPIOB_I2C_SCL               8
-#define GPIOB_I2C_SDA               9
+#define GPIOB_PIN8                  8
+#define GPIOB_PWM_IN                9
 #define GPIOB_UART_TX               10
 #define GPIOB_UART_RX               11
 #define GPIOB_LEDY                  12
@@ -311,8 +311,8 @@
  * PB5  - DRV_MOSI                  (alternate 5).
  * PB6  - DRV_NSS                   (output).
  * PB7  - LEDX                      (output).
- * PB8  - I2C_SCL                   (alternate 4).
- * PB9  - I2C_SDA                   (alternate 4).
+ * PB8  - PIN8                      (input pullup).
+ * PB9  - PWM_IN                    (alternate 4).
  * PB10 - UART_TX                   (alternate 7).
  * PB11 - UART_RX                   (alternate 7).
  * PB12 - LEDY                      (output).
@@ -328,8 +328,8 @@
                                      PIN_MODE_ALTERNATE(GPIOB_DRV_MOSI) |   \
                                      PIN_MODE_OUTPUT(GPIOB_DRV_NSS) |       \
                                      PIN_MODE_OUTPUT(GPIOB_LEDX) |          \
-                                     PIN_MODE_ALTERNATE(GPIOB_I2C_SCL) |    \
-                                     PIN_MODE_ALTERNATE(GPIOB_I2C_SDA) |    \
+                                     PIN_MODE_INPUT(GPIOB_PIN8) |           \
+                                     PIN_MODE_ALTERNATE(GPIOB_PWM_IN) |     \
                                      PIN_MODE_ALTERNATE(GPIOB_UART_TX) |    \
                                      PIN_MODE_ALTERNATE(GPIOB_UART_RX) |    \
                                      PIN_MODE_OUTPUT(GPIOB_LEDY) |          \
@@ -344,8 +344,8 @@
                                      PIN_OTYPE_PUSHPULL(GPIOB_DRV_MOSI) |   \
                                      PIN_OTYPE_PUSHPULL(GPIOB_DRV_NSS) |    \
                                      PIN_OTYPE_PUSHPULL(GPIOB_LEDX) |       \
-                                     PIN_OTYPE_OPENDRAIN(GPIOB_I2C_SCL) |   \
-                                     PIN_OTYPE_OPENDRAIN(GPIOB_I2C_SDA) |   \
+                                     PIN_OTYPE_PUSHPULL(GPIOB_PIN8) |       \
+                                     PIN_OTYPE_PUSHPULL(GPIOB_PWM_IN) |     \
                                      PIN_OTYPE_PUSHPULL(GPIOB_UART_TX) |    \
                                      PIN_OTYPE_PUSHPULL(GPIOB_UART_RX) |    \
                                      PIN_OTYPE_PUSHPULL(GPIOB_LEDY) |       \
@@ -360,8 +360,8 @@
                                      PIN_OSPEED_50M(GPIOB_DRV_MOSI) |       \
                                      PIN_OSPEED_50M(GPIOB_DRV_NSS) |        \
                                      PIN_OSPEED_50M(GPIOB_LEDX) |           \
-                                     PIN_OSPEED_50M(GPIOB_I2C_SCL) |        \
-                                     PIN_OSPEED_50M(GPIOB_I2C_SDA) |        \
+                                     PIN_OSPEED_50M(GPIOB_PIN8) |           \
+                                     PIN_OSPEED_50M(GPIOB_PWM_IN) |         \
                                      PIN_OSPEED_50M(GPIOB_UART_TX) |        \
                                      PIN_OSPEED_50M(GPIOB_UART_RX) |        \
                                      PIN_OSPEED_50M(GPIOB_LEDY) |           \
@@ -376,8 +376,8 @@
                                      PIN_PUPDR_FLOATING(GPIOB_DRV_MOSI) |   \
                                      PIN_PUPDR_FLOATING(GPIOB_DRV_NSS) |    \
                                      PIN_PUPDR_FLOATING(GPIOB_LEDX) |       \
-                                     PIN_PUPDR_PULLUP(GPIOB_I2C_SCL) |      \
-                                     PIN_PUPDR_PULLUP(GPIOB_I2C_SDA) |      \
+                                     PIN_PUPDR_PULLUP(GPIOB_PIN8) |         \
+                                     PIN_PUPDR_PULLDOWN(GPIOB_PWM_IN) |     \
                                      PIN_PUPDR_FLOATING(GPIOB_UART_TX) |    \
                                      PIN_PUPDR_FLOATING(GPIOB_UART_RX) |    \
                                      PIN_PUPDR_FLOATING(GPIOB_LEDY) |       \
@@ -392,8 +392,8 @@
                                      PIN_ODR_HIGH(GPIOB_DRV_MOSI) |         \
                                      PIN_ODR_HIGH(GPIOB_DRV_NSS) |          \
                                      PIN_ODR_HIGH(GPIOB_LEDX) |             \
-                                     PIN_ODR_HIGH(GPIOB_I2C_SCL) |          \
-                                     PIN_ODR_HIGH(GPIOB_I2C_SDA) |          \
+                                     PIN_ODR_HIGH(GPIOB_PIN8) |             \
+                                     PIN_ODR_HIGH(GPIOB_PWM_IN) |           \
                                      PIN_ODR_HIGH(GPIOB_UART_TX) |          \
                                      PIN_ODR_HIGH(GPIOB_UART_RX) |          \
                                      PIN_ODR_HIGH(GPIOB_LEDY) |             \
@@ -408,8 +408,8 @@
                                      PIN_AFIO_AF(GPIOB_DRV_MOSI, 5) |       \
                                      PIN_AFIO_AF(GPIOB_DRV_NSS, 0) |        \
                                      PIN_AFIO_AF(GPIOB_LEDX, 0))
-#define VAL_GPIOB_AFRH              (PIN_AFIO_AF(GPIOB_I2C_SCL, 4) |        \
-                                     PIN_AFIO_AF(GPIOB_I2C_SDA, 4) |        \
+#define VAL_GPIOB_AFRH              (PIN_AFIO_AF(GPIOB_PIN8, 0) |           \
+                                     PIN_AFIO_AF(GPIOB_PWM_IN, 2) |         \
                                      PIN_AFIO_AF(GPIOB_UART_TX, 7) |        \
                                      PIN_AFIO_AF(GPIOB_UART_RX, 7) |        \
                                      PIN_AFIO_AF(GPIOB_LEDY, 0) |           \

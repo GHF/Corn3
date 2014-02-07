@@ -41,7 +41,8 @@ Corn::Corn()
     : rotor_hall_(&HALL_ICU, &wa_hall_, sizeof(wa_hall_)),
       inverter_pwm_(&INVERTER_PWM),
       drv8303_(&DRV_SPI),
-      commutator_six_step_(&rotor_hall_, &inverter_pwm_) {
+      commutator_six_step_(&rotor_hall_, &inverter_pwm_),
+      servo_input_(&SERVO_INPUT_ICU) {
 }
 
 // Sequences bootup. Calls initialization methods of subsystems.
@@ -83,6 +84,10 @@ void Corn::Start() {
   // Start hall sensor rotor angle driver.
   rotor_hall_.SetCommutatorSixStep(&commutator_six_step_);
   rotor_hall_.Start();
+
+  // Start servo pulse input driver.
+  servo_input_.SetCommutatorSixStep(&commutator_six_step_);
+  servo_input_.Start();
 
   // Signal end of initialization.
   LogInfo("Initialized in %lu ms.", chTimeNow() * 1000 / CH_FREQUENCY);

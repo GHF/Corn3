@@ -97,6 +97,7 @@ CPPSRC = src/main.cpp \
 		 src/corn.cpp \
 		 src/cxx_stubs.cpp \
          src/driver/DRV8303.cpp \
+         src/driver/servo_input.cpp \
          src/motor/rotor_hall.cpp \
          src/motor/inverter_pwm.cpp \
          src/motor/commutator_six_step.cpp \

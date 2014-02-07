@@ -320,7 +320,11 @@ void icu_lld_start(ICUDriver *icup) {
               ((psc + 1) * icup->config->frequency) == icup->clock,
               "icu_lld_start(), #5", "invalid frequency");
   icup->tim->PSC  = (uint16_t)psc;
-  icup->tim->ARR   = 0xFFFFFFFF;
+  if (&ICUD2 == icup) {
+    icup->tim->ARR   = 0xFFFFFFFF;
+  } else {
+    icup->tim->ARR   = 0xFFFF;
+  }
 
   switch (icup->config->channel) {
   case ICU_CHANNEL_1:
@@ -416,8 +420,8 @@ void icu_lld_start(ICUDriver *icup) {
 
     /* Direct pointers to the capture registers in order to make reading
        data faster from within callbacks.*/
-    icup->wccrp = &icup->tim->CCR[4];
-    icup->pccrp = &icup->tim->CCR[3];
+    icup->wccrp = &icup->tim->CCR[3];
+    icup->pccrp = &icup->tim->CCR[2];
     break;
   }
 }

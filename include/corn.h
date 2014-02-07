@@ -33,6 +33,7 @@
 
 #include "base/utility.h"
 #include "driver/DRV8303.h"
+#include "driver/servo_input.h"
 #include "motor/rotor_hall.h"
 #include "motor/inverter_pwm.h"
 #include "motor/commutator_six_step.h"
@@ -82,8 +83,8 @@ class Corn {
   RotorHall rotor_hall_;  ///< Hall sensor signal handling driver.
   InverterPWM inverter_pwm_;  ///< 3-phase inverter driver.
   DRV8303 drv8303_;  ///< Gate driver and current sense amplifier driver.
-
   CommutatorSixStep commutator_six_step_;  ///< Motor output sequencer.
+  ServoInput servo_input_;  ///< Servo pulse input from R/C receiver.
 };
 
 #endif  /* CORN_H_ */

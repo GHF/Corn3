@@ -57,7 +57,7 @@ RotorHall::RotorHall(ICUDriver *icu_driver, void *wa_update, size_t wa_size)
 // Initializes ICU driver, which enables hall sensor signal edge interrupts.
 void RotorHall::Start() {
   // Setup hall sensor input capture.
-  icu_driver_->rotor_hall = this;
+  icu_driver_->self = this;
   LogDebug("Configuring hall input capture at %u Hz...", HALL_ICU_FREQ);
   icuStart(icu_driver_, &kHallIcuConfig);
   icuEnable(icu_driver_);
@@ -251,15 +251,15 @@ NORETURN msg_t RotorHall::ThreadHallWrapper(void *rotor_hall) {
 // the edge handler.
 void RotorHall::IcuWidthCallback(ICUDriver *icup) {
   const icucnt_t count = icuGetWidth(icup);
-  static_cast<RotorHall *>(icup->rotor_hall)->HandleEdge(count);
+  static_cast<RotorHall *>(icup->self)->HandleEdge(count);
 }
 
 // Redirects rising edge interrupts to the edge handler.
 void RotorHall::IcuPeriodCallback(ICUDriver *icup) {
   const icucnt_t count = icuGetPeriod(icup);
-  static_cast<RotorHall *>(icup->rotor_hall)->HandleEdge(count);
+  static_cast<RotorHall *>(icup->self)->HandleEdge(count);
 }
 
 void RotorHall::IcuOverflowCallback(ICUDriver *icup) {
-  static_cast<RotorHall *>(icup->rotor_hall)->timer_overflowed_ = true;
+  static_cast<RotorHall *>(icup->self)->timer_overflowed_ = true;
 }

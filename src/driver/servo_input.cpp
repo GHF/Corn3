@@ -1,0 +1,123 @@
+/*
+ * Corn3 - Copyright (C) 2014 Xo Wang
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ * Except as contained in this notice, the name(s) of the above copyright
+ * holders shall not be used in advertising or otherwise to promote the sale,
+ * use or other dealings in this Software without prior written authorization.
+ */
+
+#include "driver/servo_input.h"
+
+#include <algorithm>
+
+#include "config.h"
+#include "base/integer.h"
+#include "base/logging.h"
+#include "base/utility.h"
+#include "motor/commutator_six_step.h"
+
+ServoInput::ServoInput(ICUDriver *icu_driver)
+    : icu_driver_(icu_driver),
+      commutator_six_step_(nullptr),
+      signal_valid_(false) {
+}
+
+void ServoInput::Start() {
+  icu_driver_->self = this;
+  LogDebug("Configuring servo input capture at %u Hz...", SERVO_INPUT_ICU_FREQ);
+  icuStart(icu_driver_, &kServoIcuConfig);
+  icuEnable(icu_driver_);
+  LogInfo("Started servo input capture.");
+}
+
+constexpr int ServoInput::kInputLow;
+constexpr int ServoInput::kInputHigh;
+constexpr int ServoInput::kInputDeadband;
+
+const ICUConfig ServoInput::kServoIcuConfig = { ICU_INPUT_ACTIVE_HIGH,
+                                                SERVO_INPUT_ICU_FREQ,
+                                                IcuWidthCallback,
+                                                IcuPeriodCallback,
+                                                IcuOverflowCallback,
+                                                ICU_CHANNEL_4,
+                                                0,
+                                                ICU_RESET_NEVER,
+                                                ICU_CHANNEL_1_INPUT_1 };
+
+void ServoInput::HandlePulse(int pulse_width) {
+  if (signal_valid_ && commutator_six_step_ != nullptr) {
+    const int32_t bounded_command =
+        std::min(std::max(pulse_width, kInputLow), kInputHigh);
+    const Width16 period_2 = commutator_six_step_->GetMaxAmplitude();
+    const Width16Diff amplitude = MapRange(kInputLow,
+                                           kInputHigh,
+                                           bounded_command,
+                                           -period_2,
+                                           period_2,
+                                           kInputDeadband);
+    commutator_six_step_->WriteAmplitude(amplitude);
+    chSysLockFromIsr();
+    commutator_six_step_->SignalChange();
+    chSysUnlockFromIsr();
+  }
+}
+
+void ServoInput::IcuWidthCallback(ICUDriver *icu_driver) {
+  const int pulse_width = icuGetWidth(icu_driver) - icuGetPeriod(icu_driver);
+  static_cast<ServoInput *>(icu_driver->self)->HandlePulse(pulse_width);
+}
+
+void ServoInput::IcuPeriodCallback(ICUDriver *icu_driver) {
+  static_cast<ServoInput *>(icu_driver->self)->signal_valid_ = true;
+}
+
+void ServoInput::IcuOverflowCallback(ICUDriver *icu_driver) {
+  // TODO(Xo): Don't invalidate signals just for timer overflows, which happen
+  //           to 2.3% of pulses.
+  static_cast<ServoInput *>(icu_driver->self)->signal_valid_ = false;
+}
+
+int32_t ServoInput::MapRange(int32_t in_low, int32_t in_high, int32_t value,
+                             int32_t out_low, int32_t out_high,
+                             int32_t deadband) {
+  // Center the input range on zero.
+  const int32_t in_center = Average(in_low, in_high);
+  int32_t centered_input = value - in_center;
+
+  // Cut away the deadband from the centered input.
+  if (Nabs(centered_input) > -deadband) {
+    centered_input = 0;
+  } else {
+    centered_input -= SignOf(centered_input) * deadband;
+  }
+
+  // Compute the length of input and output ranges.
+  const int32_t inScale = in_high - in_low - 2 * deadband;
+  const int32_t outScale = out_high - out_low;
+  const int32_t outCenter = Average(out_low, out_high);
+
+  // Scale by output to input ratio, then shift from zero into range.
+  // WARNING: this computation can easily overflow!
+  const int32_t outValue = centered_input * outScale / inScale + outCenter;
+
+  // Clamp output within range.
+  return std::max(out_low, std::min(out_high, outValue));
+}
