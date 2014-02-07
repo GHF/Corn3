@@ -53,6 +53,12 @@ NORETURN void CommutatorSixStep::CommutationLoop() {
       inverter_->WriteChannel(InverterInterface::kChannelA, 0, false);
       inverter_->WriteChannel(InverterInterface::kChannelB, 0, false);
       inverter_->WriteChannel(InverterInterface::kChannelC, 0, false);
+    } else if (semi_amplitude_ == 0) {
+      LogDebug("Zero throttle; maximum braking.");
+      // Switch all low-side transistors on to short out phases (full braking).
+      inverter_->WriteChannel(InverterInterface::kChannelA, 0, true);
+      inverter_->WriteChannel(InverterInterface::kChannelB, 0, true);
+      inverter_->WriteChannel(InverterInterface::kChannelC, 0, true);
     } else {
       // Advance by a half step so that the six steps are split along the 0 to
       // 180 degrees axis. This makes the following arithmetic simpler.
