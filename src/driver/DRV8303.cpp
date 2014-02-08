@@ -121,6 +121,7 @@ bool DRV8303::Read(Register register_address, uint16_t *data) {
                                 (register_address << kRegisterAddressOffset);
 
   LogDebug("DRV send read command %x.", read_command);
+  spiAcquireBus(spi_driver_);
   spiSelect(spi_driver_);
   spiSend(spi_driver_, 1, &read_command);
   spiUnselect(spi_driver_);
@@ -130,6 +131,7 @@ bool DRV8303::Read(Register register_address, uint16_t *data) {
   spiSelect(spi_driver_);
   spiReceive(spi_driver_, 1, &receive_buffer);
   spiUnselect(spi_driver_);
+  spiReleaseBus(spi_driver_);
   LogDebug("DRV response %x.", receive_buffer);
 
   if (receive_buffer & (1 << kRegisterFrameErrorOffset)) {
@@ -172,6 +174,7 @@ bool DRV8303::Write(Register register_address, uint16_t data) {
                                      kRegisterDataOffset);
 
   LogDebug("DRV send write command %x.", write_command);
+  spiAcquireBus(spi_driver_);
   spiSelect(spi_driver_);
   spiSend(spi_driver_, 1, &write_command);
   spiUnselect(spi_driver_);
@@ -181,6 +184,7 @@ bool DRV8303::Write(Register register_address, uint16_t data) {
   spiSelect(spi_driver_);
   spiReceive(spi_driver_, 1, &status1);
   spiUnselect(spi_driver_);
+  spiReleaseBus(spi_driver_);
   LogDebug("DRV response %x.", status1);
 
   if (status1 & (1 << kRegisterFrameErrorOffset)) {
@@ -202,6 +206,7 @@ bool DRV8303::CheckFaults(uint16_t status1, uint16_t status2) {
   if (status1 == 0) {
     return false;
   }
+  bool needs_hard_reset = false;
   do {
     const int set_bit_index = ::ffs(status1) - 1;
 
@@ -216,6 +221,7 @@ bool DRV8303::CheckFaults(uint16_t status1, uint16_t status2) {
         LogError("PVDD under voltage.");
         break;
       case kStatus1OverTempShutDownOffset:
+        needs_hard_reset = true;
         LogError("Over temperature shut down.");
         break;
       case kStatus1OverTempWarningOffset:
@@ -248,7 +254,14 @@ bool DRV8303::CheckFaults(uint16_t status1, uint16_t status2) {
   } while (status1 != 0);
 
   if (status2 & (1 << kStatus2GVddOverVoltageOffset)) {
+    needs_hard_reset = true;
     LogError("GVDD overvoltage.");
+  }
+
+  // Clear faults that require hard resets.
+  if (needs_hard_reset) {
+    Deactivate();
+    Activate();
   }
 
   return true;

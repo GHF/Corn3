@@ -65,7 +65,7 @@ void Corn::Start() {
   chSequentialStreamWrite(&DEBUG_SERIAL, welcome_msg, sizeof(welcome_msg));
 
   // Print startup message.
-  LogInfo("Firmware version %s built %s", g_build_version, g_build_time);
+  LogInfo("Firmware version %s built %s.", g_build_version, g_build_time);
 
   // Start heartbeat thread.
   chThdCreateStatic(wa_heartbeat_,
@@ -89,6 +89,14 @@ void Corn::Start() {
   servo_input_.SetCommutatorSixStep(&commutator_six_step_);
   servo_input_.Start();
 
+  // Start error polling thread.
+  chThdCreateStatic(wa_error_,
+                    sizeof(wa_error_),
+                    LOWPRIO + 1,
+                    ThreadError,
+                    &drv8303_);
+  LogInfo("Started gate driver error polling.");
+
   // Signal end of initialization.
   LogInfo("Initialized in %lu ms.", chTimeNow() * 1000 / CH_FREQUENCY);
   INVOKE(palClearPad, GPIO_LED_INIT);
@@ -97,12 +105,6 @@ void Corn::Start() {
 NORETURN void Corn::MainLoop() {
   commutator_six_step_.CommutationLoop();
 }
-
-// Thread working area definitions.
-// TODO(Xo): Define the stack sizes in a single location.
-WORKING_AREA(Corn::wa_reset_, 128);
-WORKING_AREA(Corn::wa_heartbeat_, 128);
-WORKING_AREA(Corn::wa_hall_, 1024);
 
 // Serial settings for 8N1 at configured baud rate, with no flow control.
 const SerialConfig Corn::kDebugSerialConfig = { DEBUG_BAUDRATE,
@@ -132,6 +134,8 @@ NORETURN msg_t Corn::ThreadReset(void *arg) {
     } else {
       etx_received = false;
     }
+    // Echo character back.
+    sdPut(&DEBUG_SERIAL, c);
   }
 
   // Call through the pointer so that NVIC_SystemReset isn't inlined. This makes
@@ -155,3 +159,23 @@ NORETURN msg_t Corn::ThreadHeartbeat(void *arg) {
 
   chThdExit(0);
 }
+
+// .
+NORETURN msg_t Corn::ThreadError(void *drv8303_pointer) {
+  chRegSetThreadName("error");
+
+  DRV8303 * const drv8303 = static_cast<DRV8303 *>(drv8303_pointer);
+  while (true) {
+    drv8303->CheckFaults();
+    chThdSleepMilliseconds(100);
+  }
+
+  chThdExit(0);
+}
+
+// Thread working area definitions.
+// TODO(Xo): Define the stack sizes in a single location.
+WORKING_AREA(Corn::wa_reset_, 128);
+WORKING_AREA(Corn::wa_heartbeat_, 128);
+WORKING_AREA(Corn::wa_hall_, 1024);
+WORKING_AREA(Corn::wa_error_, 512);

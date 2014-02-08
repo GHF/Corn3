@@ -76,9 +76,17 @@ class Corn {
    */
   NORETURN static msg_t ThreadHeartbeat(void *arg);
 
+  /**
+   * @brief Polls the power stage predriver for errors.
+   *
+   * @param drv8303 Pointer to DRV8303 driver.
+   */
+  NORETURN static msg_t ThreadError(void *drv8303_pointer);
+
   static WORKING_AREA(wa_reset_, 128);      ///< Reset thread working area.
   static WORKING_AREA(wa_heartbeat_, 128);  ///< Heartbeat thread working area.
   static WORKING_AREA(wa_hall_, 1024);      ///< Hall thread working area.
+  static WORKING_AREA(wa_error_, 512);      ///< Polling thread working area.
 
   RotorHall rotor_hall_;  ///< Hall sensor signal handling driver.
   InverterPWM inverter_pwm_;  ///< 3-phase inverter driver.
