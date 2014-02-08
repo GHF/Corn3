@@ -74,9 +74,12 @@ class ServoInput {
   /**
    * @brief Handles servo pulse event.
    *
-   * @param pulse_width Width of the pulse captured.
+   * @param pulse_width Width of the pulse captured. Not used if @p pulse_valid
+   *                    is false.
+   * @param pulse_valid True if @p pulse_width is valid. Invalid can mean a
+   *                    pulse glitch, timeout, etc.
    */
-  void HandlePulse(int pulse_width);
+  void HandlePulse(int pulse_width, bool pulse_valid);
 
   /**
    * @brief Handles servo pulse input falling edges.
@@ -127,7 +130,7 @@ class ServoInput {
 
   ICUDriver * const icu_driver_;  ///< Timer input capture driver.
   CommutatorSixStep *commutator_six_step_;  ///< Servo commands signal sink.
-  bool signal_valid_;  ///< True if no overflow since last positive signal edge.
+  int num_overflows_;  ///< Times the timer overflowed since last edge.
 };
 
 #endif  /* DRIVER_SERVO_INPUT_H_ */

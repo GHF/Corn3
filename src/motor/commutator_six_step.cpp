@@ -38,7 +38,8 @@ CommutatorSixStep::CommutatorSixStep(RotorInterface *rotor,
     : rotor_(rotor),
       inverter_(inverter),
       semi_amplitude_(0),
-      semaphore_(_SEMAPHORE_DATA(semaphore_, 0)) {
+      semaphore_(_SEMAPHORE_DATA(semaphore_, 0)),
+      enable_(false) {
 }
 
 // Classifies the rotor angle into one of six buckets, then computes the channel
@@ -47,8 +48,7 @@ CommutatorSixStep::CommutatorSixStep(RotorInterface *rotor,
 NORETURN void CommutatorSixStep::CommutationLoop() {
   while (true) {
     Angle16 rotor_angle;
-    if (!rotor_->ComputeAngle(&rotor_angle)) {
-      LogError("Rotor angle could not be read.");
+    if (!enable_ || !rotor_->ComputeAngle(&rotor_angle)) {
       // Disable inverter.
       inverter_->WriteChannel(InverterInterface::kChannelA, 0, false);
       inverter_->WriteChannel(InverterInterface::kChannelB, 0, false);

@@ -71,7 +71,7 @@ bool RotorHall::ComputeAngle(Angle16 *angle) {
   if (!HallStateValid(hall_state_)) {
     hall_state_ = ReadHallState();
     if (!HallStateValid(hall_state_)) {
-      LogDebug("hall_state_ invalid (%x)", hall_state_);
+      LogError("hall_state_ invalid (%x)", hall_state_);
       return false;
     }
   }

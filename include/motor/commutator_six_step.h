@@ -89,11 +89,22 @@ class CommutatorSixStep {
    */
   Width16Diff GetMaxAmplitude();
 
+  /**
+   * @brief Write the motor drive enable flag.
+   *
+   * @param enable True if motor is to be driven or braked (and not free-
+   *               spinning).
+   */
+  void SetEnable(bool enable) {
+    enable_ = enable;
+  }
+
  protected:
   RotorInterface * const rotor_;
   InverterInterface * const inverter_;
   Width16Diff semi_amplitude_;  ///< Width by which driven phases are biased.
   Semaphore semaphore_;  ///< Synchronization for commutation updates.
+  bool enable_;  ///< Flag for whether motor is driven or free-spinning.
 };
 
 #endif  /* MOTOR_COMMUTATOR_SIX_STEP_H_ */
