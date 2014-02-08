@@ -56,6 +56,11 @@ ifeq ($(LOGGING_USE_CHPRINTF),)
   LOGGING_USE_CHPRINTF = yes
 endif
 
+# Enables new/delete dynamic memory for C++. Uses system malloc/free.
+ifeq ($(USE_NEW_DELETE),)
+  USE_NEW_DELETE = no
+endif
+
 #
 # Architecture or project specific options
 ##############################################################################
@@ -235,6 +240,12 @@ ifeq ($(LOGGING_USE_CHPRINTF),yes)
   DDEFS += -DLOGGING_USE_CHPRINTF=1
 else
   DDEFS += -DLOGGING_USE_CHPRINTF=0
+endif
+
+ifeq ($(USE_NEW_DELETE),yes)
+  DDEFS += -DUSE_NEW_DELETE=1
+else
+  DDEFS += -DUSE_NEW_DELETE=0
 endif
 
 # Main make targets and rules.

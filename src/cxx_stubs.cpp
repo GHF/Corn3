@@ -46,11 +46,16 @@ void *__dso_handle;
  * @return Pointer to allocated memory. Halts system if out of space.
  */
 void * operator new(size_t n) {
+#if USE_NEW_DELETE
   void * const p = ::malloc(n);
   if (p == nullptr) {
     CriticalHalt("Heap exhausted; halting.");
   }
   return p;
+#else
+  (void) n;
+  CriticalHalt("new disabled.");
+#endif
 }
 
 /**
@@ -59,7 +64,12 @@ void * operator new(size_t n) {
  * @param p Pointer to memory of destroyed object.
  */
 void operator delete(void *p) {
+#if USE_NEW_DELETE
   ::free(p);
+#else
+  (void) p;
+  CriticalHalt("delete disabled.");
+#endif
 }
 
 /**
