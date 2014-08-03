@@ -23,6 +23,16 @@ ifeq ($(USE_LINK_GC),)
   USE_LINK_GC = yes
 endif
 
+# Linker extra options here.
+ifeq ($(USE_LDOPT),)
+  USE_LDOPT = 
+endif
+
+# Enable this if you want link time optimizations (LTO)
+ifeq ($(USE_LTO),)
+  USE_LTO = no
+endif
+
 # If enabled, this option allows to compile the application in THUMB mode.
 ifeq ($(USE_THUMB),)
   USE_THUMB = yes
@@ -41,14 +51,9 @@ endif
 # Architecture or project specific options
 #
 
-# Enables the use of FPU on Cortex-M4.
+# Enables the use of FPU on Cortex-M4 (no, softfp, hard).
 ifeq ($(USE_FPU),)
-  USE_FPU = yes
-endif
-
-# Enable this if you really want to use the STM FWLib.
-ifeq ($(USE_FWLIB),)
-  USE_FWLIB = no
+  USE_FPU = softfp
 endif
 
 # Enables the use of chprintf instead of system printf for base/logging.
@@ -73,10 +78,15 @@ endif
 PROJECT = corn3
 
 # Imported source files and paths
+# Path to ChibiOS
 CHIBIOS = ChibiOS
+# Board rules
 include src/board/board.mk
+# Additional rules for version variables
 include src/version/version_vars.mk
+# Platform rules for modified low-level drivers
 include src/lld/platform.mk
+# Default ChibiOS rules
 include $(CHIBIOS)/os/hal/hal.mk
 include $(CHIBIOS)/os/ports/GCC/ARMCMx/STM32F3xx/port.mk
 include $(CHIBIOS)/os/kernel/kernel.mk
@@ -221,20 +231,6 @@ ULIBS = $(VERSIONLIBS)
 # End of user defines
 ##############################################################################
 
-ifeq ($(USE_FPU),yes)
-  USE_OPT += -mfloat-abi=softfp -mfpu=fpv4-sp-d16 -fsingle-precision-constant
-  DDEFS += -DCORTEX_USE_FPU=TRUE
-else
-  DDEFS += -DCORTEX_USE_FPU=FALSE
-endif
-
-ifeq ($(USE_FWLIB),yes)
-  include $(CHIBIOS)/ext/stm32lib/stm32lib.mk
-  CSRC += $(STM32SRC)
-  INCDIR += $(STM32INC)
-  USE_OPT += -DUSE_STDPERIPH_DRIVER
-endif
-
 ifeq ($(LOGGING_USE_CHPRINTF),yes)
   CSRC += $(CHIBIOS)/os/various/chprintf.c
   DDEFS += -DLOGGING_USE_CHPRINTF=1
@@ -249,7 +245,8 @@ else
 endif
 
 # Main make targets and rules.
-include $(CHIBIOS)/os/ports/GCC/ARMCMx/rules.mk
+RULESPATH = $(CHIBIOS)/os/ports/GCC/ARMCMx
+include $(RULESPATH)/rules.mk
 
 # Additional make rules.
 include $(VERSIONDIR)/version_rules.mk
