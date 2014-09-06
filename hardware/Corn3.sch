@@ -564,45 +564,54 @@ LETTER landscape</description>
 </library>
 <library name="dan-led">
 <packages>
-<package name="0402_POL">
-<wire x1="-0.1588" y1="0.3175" x2="-0.1588" y2="0" width="0.2032" layer="21"/>
-<wire x1="-0.1588" y1="0" x2="-0.1588" y2="-0.3175" width="0.2032" layer="21"/>
-<wire x1="-0.1588" y1="0" x2="0.1588" y2="0" width="0.2032" layer="21"/>
-<smd name="+" x="0.6548" y="0" dx="0.7" dy="0.6" layer="1"/>
-<smd name="-" x="-0.6548" y="0" dx="0.7" dy="0.6" layer="1"/>
-<text x="1.27" y="-0.635" size="1.016" layer="25" font="vector" ratio="20">&gt;NAME</text>
-<rectangle x1="-0.525" y1="-0.275" x2="-0.15" y2="0.275" layer="51"/>
-<rectangle x1="0.15" y1="-0.275" x2="0.525" y2="0.275" layer="51" rot="R180"/>
-</package>
-<package name="0603_POL">
-<wire x1="-0.1588" y1="0.4763" x2="-0.1588" y2="0" width="0.2032" layer="21"/>
-<wire x1="-0.1588" y1="0" x2="-0.1588" y2="-0.4763" width="0.2032" layer="21"/>
-<wire x1="-0.1588" y1="0" x2="0.1588" y2="0" width="0.2032" layer="21"/>
-<smd name="+" x="0.725" y="0" dx="0.55" dy="1" layer="1"/>
-<smd name="-" x="-0.725" y="0" dx="0.55" dy="1" layer="1"/>
-<text x="1.27" y="-0.635" size="1.016" layer="25" font="vector" ratio="20">&gt;NAME</text>
-<rectangle x1="-0.825" y1="-0.425" x2="-0.4" y2="0.425" layer="51"/>
-<rectangle x1="0.4" y1="-0.425" x2="0.825" y2="0.425" layer="51" rot="R180"/>
-</package>
 <package name="0805_POL">
-<wire x1="-0.3175" y1="0.635" x2="-0.3175" y2="0" width="0.2032" layer="21"/>
-<wire x1="-0.3175" y1="0" x2="-0.3175" y2="-0.635" width="0.2032" layer="21"/>
-<wire x1="-0.3175" y1="0" x2="0.3175" y2="0" width="0.2032" layer="21"/>
 <smd name="+" x="1.1" y="0" dx="0.9" dy="1.4" layer="1"/>
 <smd name="-" x="-1.1" y="0" dx="0.9" dy="1.4" layer="1"/>
 <text x="1.905" y="-0.635" size="1.016" layer="25" font="vector" ratio="20">&gt;NAME</text>
 <rectangle x1="-1.025" y1="-0.65" x2="-0.475" y2="0.65" layer="51"/>
 <rectangle x1="0.475" y1="-0.65" x2="1.025" y2="0.65" layer="51" rot="R180"/>
+<polygon width="0.2" layer="21">
+<vertex x="0.25" y="0.5"/>
+<vertex x="-0.25" y="0"/>
+<vertex x="0.25" y="-0.5"/>
+</polygon>
+</package>
+<package name="0402_POL">
+<smd name="+" x="0.6548" y="0" dx="0.7" dy="0.6" layer="1"/>
+<smd name="-" x="-0.6548" y="0" dx="0.7" dy="0.6" layer="1"/>
+<text x="1.27" y="-0.635" size="1.016" layer="25" font="vector" ratio="20">&gt;NAME</text>
+<polygon width="0.127" layer="21">
+<vertex x="-0.1" y="0"/>
+<vertex x="0.1" y="0.2"/>
+<vertex x="0.1" y="-0.2"/>
+</polygon>
+</package>
+<package name="0603_POL">
+<smd name="+" x="0.725" y="0" dx="0.55" dy="1" layer="1"/>
+<smd name="-" x="-0.725" y="0" dx="0.55" dy="1" layer="1"/>
+<text x="1.27" y="-0.635" size="1.016" layer="25" font="vector" ratio="20">&gt;NAME</text>
+<rectangle x1="-0.825" y1="-0.425" x2="-0.4" y2="0.425" layer="51"/>
+<rectangle x1="0.4" y1="-0.425" x2="0.825" y2="0.425" layer="51" rot="R180"/>
+<polygon width="0.127" layer="21">
+<vertex x="0.25" y="0.4"/>
+<vertex x="-0.25" y="0"/>
+<vertex x="0.25" y="-0.4"/>
+</polygon>
 </package>
 <package name="1206_POL">
-<wire x1="-0.7938" y1="0.7938" x2="-0.7938" y2="0" width="0.2032" layer="21"/>
-<wire x1="-0.7938" y1="0" x2="-0.7938" y2="-0.7938" width="0.2032" layer="21"/>
-<wire x1="-0.7938" y1="0" x2="0.7938" y2="0" width="0.2032" layer="21"/>
+<wire x1="-0.5438" y1="0.7938" x2="-0.5438" y2="0" width="0.2032" layer="21"/>
+<wire x1="-0.5438" y1="0" x2="-0.5438" y2="-0.7938" width="0.2032" layer="21"/>
+<wire x1="-0.5438" y1="0" x2="0.7938" y2="0" width="0.2032" layer="21"/>
 <smd name="-" x="-1.65" y="0" dx="1.1" dy="1.8" layer="1"/>
 <smd name="+" x="1.65" y="0" dx="1.1" dy="1.8" layer="1" rot="R180"/>
 <text x="3.175" y="-0.635" size="1.016" layer="25" font="vector" ratio="20">&gt;NAME</text>
 <rectangle x1="-1.625" y1="-0.825" x2="-1" y2="0.825" layer="51"/>
 <rectangle x1="1" y1="-0.825" x2="1.625" y2="0.825" layer="51" rot="R180"/>
+<polygon width="0.2" layer="21">
+<vertex x="0.5" y="0.75"/>
+<vertex x="-0.5" y="0"/>
+<vertex x="0.5" y="-0.75"/>
+</polygon>
 </package>
 </packages>
 <symbols>
