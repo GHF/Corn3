@@ -6670,6 +6670,96 @@ We've spent an enormous amount of time creating and checking these footprints an
 </deviceset>
 </devicesets>
 </library>
+<library name="dan-diode">
+<packages>
+<package name="SMA">
+<description>&lt;b&gt;SMA/DO-214AC&lt;/b&gt;
+&lt;p&gt;From: http://www.st.com/stonline/products/literature/ds/5506/stps1l30.pdf&lt;/p&gt;</description>
+<wire x1="-2.3" y1="1.475" x2="-2.3" y2="-1.475" width="0.2032" layer="21"/>
+<wire x1="-2.3" y1="-1.475" x2="2.3" y2="-1.475" width="0.2032" layer="21"/>
+<wire x1="2.3" y1="-1.475" x2="2.3" y2="1.475" width="0.2032" layer="21"/>
+<wire x1="2.3" y1="1.475" x2="-2.3" y2="1.475" width="0.2032" layer="21"/>
+<wire x1="-0.5" y1="0" x2="0.5" y2="1" width="0.2032" layer="21"/>
+<wire x1="0.5" y1="1" x2="0.5" y2="0" width="0.2032" layer="21"/>
+<wire x1="0.5" y1="0" x2="0.5" y2="-1" width="0.2032" layer="21"/>
+<wire x1="0.5" y1="-1" x2="-0.5" y2="0" width="0.2032" layer="21"/>
+<wire x1="-0.5" y1="1" x2="-0.5" y2="0" width="0.2032" layer="21"/>
+<wire x1="-0.5" y1="0" x2="-0.5" y2="-1" width="0.2032" layer="21"/>
+<wire x1="0.5" y1="0" x2="0.75" y2="0" width="0.2032" layer="21"/>
+<wire x1="-0.5" y1="0" x2="-0.75" y2="0" width="0.2032" layer="21"/>
+<smd name="C" x="-1.925" y="0" dx="1.45" dy="1.65" layer="1"/>
+<smd name="A" x="1.925" y="0" dx="1.45" dy="1.65" layer="1" rot="R180"/>
+<text x="-1.27" y="1.905" size="1.016" layer="25" font="vector" ratio="20">&gt;NAME</text>
+<rectangle x1="-2.8" y1="-0.825" x2="-1.2" y2="0.825" layer="51"/>
+<rectangle x1="1.2" y1="-0.825" x2="2.8" y2="0.825" layer="51" rot="R180"/>
+</package>
+<package name="SMB">
+<description>&lt;b&gt;SMB/DO-214AA&lt;/b&gt;
+&lt;p&gt;From: http://www.st.com/stonline/products/literature/ds/5506/stps1l30.pdf&lt;/p&gt;</description>
+<wire x1="-2.3" y1="1.975" x2="-2.3" y2="-1.975" width="0.2032" layer="21"/>
+<wire x1="-2.3" y1="-1.975" x2="2.3" y2="-1.975" width="0.2032" layer="21"/>
+<wire x1="2.3" y1="-1.975" x2="2.3" y2="1.975" width="0.2032" layer="21"/>
+<wire x1="2.3" y1="1.975" x2="-2.3" y2="1.975" width="0.2032" layer="21"/>
+<wire x1="-0.5" y1="0" x2="0.5" y2="1" width="0.2032" layer="21"/>
+<wire x1="0.5" y1="1" x2="0.5" y2="0" width="0.2032" layer="21"/>
+<wire x1="0.5" y1="0" x2="0.5" y2="-1" width="0.2032" layer="21"/>
+<wire x1="0.5" y1="-1" x2="-0.5" y2="0" width="0.2032" layer="21"/>
+<wire x1="-0.5" y1="1" x2="-0.5" y2="0" width="0.2032" layer="21"/>
+<wire x1="-0.5" y1="0" x2="-0.5" y2="-1" width="0.2032" layer="21"/>
+<wire x1="0.5" y1="0" x2="0.75" y2="0" width="0.2032" layer="21"/>
+<wire x1="-0.5" y1="0" x2="-0.75" y2="0" width="0.2032" layer="21"/>
+<smd name="C" x="-2.135" y="0" dx="1.52" dy="2.3" layer="1"/>
+<smd name="A" x="2.135" y="0" dx="1.52" dy="2.3" layer="1" rot="R180"/>
+<text x="-1.27" y="2.54" size="1.016" layer="25" font="vector" ratio="20">&gt;NAME</text>
+<rectangle x1="-2.8" y1="-1.1" x2="-1.2" y2="1.1" layer="51"/>
+<rectangle x1="1.2" y1="-1.1" x2="2.8" y2="1.1" layer="51" rot="R180"/>
+</package>
+</packages>
+<symbols>
+<symbol name="D">
+<wire x1="-1.27" y1="-1.27" x2="1.27" y2="0" width="0.254" layer="94"/>
+<wire x1="1.27" y1="0" x2="-1.27" y2="1.27" width="0.254" layer="94"/>
+<wire x1="1.27" y1="1.27" x2="1.27" y2="0" width="0.254" layer="94"/>
+<wire x1="-1.27" y1="1.27" x2="-1.27" y2="0" width="0.254" layer="94"/>
+<wire x1="-1.27" y1="0" x2="-1.27" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="1.27" y1="0" x2="1.27" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="-1.27" y1="0" x2="-2.54" y2="0" width="0.1524" layer="94"/>
+<wire x1="1.27" y1="0" x2="2.54" y2="0" width="0.1524" layer="94"/>
+<text x="1.524" y="0.2286" size="1.27" layer="95">&gt;NAME</text>
+<text x="-1.524" y="0.2286" size="1.27" layer="96" rot="MR0">&gt;VALUE</text>
+<pin name="A" x="-2.54" y="0" visible="off" length="point" direction="pas"/>
+<pin name="C" x="2.54" y="0" visible="off" length="point" direction="pas" rot="R180"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="D" prefix="D" uservalue="yes">
+<description>&lt;b&gt;Diode&lt;/b&gt;</description>
+<gates>
+<gate name="G$1" symbol="D" x="0" y="0"/>
+</gates>
+<devices>
+<device name="-SMA" package="SMA">
+<connects>
+<connect gate="G$1" pin="A" pad="A"/>
+<connect gate="G$1" pin="C" pad="C"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="-SMB" package="SMB">
+<connects>
+<connect gate="G$1" pin="A" pad="A"/>
+<connect gate="G$1" pin="C" pad="C"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -6799,6 +6889,8 @@ We've spent an enormous amount of time creating and checking these footprints an
 <part name="P+7" library="supply1" deviceset="V+" device=""/>
 <part name="P-7" library="supply1" deviceset="V-" device=""/>
 <part name="C17" library="Xo-RCL" deviceset="CPOL-US" device="-E3,5-8" value="470uF/35V"/>
+<part name="D1" library="dan-diode" deviceset="D" device="-SMA"/>
+<part name="P+11" library="supply1" deviceset="+5V" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -8138,6 +8230,8 @@ We've spent an enormous amount of time creating and checking these footprints an
 <instance part="GND15" gate="1" x="81.28" y="35.56"/>
 <instance part="P+6" gate="1" x="78.74" y="55.88"/>
 <instance part="JP3" gate="G$1" x="83.82" y="124.46"/>
+<instance part="D1" gate="G$1" x="63.5" y="139.7" rot="R90"/>
+<instance part="P+11" gate="1" x="63.5" y="149.86"/>
 </instances>
 <busses>
 </busses>
@@ -8221,6 +8315,11 @@ We've spent an enormous amount of time creating and checking these footprints an
 <wire x1="86.36" y1="45.72" x2="78.74" y2="45.72" width="0.1524" layer="91"/>
 <wire x1="78.74" y1="45.72" x2="78.74" y2="53.34" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="P+11" gate="1" pin="+5V"/>
+<pinref part="D1" gate="G$1" pin="C"/>
+<wire x1="63.5" y1="147.32" x2="63.5" y2="142.24" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="HALL_A" class="0">
 <segment>
@@ -8287,6 +8386,14 @@ We've spent an enormous amount of time creating and checking these footprints an
 <pinref part="JP2" gate="A" pin="4"/>
 <wire x1="66.04" y1="40.64" x2="86.36" y2="40.64" width="0.1524" layer="91"/>
 <label x="66.04" y="40.64" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="N$10" class="0">
+<segment>
+<pinref part="D1" gate="G$1" pin="A"/>
+<pinref part="JP3" gate="G$1" pin="VBUS"/>
+<wire x1="63.5" y1="137.16" x2="63.5" y2="127" width="0.1524" layer="91"/>
+<wire x1="63.5" y1="127" x2="81.28" y2="127" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
