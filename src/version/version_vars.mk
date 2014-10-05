@@ -11,5 +11,3 @@ VERSIONSRC = $(VERSIONDIR)/version.c
 
 # This ensures every linker invocation gets a fresh timestamp.
 VERSIONLIBS = $(VERSIONDIR)/build_time.c
-
-VERSIONINC = $(VERSIONDIR)/version.c

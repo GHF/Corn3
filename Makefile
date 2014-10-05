@@ -109,8 +109,8 @@ CSRC = $(PORTSRC) \
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
 CPPSRC = src/main.cpp \
-		 src/corn.cpp \
-		 src/cxx_stubs.cpp \
+         src/corn.cpp \
+         src/cxx_stubs.cpp \
          src/driver/DRV8303.cpp \
          src/driver/servo_input.cpp \
          src/motor/rotor_hall.cpp \
