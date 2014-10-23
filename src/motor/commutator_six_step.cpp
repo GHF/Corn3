@@ -29,7 +29,7 @@
 #include <cstdlib>
 #include <algorithm>
 
-#include "base/logging.h"
+#include "base/log.h"
 #include "motor/rotor_interface.h"
 #include "motor/inverter_interface.h"
 

@@ -29,7 +29,7 @@
 #include "ch.h"
 #include "hal.h"
 
-#include "base/logging.h"
+#include "base/log.h"
 
 NORETURN void _CriticalHalt(const char *func, const char *format, ...) {
   va_list args;

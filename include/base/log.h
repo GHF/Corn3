@@ -24,8 +24,8 @@
  * use or other dealings in this Software without prior written authorization.
  */
 
-#ifndef BASE_LOGGING_H_
-#define BASE_LOGGING_H_
+#ifndef BASE_LOG_H_
+#define BASE_LOG_H_
 
 #include <stdarg.h>
 
@@ -98,4 +98,4 @@ void LogAtLevel(LoggingLevel level, const char *, const char *, ...)
 }  /* extern "C" */
 #endif
 
-#endif  /* BASE_LOGGING_H_ */
+#endif  /* BASE_LOG_H_ */

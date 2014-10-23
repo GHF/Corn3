@@ -28,7 +28,7 @@
 
 #include "ch.h"
 
-#include "base/logging.h"
+#include "base/log.h"
 #include "base/utility.h"
 
 /**

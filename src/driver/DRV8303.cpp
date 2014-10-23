@@ -31,7 +31,7 @@
 #include <strings.h>
 
 #include "config.h"
-#include "base/logging.h"
+#include "base/log.h"
 #include "base/utility.h"
 
 DRV8303::DRV8303(SPIDriver *spi_driver)

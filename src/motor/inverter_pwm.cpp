@@ -26,7 +26,7 @@
 
 #include "motor/inverter_pwm.h"
 
-#include "base/logging.h"
+#include "base/log.h"
 
 InverterPWM::InverterPWM(PWMDriver *pwm_driver)
     : pwm_driver_(pwm_driver) {

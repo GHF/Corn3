@@ -30,7 +30,7 @@
 #include "hal.h"
 
 #include "config.h"
-#include "base/logging.h"
+#include "base/log.h"
 #include "base/utility.h"
 #include "version/version.h"
 

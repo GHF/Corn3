@@ -56,7 +56,7 @@ ifeq ($(USE_FPU),)
   USE_FPU = softfp
 endif
 
-# Enables the use of chprintf instead of system printf for base/logging.
+# Enables the use of chprintf instead of system printf for base/log.
 ifeq ($(LOGGING_USE_CHPRINTF),)
   LOGGING_USE_CHPRINTF = yes
 endif
@@ -102,7 +102,7 @@ CSRC = $(PORTSRC) \
        $(PLATFORMSRC) \
        $(BOARDSRC) \
        $(VERSIONSRC) \
-       src/base/logging.c \
+       src/base/log.c \
        src/base/utility.c \
        src/syscalls.c \
 

@@ -30,7 +30,7 @@
 
 #include "config.h"
 #include "base/integer.h"
-#include "base/logging.h"
+#include "base/log.h"
 #include "base/utility.h"
 #include "motor/commutator_six_step.h"
 
