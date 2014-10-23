@@ -113,7 +113,8 @@ void CommutatorSixStep::SignalChange() {
 }
 
 void CommutatorSixStep::WriteAmplitude(Width16Diff semi_amplitude) {
-  CHECK(std::abs(semi_amplitude) <= inverter_->GetPeriod() / 2);
+  CHECK(std::abs(static_cast<int>(semi_amplitude)) <=
+        inverter_->GetPeriod() / 2);
   semi_amplitude_ = semi_amplitude;
 }
 
