@@ -20,22 +20,22 @@ make
 If you don't have arm-none-eabi in your PATH, specify its prefix in TRGT, e.g.:
 
 ```
-make TRGT=~/gcc-arm-none-eabi-4_7-2013q3/bin/arm-none-eabi-
+make TRGT=~/gcc-arm-none-eabi-4_8-2014q3/bin/arm-none-eabi-
 ```
 
 Hardware
 --------
 Corntroller is a small and efficient brushless motor controller.
 
-Version 3 features:
+Version 3.2 features:
 
-  - 1.0 in by 1.9 in
+  - 0.8 in by 1.6 in
   - STM32F3 microcontroller (ARM Cortex-M4 @ 72MHz)
-  - TI DRV8303 gate driver and current sense amplifier
+  - TI DRV8301 gate driver, current sense amplifier, and buck converter
   - Three-phase inverter with SO8 N-FETs
   - Dual shunt current sense
   - Hall sensor inputs
-  - Up to 40 V input voltage
+  - Up to 30 V input voltage
 
 No power figures available, but should be similar to hobby controllers of
 similar size.

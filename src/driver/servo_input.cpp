@@ -57,7 +57,7 @@ const ICUConfig ServoInput::kServoIcuConfig = { ICU_INPUT_ACTIVE_HIGH,
                                                 IcuWidthCallback,
                                                 IcuPeriodCallback,
                                                 IcuOverflowCallback,
-                                                ICU_CHANNEL_4,
+                                                ICU_CHANNEL_1,
                                                 0,
                                                 ICU_RESET_NEVER,
                                                 ICU_CHANNEL_1_INPUT_1 };
