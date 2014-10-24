@@ -1020,13 +1020,13 @@ LETTER landscape</description>
 <wire x1="3.375" y1="1.75" x2="3.375" y2="2.1" width="0.3" layer="21"/>
 <wire x1="3.375" y1="2.1" x2="2.6" y2="2.1" width="0.3" layer="21"/>
 </package>
-<package name="JST-S6B-ZR-SM4A">
-<smd name="1" x="-3.75" y="-5.8" dx="0.7" dy="3" layer="1"/>
-<smd name="2" x="-2.25" y="-5.8" dx="0.7" dy="3" layer="1"/>
-<smd name="3" x="-0.75" y="-5.8" dx="0.7" dy="3" layer="1"/>
-<smd name="4" x="0.75" y="-5.8" dx="0.7" dy="3" layer="1"/>
-<smd name="5" x="2.25" y="-5.8" dx="0.7" dy="3" layer="1"/>
-<smd name="6" x="3.75" y="-5.8" dx="0.7" dy="3" layer="1"/>
+<package name="JST_S6B-ZR-SM4A">
+<smd name="1" x="3.75" y="-5.8" dx="0.7" dy="3" layer="1"/>
+<smd name="2" x="2.25" y="-5.8" dx="0.7" dy="3" layer="1"/>
+<smd name="3" x="0.75" y="-5.8" dx="0.7" dy="3" layer="1"/>
+<smd name="4" x="-0.75" y="-5.8" dx="0.7" dy="3" layer="1"/>
+<smd name="5" x="-2.25" y="-5.8" dx="0.7" dy="3" layer="1"/>
+<smd name="6" x="-3.75" y="-5.8" dx="0.7" dy="3" layer="1"/>
 <smd name="TAB1" x="-5.7" y="-1.95" dx="1.1" dy="1.9" layer="1"/>
 <smd name="TAB2" x="5.7" y="-1.95" dx="1.1" dy="1.9" layer="1"/>
 <wire x1="-6" y1="-3.5" x2="-6" y2="-6" width="0.25" layer="21"/>
@@ -1061,10 +1061,10 @@ LETTER landscape</description>
 <text x="-2.5" y="-2.5" size="0.5" layer="51">board receptacle</text>
 </package>
 <package name="JST_SM04B-SRSS">
-<smd name="1" x="-1.5" y="-4.575" dx="0.6" dy="1.55" layer="1"/>
-<smd name="2" x="-0.5" y="-4.575" dx="0.6" dy="1.55" layer="1"/>
-<smd name="3" x="0.5" y="-4.575" dx="0.6" dy="1.55" layer="1"/>
-<smd name="4" x="1.5" y="-4.575" dx="0.6" dy="1.55" layer="1"/>
+<smd name="1" x="1.5" y="-4.575" dx="0.6" dy="1.55" layer="1"/>
+<smd name="2" x="0.5" y="-4.575" dx="0.6" dy="1.55" layer="1"/>
+<smd name="3" x="-0.5" y="-4.575" dx="0.6" dy="1.55" layer="1"/>
+<smd name="4" x="-1.5" y="-4.575" dx="0.6" dy="1.55" layer="1"/>
 <smd name="TAB1" x="-2.8" y="-0.7" dx="1.2" dy="1.8" layer="1"/>
 <smd name="TAB2" x="2.8" y="-0.7" dx="1.2" dy="1.8" layer="1"/>
 <wire x1="-3" y1="0" x2="-2.5" y2="0" width="0.127" layer="51"/>
@@ -1148,7 +1148,19 @@ LETTER landscape</description>
 <text x="-2.54" y="5.715" size="1.27" layer="95">&gt;NAME</text>
 <text x="4.445" y="-7.62" size="1.27" layer="96" rot="R90">&gt;VALUE</text>
 </symbol>
-<symbol name="HALL_SENSOR_CONNECTOR">
+<symbol name="FLEX_PORT">
+<wire x1="-6.985" y1="5.08" x2="-6.985" y2="-7.62" width="0.254" layer="94"/>
+<wire x1="-6.985" y1="-7.62" x2="7.62" y2="-7.62" width="0.254" layer="94"/>
+<wire x1="7.62" y1="-7.62" x2="7.62" y2="5.08" width="0.254" layer="94"/>
+<wire x1="7.62" y1="5.08" x2="-6.985" y2="5.08" width="0.254" layer="94"/>
+<pin name="GND" x="-10.16" y="-2.54" length="middle"/>
+<pin name="PWR" x="-10.16" y="-5.08" length="middle"/>
+<pin name="TX/SCL" x="-10.16" y="0" length="middle"/>
+<pin name="RX/SDA" x="-10.16" y="2.54" length="middle"/>
+<text x="-7.62" y="5.715" size="1.27" layer="95">&gt;NAME</text>
+<text x="9.525" y="-7.62" size="1.27" layer="96" rot="R90">&gt;VALUE</text>
+</symbol>
+<symbol name="HALL-SENSOR-CONNECTOR">
 <wire x1="-4.445" y1="7.62" x2="-4.445" y2="-10.16" width="0.254" layer="94"/>
 <wire x1="-4.445" y1="-10.16" x2="5.08" y2="-10.16" width="0.254" layer="94"/>
 <wire x1="5.08" y1="-10.16" x2="5.08" y2="7.62" width="0.254" layer="94"/>
@@ -1161,18 +1173,6 @@ LETTER landscape</description>
 <text x="6.985" y="-10.16" size="1.27" layer="96" rot="R90">&gt;VALUE</text>
 <pin name="NTC" x="-7.62" y="-5.08" length="middle"/>
 <pin name="+5V" x="-7.62" y="-7.62" length="middle"/>
-</symbol>
-<symbol name="FLEXIPORT">
-<wire x1="-6.985" y1="5.08" x2="-6.985" y2="-7.62" width="0.254" layer="94"/>
-<wire x1="-6.985" y1="-7.62" x2="7.62" y2="-7.62" width="0.254" layer="94"/>
-<wire x1="7.62" y1="-7.62" x2="7.62" y2="5.08" width="0.254" layer="94"/>
-<wire x1="7.62" y1="5.08" x2="-6.985" y2="5.08" width="0.254" layer="94"/>
-<pin name="GND" x="-10.16" y="2.54" length="middle"/>
-<pin name="PWR" x="-10.16" y="0" length="middle"/>
-<pin name="TX/SCL" x="-10.16" y="-2.54" length="middle"/>
-<pin name="RX/SDA" x="-10.16" y="-5.08" length="middle"/>
-<text x="-7.62" y="5.715" size="1.27" layer="95">&gt;NAME</text>
-<text x="9.525" y="-7.62" size="1.27" layer="96" rot="R90">&gt;VALUE</text>
 </symbol>
 </symbols>
 <devicesets>
@@ -1229,13 +1229,13 @@ LETTER landscape</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="HALL_SENSOR_CONNECTOR" prefix="JP">
+<deviceset name="HALL-SENSOR-CONNECTOR" prefix="JP">
 <description>Receptacle for "standard" R/C car hall sensor and 10k thermistor cable using a 6-position 1.5 mm pitch JST ZH housing.</description>
 <gates>
-<gate name="G$1" symbol="HALL_SENSOR_CONNECTOR" x="0" y="0"/>
+<gate name="G$1" symbol="HALL-SENSOR-CONNECTOR" x="0" y="0"/>
 </gates>
 <devices>
-<device name="_SM4A" package="JST-S6B-ZR-SM4A">
+<device name="_SM4A" package="JST_S6B-ZR-SM4A">
 <connects>
 <connect gate="G$1" pin="+5V" pad="6"/>
 <connect gate="G$1" pin="A" pad="4"/>
@@ -1250,18 +1250,18 @@ LETTER landscape</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="FLEXIPORT" prefix="JP">
+<deviceset name="FLEX-PORT" prefix="JP">
 <description>Dual purpose UART/I2C board connector compatible with OpenPilot Main Port and Flexi Port. Must use crossover cable for UART connections.</description>
 <gates>
-<gate name="G$1" symbol="FLEXIPORT" x="0" y="0"/>
+<gate name="G$1" symbol="FLEX_PORT" x="0" y="0"/>
 </gates>
 <devices>
 <device name="_HORI" package="JST_SM04B-SRSS">
 <connects>
-<connect gate="G$1" pin="GND" pad="1 TAB1 TAB2"/>
-<connect gate="G$1" pin="PWR" pad="2"/>
-<connect gate="G$1" pin="RX/SDA" pad="4"/>
-<connect gate="G$1" pin="TX/SCL" pad="3"/>
+<connect gate="G$1" pin="GND" pad="3 TAB1 TAB2"/>
+<connect gate="G$1" pin="PWR" pad="4"/>
+<connect gate="G$1" pin="RX/SDA" pad="1"/>
+<connect gate="G$1" pin="TX/SCL" pad="2"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -6215,10 +6215,10 @@ Basic SMA packaged diode. Good for reverse polarization protection. Common part 
 <part name="R21" library="dan-rcl" deviceset="R" device="0603" value="53.6k"/>
 <part name="R22" library="dan-rcl" deviceset="R" device="0603" value="10k"/>
 <part name="C23" library="dan-rcl" deviceset="C" device="1206" value="4.7uF/50V"/>
-<part name="JP1" library="Xo-Connector" deviceset="HALL_SENSOR_CONNECTOR" device="_SM4A"/>
+<part name="JP1" library="Xo-Connector" deviceset="HALL-SENSOR-CONNECTOR" device="_SM4A"/>
 <part name="P+7" library="supply1" deviceset="V+" device=""/>
 <part name="P-4" library="supply1" deviceset="V-" device=""/>
-<part name="JP2" library="Xo-Connector" deviceset="FLEXIPORT" device="_HORI"/>
+<part name="JP2" library="Xo-Connector" deviceset="FLEX-PORT" device="_HORI"/>
 <part name="C17" library="dan-rcl" deviceset="C" device="0603" value="1uF"/>
 </parts>
 <sheets>
@@ -7589,8 +7589,8 @@ Basic SMA packaged diode. Good for reverse polarization protection. Common part 
 <instance part="GND13" gate="1" x="78.74" y="111.76"/>
 <instance part="VDD4" gate="G$1" x="78.74" y="149.86"/>
 <instance part="R4" gate="G$1" x="78.74" y="139.7" rot="R90"/>
-<instance part="GND15" gate="1" x="73.66" y="35.56"/>
-<instance part="P+6" gate="1" x="71.12" y="55.88"/>
+<instance part="GND15" gate="1" x="76.2" y="35.56"/>
+<instance part="P+6" gate="1" x="73.66" y="55.88"/>
 <instance part="JP3" gate="G$1" x="83.82" y="124.46"/>
 <instance part="D1" gate="G$1" x="63.5" y="139.7" rot="R90"/>
 <instance part="P+11" gate="1" x="63.5" y="149.86"/>
@@ -7608,12 +7608,6 @@ Basic SMA packaged diode. Good for reverse polarization protection. Common part 
 <wire x1="172.72" y1="142.24" x2="172.72" y2="127" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="GND18" gate="1" pin="GND"/>
-<wire x1="177.8" y1="83.82" x2="177.8" y2="68.58" width="0.1524" layer="91"/>
-<pinref part="JP1" gate="G$1" pin="GND"/>
-<wire x1="177.8" y1="83.82" x2="180.34" y2="83.82" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="J4" gate="G$1" pin="4"/>
 <pinref part="GND19" gate="1" pin="GND"/>
 <wire x1="81.28" y1="81.28" x2="78.74" y2="81.28" width="0.1524" layer="91"/>
@@ -7627,9 +7621,16 @@ Basic SMA packaged diode. Good for reverse polarization protection. Common part 
 </segment>
 <segment>
 <pinref part="GND15" gate="1" pin="GND"/>
-<wire x1="78.74" y1="48.26" x2="73.66" y2="48.26" width="0.1524" layer="91"/>
-<wire x1="73.66" y1="48.26" x2="73.66" y2="38.1" width="0.1524" layer="91"/>
+<wire x1="76.2" y1="43.18" x2="76.2" y2="38.1" width="0.1524" layer="91"/>
 <pinref part="JP2" gate="G$1" pin="GND"/>
+<wire x1="78.74" y1="43.18" x2="76.2" y2="43.18" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="JP1" gate="G$1" pin="GND"/>
+<pinref part="JP1" gate="G$1" pin="GND"/>
+<pinref part="GND18" gate="1" pin="GND"/>
+<wire x1="177.8" y1="68.58" x2="177.8" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="177.8" y1="83.82" x2="180.34" y2="83.82" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="+3V3" class="0">
@@ -7671,13 +7672,14 @@ Basic SMA packaged diode. Good for reverse polarization protection. Common part 
 <pinref part="P+8" gate="1" pin="+5V"/>
 <wire x1="175.26" y1="71.12" x2="175.26" y2="88.9" width="0.1524" layer="91"/>
 <pinref part="JP1" gate="G$1" pin="+5V"/>
+<pinref part="JP1" gate="G$1" pin="+5V"/>
 <wire x1="175.26" y1="71.12" x2="180.34" y2="71.12" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="P+6" gate="1" pin="+5V"/>
-<wire x1="78.74" y1="45.72" x2="71.12" y2="45.72" width="0.1524" layer="91"/>
-<wire x1="71.12" y1="45.72" x2="71.12" y2="53.34" width="0.1524" layer="91"/>
+<wire x1="73.66" y1="40.64" x2="73.66" y2="53.34" width="0.1524" layer="91"/>
 <pinref part="JP2" gate="G$1" pin="PWR"/>
+<wire x1="78.74" y1="40.64" x2="73.66" y2="40.64" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="P+11" gate="1" pin="+5V"/>
@@ -7690,6 +7692,7 @@ Basic SMA packaged diode. Good for reverse polarization protection. Common part 
 <wire x1="162.56" y1="76.2" x2="180.34" y2="76.2" width="0.1524" layer="91"/>
 <label x="162.56" y="76.2" size="1.778" layer="95"/>
 <pinref part="JP1" gate="G$1" pin="A"/>
+<pinref part="JP1" gate="G$1" pin="A"/>
 </segment>
 </net>
 <net name="HALL_B" class="0">
@@ -7697,12 +7700,14 @@ Basic SMA packaged diode. Good for reverse polarization protection. Common part 
 <wire x1="162.56" y1="78.74" x2="180.34" y2="78.74" width="0.1524" layer="91"/>
 <label x="162.56" y="78.74" size="1.778" layer="95"/>
 <pinref part="JP1" gate="G$1" pin="B"/>
+<pinref part="JP1" gate="G$1" pin="B"/>
 </segment>
 </net>
 <net name="HALL_C" class="0">
 <segment>
 <wire x1="162.56" y1="81.28" x2="180.34" y2="81.28" width="0.1524" layer="91"/>
 <label x="162.56" y="81.28" size="1.778" layer="95"/>
+<pinref part="JP1" gate="G$1" pin="C"/>
 <pinref part="JP1" gate="G$1" pin="C"/>
 </segment>
 </net>
@@ -7740,15 +7745,15 @@ Basic SMA packaged diode. Good for reverse polarization protection. Common part 
 </net>
 <net name="I2C_SDA" class="0">
 <segment>
-<wire x1="60.96" y1="40.64" x2="78.74" y2="40.64" width="0.1524" layer="91"/>
-<label x="60.96" y="40.64" size="1.778" layer="95"/>
+<wire x1="60.96" y1="48.26" x2="78.74" y2="48.26" width="0.1524" layer="91"/>
+<label x="60.96" y="48.26" size="1.778" layer="95"/>
 <pinref part="JP2" gate="G$1" pin="RX/SDA"/>
 </segment>
 </net>
 <net name="I2C_SCL" class="0">
 <segment>
-<wire x1="60.96" y1="43.18" x2="78.74" y2="43.18" width="0.1524" layer="91"/>
-<label x="60.96" y="43.18" size="1.778" layer="95"/>
+<wire x1="60.96" y1="45.72" x2="78.74" y2="45.72" width="0.1524" layer="91"/>
+<label x="60.96" y="45.72" size="1.778" layer="95"/>
 <pinref part="JP2" gate="G$1" pin="TX/SCL"/>
 </segment>
 </net>
@@ -7790,6 +7795,11 @@ Basic SMA packaged diode. Good for reverse polarization protection. Common part 
 <approved hash="104,2,88.9,139.7,U4,PVDD2_1,V+,,,"/>
 <approved hash="205,2,88.9,134.62,N$29,,,,,"/>
 <approved hash="205,2,88.9,132.08,N$29,,,,,"/>
+<approved hash="108,4,180.34,83.82,GND,,,,,"/>
+<approved hash="108,4,180.34,71.12,+5V,,,,,"/>
+<approved hash="108,4,180.34,76.2,HALL_A,,,,,"/>
+<approved hash="108,4,180.34,78.74,HALL_B,,,,,"/>
+<approved hash="108,4,180.34,81.28,HALL_C,,,,,"/>
 <approved hash="115,1,124.356,92.606,FRAME1,,,,,"/>
 <approved hash="115,1,154.148,59.69,LEDY,,,,,"/>
 <approved hash="115,1,143.988,59.69,LEDX,,,,,"/>
