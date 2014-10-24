@@ -112,10 +112,6 @@ const SerialConfig Corn::kDebugSerialConfig = { DEBUG_BAUDRATE,
                                                 USART_CR2_STOP1_BITS,
                                                 0 };
 
-// Pointer to the normally-inlined system reset so its definition is linked.
-// This may still be optimized out unless referenced somewhere.
-void (* const Corn::system_reset_function)(void) = NVIC_SystemReset;
-
 // Resets the system if two ^C characters are received in succession.
 NORETURN msg_t Corn::ThreadReset(void *arg) {
   (void) arg;
@@ -137,11 +133,7 @@ NORETURN msg_t Corn::ThreadReset(void *arg) {
     // Echo character back.
     sdPut(&DEBUG_SERIAL, c);
   }
-
-  // Call through the pointer so that NVIC_SystemReset isn't inlined. This makes
-  // it show up as a global symbol which can be easily jumped to in a debugger.
-  system_reset_function();
-  UNREACHABLE();
+  SystemReset();
 }
 
 // Uses delays to achieve a 1 Hz blink rate, so the timing will not be exact.
@@ -160,7 +152,7 @@ NORETURN msg_t Corn::ThreadHeartbeat(void *arg) {
   chThdExit(0);
 }
 
-// .
+// Polls the DRV8303 for errors, which also clears any faults.
 NORETURN msg_t Corn::ThreadError(void *drv8303_pointer) {
   chRegSetThreadName("error");
 

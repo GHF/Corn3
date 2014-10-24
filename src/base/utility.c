@@ -31,6 +31,11 @@
 
 #include "base/log.h"
 
+NORETURN USED void SystemReset(void) {
+  NVIC_SystemReset();
+  UNREACHABLE();
+}
+
 NORETURN void _CriticalHalt(const char *func, const char *format, ...) {
   va_list args;
   va_start(args, format);

@@ -31,18 +31,26 @@
 extern "C" {
 #endif
 
-/* Compiler-specific attribute definitions. */
+// Compiler-specific attribute definitions.
 #ifdef __GNUC__
-#define NORETURN __attribute__((noreturn))
 #define ALIGNED(x) __attribute__((aligned(x)))
-#define UNREACHABLE() __builtin_unreachable()
 #define FORMAT(archetype, format_index, first_arg) \
     __attribute__((__format__(archetype, format_index, first_arg)))
+#ifdef __cplusplus
+#define NORETURN [[noreturn]]
 #else
-#define NORETURN
+#define NORETURN __attribute__((noreturn))
+#endif  // #ifdef __cplusplus
+#define UNUSED __attribute__((unused))
+#define USED __attribute__((used))
+#define UNREACHABLE() __builtin_unreachable()
+#else
 #define ALIGNED(x)
-#define UNREACHABLE() do { } while (0)
 #define FORMAT(archetype, format_index, first_arg)
+#define NORETURN
+#define UNUSED
+#define USED
+#define UNREACHABLE() do { } while (0)
 #endif
 
 /**
@@ -61,6 +69,11 @@ extern "C" {
  * @param ...        Arguments to pass to invokable.
  */
 #define INVOKE(invokable, ...) invokable(__VA_ARGS__)
+
+/**
+ * @brief Performs an immediate software reset on the system.
+ */
+NORETURN USED void SystemReset(void);
 
 /**
  * @brief Logs a critical error then halts the system.
