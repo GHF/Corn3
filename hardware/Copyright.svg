@@ -14,10 +14,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   inkscape:export-filename="/Users/xw/Dropbox/EAGLE projects/Corntroller v3/Corn3.2/Copyright.png"
+   inkscape:export-filename="/Users/xw/Dropbox/EAGLE projects/Corntroller v3/Corn3.3/Copyright.png"
    inkscape:export-xdpi="1000"
    inkscape:export-ydpi="1000"
-   sodipodi:docname="New document 1">
+   sodipodi:docname="Copyright.svg">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -27,7 +27,7 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="75.396823"
+     inkscape:zoom="51.11111"
      inkscape:cx="11.25"
      inkscape:cy="6.3000002"
      inkscape:document-units="px"
@@ -35,8 +35,8 @@
      showgrid="false"
      units="in"
      width="1.4in"
-     inkscape:window-width="1920"
-     inkscape:window-height="1156"
+     inkscape:window-width="1440"
+     inkscape:window-height="851"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1" />
@@ -95,16 +95,16 @@
          sodipodi:role="line" /></text>
     <text
        xml:space="preserve"
-       style="font-size:4.5999999px;font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;font-family:Gotham HTF;-inkscape-font-specification:Gotham HTF Light"
-       x="0.99473685"
-       y="1044.5875"
+       style="font-size:11px;font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;font-family:Gotham HTF;-inkscape-font-specification:Gotham HTF Light"
+       x="-0.2770023"
+       y="1049.9093"
        id="text2997"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
-         x="0.99473685"
-         y="1044.5875"
-         style="font-size:4.5999999px;font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Gotham HTF;-inkscape-font-specification:Gotham HTF Heavy"
-         id="tspan3001">Xo Wang</tspan></text>
+         x="-0.2770023"
+         y="1049.9093"
+         style="font-size:11px;font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Gotham HTF;-inkscape-font-specification:Gotham HTF Heavy"
+         id="tspan3001">©</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:4px;font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr;fill:#000000;fill-opacity:1;stroke:none;font-family:Gotham HTF;-inkscape-font-specification:Gotham HTF Light"
@@ -126,17 +126,21 @@
        sodipodi:linespacing="125%"
        transform="translate(0,1039.7598)"><tspan
          sodipodi:role="line"
-         id="tspan3011"></tspan></text>
+         id="tspan3011" /></text>
     <text
        xml:space="preserve"
-       style="font-size:4.19999981px;font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Gotham HTF;-inkscape-font-specification:Gotham HTF Heavy"
-       x="0.76926315"
-       y="1048.8848"
+       style="font-size:5px;font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;text-align:start;line-height:80.00000119%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Gotham HTF;-inkscape-font-specification:Gotham HTF Heavy"
+       x="9.5931768"
+       y="1045.813"
        id="text3013"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="80.000001%"><tspan
          sodipodi:role="line"
          id="tspan3015"
-         x="0.76926315"
-         y="1048.8848">2011-2014</tspan></text>
+         x="9.5931768"
+         y="1045.813">2011-</tspan><tspan
+         sodipodi:role="line"
+         x="9.5931768"
+         y="1049.813"
+         id="tspan2996">2014</tspan></text>
   </g>
 </svg>

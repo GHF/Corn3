@@ -14,8 +14,8 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="Corntroller 3.2 logo.svg"
-   inkscape:export-filename="/Users/xw/Dropbox/EAGLE projects/Corntroller v3/Corn3.2/Corntroller 3.2 logo.bmp.png"
+   sodipodi:docname="Corntroller version.svg"
+   inkscape:export-filename="/Users/xw/Dropbox/EAGLE projects/Corntroller v3/Corn3.3/Corntroller version.png"
    inkscape:export-xdpi="1000"
    inkscape:export-ydpi="1000">
   <defs
@@ -27,15 +27,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="30.649573"
+     inkscape:zoom="22.444444"
      inkscape:cx="29.25"
      inkscape:cy="4.5"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      units="in"
-     inkscape:window-width="1920"
-     inkscape:window-height="856"
+     inkscape:window-width="1440"
+     inkscape:window-height="851"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1" />
@@ -66,6 +66,6 @@
          sodipodi:role="line"
          id="tspan2987"
          x="3.0343001"
-         y="1050.1108">Corntroller 3.2</tspan></text>
+         y="1050.1108">Corntroller 3.3</tspan></text>
   </g>
 </svg>
