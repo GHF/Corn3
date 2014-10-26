@@ -104,7 +104,7 @@ CSRC = $(PORTSRC) \
        $(VERSIONSRC) \
        src/base/log.c \
        src/base/utility.c \
-       src/syscalls.c \
+       src/c_stubs.c \
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
