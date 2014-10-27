@@ -29,9 +29,10 @@
 #include "ch.h"
 #include "hal.h"
 
-#include "config.h"
 #include "base/log.h"
 #include "base/utility.h"
+#include "config.h"
+#include "driver/usb_device.h"
 #include "version/version.h"
 
 // Does whole-system initialization, and uses many static variables as if they
@@ -61,7 +62,7 @@ void Corn::Start() {
                     nullptr);
 
   // Print welcome with OS mechanism, so there is output even if logging breaks.
-  const uint8_t welcome_msg[] = ANSI_RESET "\r\n" BOARD_NAME "\r\n";
+  const uint8_t welcome_msg[] = ANSI_RESET "\r\n" CORN_NAME "\r\n";
   sdWrite(&DEBUG_SERIAL, welcome_msg, sizeof(welcome_msg));
 
   // Print startup message.
@@ -73,6 +74,9 @@ void Corn::Start() {
                     LOWPRIO,
                     ThreadHeartbeat,
                     nullptr);
+
+  // Start USB CDC ACM serial device.
+  UsbDevice::Start();
 
   // Start three-phase PWM driver.
   inverter_pwm_.Start();

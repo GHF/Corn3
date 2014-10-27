@@ -71,6 +71,13 @@ extern "C" {
 #define INVOKE(invokable, ...) invokable(__VA_ARGS__)
 
 /**
+ * @brief  Gets the size of an array.
+ *
+ * @param array  Identifier of array type.
+ */
+#define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))
+
+/**
  * @brief Performs an immediate software reset on the system.
  */
 NORETURN USED void SystemReset(void);

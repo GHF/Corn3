@@ -29,13 +29,8 @@
 #define BOARD_BOARD_H_
 
 /*
- * Setup for the Corn3 brushless motor controller.
+ * Setup for the Corntroller brushless motor controller.
  */
-
-/*
- * Board identifier.
- */
-#define BOARD_NAME                  "Corn3 (Corntroller v3.2)"
 
 /*
  * Board oscillators-related settings.

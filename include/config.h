@@ -27,6 +27,15 @@
 #ifndef CONFIG_H_
 #define CONFIG_H_
 
+/* Version numbering. */
+#define CORN_MAJOR 3
+#define CORN_MINOR 2
+#define CORN_NAME "Corntroller v" \
+                  CORN_EXPAND_AND_STRINGIFY(CORN_MAJOR) "." \
+                  CORN_EXPAND_AND_STRINGIFY(CORN_MINOR)
+#define CORN_STRINGIFY(s) #s
+#define CORN_EXPAND_AND_STRINGIFY(x) CORN_STRINGIFY(x)
+
 /* Set a compile-time logging level. */
 #define STATIC_LOGGING_LEVEL LOGGING_INFO
 
@@ -77,5 +86,8 @@
 #define SERVO_INPUT_MIN_COMMAND  (1200)
 #define SERVO_INPUT_MAX_COMMAND  (1800)
 #define SERVO_INPUT_DEADBAND     (17)
+
+/* USB device options. */
+#define USB_DRIVER  (USBD1)
 
 #endif  /* CONFIG_H_ */
