@@ -42,6 +42,10 @@ void UsbDevice::Start() {
   usbConnectBus(usb_driver);
 }
 
+SerialUSBDriver *UsbDevice::GetSerial() {
+  return &sdud_;
+}
+
 const SerialUSBConfig UsbDevice::kSerialUsbConfig = {
   &USB_DRIVER,               // usbp
   kDataRequestEndpoint,      // bulk_in

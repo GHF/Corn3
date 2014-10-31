@@ -102,9 +102,9 @@ CSRC = $(PORTSRC) \
        $(PLATFORMSRC) \
        $(BOARDSRC) \
        $(VERSIONSRC) \
+       src/c_stubs.c \
        src/base/log.c \
        src/base/utility.c \
-       src/c_stubs.c \
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
@@ -114,9 +114,9 @@ CPPSRC = src/main.cpp \
          src/driver/DRV8303.cpp \
          src/driver/servo_input.cpp \
          src/driver/usb_device.cpp \
-         src/motor/rotor_hall.cpp \
-         src/motor/inverter_pwm.cpp \
          src/motor/commutator_six_step.cpp \
+         src/motor/inverter_pwm.cpp \
+         src/motor/rotor_hall.cpp \
 
 # C sources to be compiled in ARM mode regardless of the global setting.
 # NOTE: Mixing ARM and THUMB mode enables the -mthumb-interwork compiler

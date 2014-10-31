@@ -32,13 +32,23 @@
 #include "ch.h"
 #include "hal.h"
 
+/**
+ * @brief Configuration, initialization routines, and event handlers for USB
+ *        serial driver.
+ */
 class UsbDevice {
  public:
+  /**
+   * @brief Initializes USB peripheral and prepares USB serial driver for data.
+   */
   static void Start();
 
-  static SerialUSBDriver *GetSerial() {
-    return &sdud_;
-  }
+  /**
+   * @brief Retrieves the USB serial channel. Pointer will not change during
+   *        initialization.
+   * @return USB serial channel, castable to OS IO channel.
+   */
+  static SerialUSBDriver *GetSerial();
 
  protected:
   static const SerialUSBConfig kSerialUsbConfig;

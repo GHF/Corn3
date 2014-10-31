@@ -34,9 +34,9 @@
 #include "base/utility.h"
 #include "driver/DRV8303.h"
 #include "driver/servo_input.h"
-#include "motor/rotor_hall.h"
-#include "motor/inverter_pwm.h"
 #include "motor/commutator_six_step.h"
+#include "motor/inverter_pwm.h"
+#include "motor/rotor_hall.h"
 
 /**
  * @brief Entry point, initialization, and main loop for all functionality.
