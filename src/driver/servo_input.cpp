@@ -60,7 +60,8 @@ const ICUConfig ServoInput::kServoIcuConfig = { ICU_INPUT_ACTIVE_HIGH,
                                                 ICU_CHANNEL_1,
                                                 0,
                                                 ICU_RESET_NEVER,
-                                                ICU_CHANNEL_1_INPUT_1 };
+                                                ICU_CHANNEL_1_INPUT_1,
+                                                ICU_FILTER_F_1_N_8 };
 
 void ServoInput::HandlePulse(int pulse_width, bool pulse_valid) {
   if (commutator_six_step_ != nullptr) {

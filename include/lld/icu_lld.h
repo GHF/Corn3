@@ -199,6 +199,28 @@ typedef enum {
 } icuxormode_t;
 
 /**
+ * @brief   ICU sample rate and filter configuration.
+ */
+typedef enum {
+  ICU_FILTER_F_1_N_1 = 0,    /**< Full sample frequency, 1 sample filter. */
+  ICU_FILTER_F_1_N_2 = 1,    /**< Full sample frequency, 2 sample filter. */
+  ICU_FILTER_F_1_N_4 = 2,    /**< Full sample frequency, 2 sample filter. */
+  ICU_FILTER_F_1_N_8 = 3,    /**< Full sample frequency, 8 sample filter. */
+  ICU_FILTER_F_2_N_6 = 4,    /**< 1/2 sample frequency, 6 sample filter. */
+  ICU_FILTER_F_2_N_8 = 5,    /**< 1/2 sample frequency, 8 sample filter. */
+  ICU_FILTER_F_4_N_6 = 6,    /**< 1/4 sample frequency, 6 sample filter. */
+  ICU_FILTER_F_4_N_8 = 7,    /**< 1/4 sample frequency, 8 sample filter. */
+  ICU_FILTER_F_8_N_6 = 8,    /**< 1/8 sample frequency, 6 sample filter. */
+  ICU_FILTER_F_8_N_8 = 9,    /**< 1/8 sample frequency, 8 sample filter. */
+  ICU_FILTER_F_16_N_5 = 10,  /**< 1/16 sample frequency, 5 sample filter. */
+  ICU_FILTER_F_16_N_6 = 11,  /**< 1/16 sample frequency, 6 sample filter. */
+  ICU_FILTER_F_16_N_8 = 12,  /**< 1/16 sample frequency, 8 sample filter. */
+  ICU_FILTER_F_32_N_5 = 13,  /**< 1/16 sample frequency, 5 sample filter. */
+  ICU_FILTER_F_32_N_6 = 14,  /**< 1/16 sample frequency, 6 sample filter. */
+  ICU_FILTER_F_32_N_8 = 15,  /**< 1/16 sample frequency, 8 sample filter. */
+} icufilter_t;
+
+/**
  * @brief   ICU counter type.
  */
 typedef uint32_t icucnt_t;
@@ -250,6 +272,10 @@ typedef struct {
    * @brief   Configuration of channel 1.
    */
   icuxormode_t              xormode;
+  /**
+   * @brief   Hardware filter configuration.
+   */
+  icufilter_t               filter;
 } ICUConfig;
 
 /**

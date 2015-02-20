@@ -332,7 +332,8 @@ void icu_lld_start(ICUDriver *icup) {
     /* Selected input 1.
        CCMR1_CC1S = 01 = CH1 Input on TI1.
        CCMR1_CC2S = 10 = CH2 Input on TI1.*/
-    icup->tim->CCMR1 = STM32_TIM_CCMR1_CC1S(1) | STM32_TIM_CCMR1_CC2S(2);
+    icup->tim->CCMR1 = STM32_TIM_CCMR1_CC1S(1) | STM32_TIM_CCMR1_CC2S(2) |
+                       STM32_TIM_CCMR1_IC1F(icup->config->filter);
 
     if (icup->config->xormode == ICU_CHANNEL_1_XOR_123) {
       /* TI1 is CH1, CH1, and CH3 XORed together. */
@@ -369,7 +370,8 @@ void icu_lld_start(ICUDriver *icup) {
     /* Selected input 2.
        CCMR1_CC1S = 10 = CH1 Input on TI2.
        CCMR1_CC2S = 01 = CH2 Input on TI2.*/
-    icup->tim->CCMR1 = STM32_TIM_CCMR1_CC1S(2) | STM32_TIM_CCMR1_CC2S(1);
+    icup->tim->CCMR1 = STM32_TIM_CCMR1_CC1S(2) | STM32_TIM_CCMR1_CC2S(1) |
+                       STM32_TIM_CCMR1_IC2F(icup->config->filter);
 
     if (icup->config->resetmode == ICU_RESET_ON_ACTIVE) {
       /* SMCR_TS  = 110, input is TI2FP2.
@@ -401,12 +403,14 @@ void icu_lld_start(ICUDriver *icup) {
       /* Selected input 3.
          CCMR2_CC3S = 01 = CH1 Input on TI3.
          CCMR2_CC4S = 10 = CH2 Input on TI3.*/
-      icup->tim->CCMR2 = STM32_TIM_CCMR2_CC3S(1) | STM32_TIM_CCMR2_CC4S(2);
+      icup->tim->CCMR2 = STM32_TIM_CCMR2_CC3S(1) | STM32_TIM_CCMR2_CC4S(2) |
+                         STM32_TIM_CCMR2_IC3F(icup->config->filter);
     } else {
       /* Selected input 4.
          CCMR2_CC3S = 10 = CH1 Input on TI4.
          CCMR2_CC4S = 01 = CH2 Input on TI4.*/
-      icup->tim->CCMR2 = STM32_TIM_CCMR2_CC3S(2) | STM32_TIM_CCMR2_CC4S(1);
+      icup->tim->CCMR2 = STM32_TIM_CCMR2_CC3S(2) | STM32_TIM_CCMR2_CC4S(1) |
+                         STM32_TIM_CCMR2_IC4F(icup->config->filter);
     }
 
     /* The CCER settings depend on the selected trigger mode.

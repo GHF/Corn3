@@ -117,7 +117,8 @@ const ICUConfig RotorHall::kHallIcuConfig = { ICU_INPUT_ACTIVE_HIGH,
                                               ICU_CHANNEL_1,
                                               0,
                                               ICU_RESET_ON_CH1_EDGE,
-                                              ICU_CHANNEL_1_XOR_123 };
+                                              ICU_CHANNEL_1_XOR_123,
+                                              ICU_FILTER_F_1_N_2 };
 
 // Lookup table from hall state bitfield to fixed-point angle.
 // Note that they are out of angular order because the hall states are in
