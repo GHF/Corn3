@@ -51,6 +51,7 @@ void ServoInput::Start() {
 constexpr int ServoInput::kInputLow;
 constexpr int ServoInput::kInputHigh;
 constexpr int ServoInput::kInputDeadband;
+constexpr int ServoInput::kInputMargin;
 
 const ICUConfig ServoInput::kServoIcuConfig = { ICU_INPUT_ACTIVE_HIGH,
                                                 SERVO_INPUT_ICU_FREQ,
@@ -65,6 +66,10 @@ const ICUConfig ServoInput::kServoIcuConfig = { ICU_INPUT_ACTIVE_HIGH,
 
 void ServoInput::HandlePulse(int pulse_width, bool pulse_valid) {
   if (commutator_six_step_ != nullptr) {
+    if ((pulse_width < (kInputLow - kInputMargin)) ||
+        (pulse_width > (kInputHigh + kInputMargin))) {
+      pulse_valid = false;
+    }
     if (pulse_valid) {
       const int32_t bounded_command =
           std::min(std::max(pulse_width, kInputLow), kInputHigh);

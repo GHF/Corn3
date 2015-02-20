@@ -80,12 +80,13 @@
 #define INVERTER_COUNTER_FREQ  (144000000)
 #define INVERTER_PWM_PERIOD    (7200)
 
-/* Servo PWM input options. */
+/* Servo PWM input options. See servo_input.h for descriptions. */
 #define SERVO_INPUT_ICU          (ICUD4)
 #define SERVO_INPUT_ICU_FREQ     (1000000)
-#define SERVO_INPUT_MIN_COMMAND  (1200)
-#define SERVO_INPUT_MAX_COMMAND  (1800)
+#define SERVO_INPUT_MIN_COMMAND  (1000)
+#define SERVO_INPUT_MAX_COMMAND  (2000)
 #define SERVO_INPUT_DEADBAND     (17)
+#define SERVO_INPUT_MARGIN       (530) /* Allows mixed 1024 us wide channels. */
 
 /* USB device options. */
 #define USB_DRIVER  (USBD1)

@@ -68,6 +68,8 @@ class ServoInput {
   static constexpr int kInputHigh = SERVO_INPUT_MAX_COMMAND;
   /// Deadband of pulse width.
   static constexpr int kInputDeadband = SERVO_INPUT_DEADBAND;
+  /// Margin past the bounds for which pulse widths are rejected.
+  static constexpr int kInputMargin = SERVO_INPUT_MARGIN;
   /// Servo input capture settings.
   static const ICUConfig kServoIcuConfig;
 
