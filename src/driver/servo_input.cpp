@@ -71,8 +71,7 @@ void ServoInput::HandlePulse(int pulse_width, bool pulse_valid) {
       pulse_valid = false;
     }
     if (pulse_valid) {
-      const int32_t bounded_command =
-          std::min(std::max(pulse_width, kInputLow), kInputHigh);
+      const int32_t bounded_command = Clamp(pulse_width, kInputLow, kInputHigh);
       const Width16 period_2 = commutator_six_step_->GetMaxAmplitude();
       const Width16Diff amplitude = MapRange(kInputLow,
                                              kInputHigh,

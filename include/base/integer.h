@@ -27,6 +27,7 @@
 #ifndef BASE_INTEGER_H_
 #define BASE_INTEGER_H_
 
+#include <algorithm>
 #include <type_traits>
 
 /**
@@ -83,6 +84,22 @@ static inline T Average(T a, T b) {
   const T round_to_zero = (sum_halves < 0) & (a ^ b);
   // result is sum of halves corrected for rounding
   return sum_halves + both_odd + round_to_zero;
+}
+
+/**
+ * @brief Clamps a value to a range.
+ *
+ * @param i Value.
+ * @param min Lower bound for range.
+ * @param max Upper bound for range.
+ * @return For a value i that is >= @ pmin and <= @p max, returns @p i.
+ *         Otherwise, returns the bound that @p i goes beyond.
+ */
+template<typename T>
+static inline T Clamp(T i, T min, T max) {
+  const T lower_bounded = std::max(i, min);
+  const T both_bounded = std::min(lower_bounded, max);
+  return both_bounded;
 }
 
 /**
