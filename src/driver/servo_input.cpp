@@ -60,18 +60,18 @@ const ICUConfig ServoInput::kServoIcuConfig = { ICU_INPUT_ACTIVE_HIGH,
                                                 IcuOverflowCallback,
                                                 ICU_CHANNEL_1,
                                                 0,
-                                                ICU_RESET_NEVER,
+                                                ICU_RESET_ON_ACTIVE,
                                                 ICU_CHANNEL_1_INPUT_1,
                                                 ICU_FILTER_F_1_N_8 };
 
-void ServoInput::HandlePulse(int pulse_width, bool pulse_valid) {
+void ServoInput::HandlePulse(int width, bool valid) {
   if (commutator_six_step_ != nullptr) {
-    if ((pulse_width < (kInputLow - kInputMargin)) ||
-        (pulse_width > (kInputHigh + kInputMargin))) {
-      pulse_valid = false;
+    if ((width < (kInputLow - kInputMargin)) ||
+        (width > (kInputHigh + kInputMargin))) {
+      valid = false;
     }
-    if (pulse_valid) {
-      const int32_t bounded_command = Clamp(pulse_width, kInputLow, kInputHigh);
+    if (valid) {
+      const int32_t bounded_command = Clamp(width, kInputLow, kInputHigh);
       const Width16 period_2 = commutator_six_step_->GetMaxAmplitude();
       const Width16Diff amplitude = MapRange(kInputLow,
                                              kInputHigh,
@@ -93,15 +93,12 @@ void ServoInput::HandlePulse(int pulse_width, bool pulse_valid) {
   }
 }
 
-// Computes width of pulse. Disables drive if time between edges would overflow
-// a 16-bit counter.
+// Gets width of pulse captured. Disables drive if time between edges overflowed
+// the timer counter.
 void ServoInput::IcuWidthCallback(ICUDriver *icu_driver) {
-  const auto falling_edge = icuGetWidth(icu_driver);
-  const auto rising_edge = icuGetPeriod(icu_driver);
-  const uint16_t pulse_width = falling_edge - rising_edge;
+  const uint16_t pulse_width = icuGetWidth(icu_driver);
   ServoInput * const servo_input = static_cast<ServoInput *>(icu_driver->self);
-  if (servo_input->num_overflows_ > 1 ||
-      (servo_input->num_overflows_ == 1 && falling_edge > rising_edge)) {
+  if (servo_input->num_overflows_ > 0) {
     servo_input->HandlePulse(-1, false);
   } else {
     servo_input->HandlePulse(pulse_width, true);
@@ -119,7 +116,7 @@ void ServoInput::IcuOverflowCallback(ICUDriver *icu_driver) {
   // Increment with saturation.
   servo_input->num_overflows_ =
       std::max(servo_input->num_overflows_, servo_input->num_overflows_ + 1);
-  if (servo_input->num_overflows_ > 1) {
+  if (servo_input->num_overflows_ > 0) {
     servo_input->HandlePulse(-1, false);
   }
 }

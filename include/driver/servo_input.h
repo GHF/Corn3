@@ -76,12 +76,11 @@ class ServoInput {
   /**
    * @brief Handles servo pulse event.
    *
-   * @param pulse_width Width of the pulse captured. Not used if @p pulse_valid
-   *                    is false.
-   * @param pulse_valid True if @p pulse_width is valid. Invalid can mean a
-   *                    pulse glitch, timeout, etc.
+   * @param width Width of the pulse captured. Not used if @p valid is false.
+   * @param valid True if @p width is valid. Invalid can mean a pulse glitch,
+   *              timeout, etc.
    */
-  void HandlePulse(int pulse_width, bool pulse_valid);
+  void HandlePulse(int width, bool valid);
 
   /**
    * @brief Handles servo pulse input falling edges.
