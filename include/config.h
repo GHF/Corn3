@@ -87,6 +87,8 @@
 #define SERVO_INPUT_MAX_COMMAND  (2000)
 #define SERVO_INPUT_DEADBAND     (17)
 #define SERVO_INPUT_MARGIN       (530) /* Allows mixed 1024 us wide channels. */
+#define SERVO_INPUT_SLEW_LIMIT   (34)  /* Unit: motor amplitude / ms. */
+                                       /* Must be <= 32767. */
 
 /* USB device options. */
 #define USB_DRIVER  (USBD1)

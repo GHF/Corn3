@@ -70,6 +70,8 @@ class ServoInput {
   static constexpr int kInputDeadband = SERVO_INPUT_DEADBAND;
   /// Margin past the bounds for which pulse widths are rejected.
   static constexpr int kInputMargin = SERVO_INPUT_MARGIN;
+  /// Maximum motor command rate of change in amplitude units per millisecond.
+  static constexpr int kInputSlewLimit = SERVO_INPUT_SLEW_LIMIT;
   /// Servo input capture settings.
   static const ICUConfig kServoIcuConfig;
 
@@ -77,10 +79,11 @@ class ServoInput {
    * @brief Handles servo pulse event.
    *
    * @param width Width of the pulse captured. Not used if @p valid is false.
+   * @param period Period of the pulse captured. Not used if @p valid is false.
    * @param valid True if @p width is valid. Invalid can mean a pulse glitch,
    *              timeout, etc.
    */
-  void HandlePulse(int width, bool valid);
+  void HandlePulse(int width, int period, bool valid);
 
   /**
    * @brief Handles servo pulse input falling edges.
@@ -132,6 +135,7 @@ class ServoInput {
   ICUDriver * const icu_driver_;  ///< Timer input capture driver.
   CommutatorSixStep *commutator_six_step_;  ///< Servo commands signal sink.
   int num_overflows_;  ///< Times the timer overflowed since last edge.
+  int last_amplitude_;  ///< Previous command sent to motor.
 };
 
 #endif  /* DRIVER_SERVO_INPUT_H_ */

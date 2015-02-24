@@ -37,7 +37,8 @@
 ServoInput::ServoInput(ICUDriver *icu_driver)
     : icu_driver_(icu_driver),
       commutator_six_step_(nullptr),
-      num_overflows_(0) {
+      num_overflows_(0),
+      last_amplitude_(0) {
 }
 
 void ServoInput::Start() {
@@ -52,6 +53,7 @@ constexpr int ServoInput::kInputLow;
 constexpr int ServoInput::kInputHigh;
 constexpr int ServoInput::kInputDeadband;
 constexpr int ServoInput::kInputMargin;
+constexpr int ServoInput::kInputSlewLimit;
 
 const ICUConfig ServoInput::kServoIcuConfig = { ICU_INPUT_ACTIVE_HIGH,
                                                 SERVO_INPUT_ICU_FREQ,
@@ -64,14 +66,14 @@ const ICUConfig ServoInput::kServoIcuConfig = { ICU_INPUT_ACTIVE_HIGH,
                                                 ICU_CHANNEL_1_INPUT_1,
                                                 ICU_FILTER_F_1_N_8 };
 
-void ServoInput::HandlePulse(int width, bool valid) {
+void ServoInput::HandlePulse(int width, int period, bool valid) {
   if (commutator_six_step_ != nullptr) {
     if ((width < (kInputLow - kInputMargin)) ||
         (width > (kInputHigh + kInputMargin))) {
       valid = false;
     }
     if (valid) {
-      const int32_t bounded_command = Clamp(width, kInputLow, kInputHigh);
+      const int bounded_command = Clamp(width, kInputLow, kInputHigh);
       const Width16 period_2 = commutator_six_step_->GetMaxAmplitude();
       const Width16Diff amplitude = MapRange(kInputLow,
                                              kInputHigh,
@@ -79,12 +81,21 @@ void ServoInput::HandlePulse(int width, bool valid) {
                                              -period_2,
                                              period_2,
                                              kInputDeadband);
-      commutator_six_step_->WriteAmplitude(amplitude);
+      // Greatest change allowed this period based on slew rate limits.
+      const int slew_margin = (kInputSlewLimit * period) /
+                              (SERVO_INPUT_ICU_FREQ / 1000);
+      const Width16Diff slew_limited_amplitude =
+          Clamp<int>(amplitude,
+                     last_amplitude_ - slew_margin,
+                     last_amplitude_ + slew_margin);
+      commutator_six_step_->WriteAmplitude(slew_limited_amplitude);
+      last_amplitude_ = slew_limited_amplitude;
       chSysLockFromIsr();
       commutator_six_step_->SetEnable(true);
       commutator_six_step_->SignalChange();
       chSysUnlockFromIsr();
     } else {
+      last_amplitude_ = 0;
       chSysLockFromIsr();
       commutator_six_step_->SetEnable(false);
       commutator_six_step_->SignalChange();
@@ -97,11 +108,12 @@ void ServoInput::HandlePulse(int width, bool valid) {
 // the timer counter.
 void ServoInput::IcuWidthCallback(ICUDriver *icu_driver) {
   const uint16_t pulse_width = icuGetWidth(icu_driver);
+  const uint16_t pulse_period = icuGetPeriod(icu_driver);
   ServoInput * const servo_input = static_cast<ServoInput *>(icu_driver->self);
   if (servo_input->num_overflows_ > 0) {
-    servo_input->HandlePulse(-1, false);
+    servo_input->HandlePulse(-1, -1, false);
   } else {
-    servo_input->HandlePulse(pulse_width, true);
+    servo_input->HandlePulse(pulse_width, pulse_period, true);
   }
 }
 
@@ -117,7 +129,7 @@ void ServoInput::IcuOverflowCallback(ICUDriver *icu_driver) {
   servo_input->num_overflows_ =
       std::max(servo_input->num_overflows_, servo_input->num_overflows_ + 1);
   if (servo_input->num_overflows_ > 0) {
-    servo_input->HandlePulse(-1, false);
+    servo_input->HandlePulse(-1, -1, false);
   }
 }
 
