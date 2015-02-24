@@ -71,8 +71,9 @@ template<typename T>
 static inline T Average(T a, T b) {
   static_assert(std::is_integral<T>::value,
                 "Average is valid only for integers.");
-  static_assert(std::is_signed<T>::value &&
-                    ((static_cast<T>(-1) >> 1) == static_cast<T>(-1)),
+  static_assert(std::is_unsigned<T>::value ||
+                    (std::is_signed<T>::value &&
+                        ((static_cast<T>(-1) >> 1) == static_cast<T>(-1))),
                 "Arithmetic right shift is not available.");
   // shifts divide by two, rounded towards negative infinity
   const T sum_halves = (a >> 1) + (b >> 1);
